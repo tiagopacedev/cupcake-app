@@ -237,7 +237,7 @@ Business constants (ready minutes, store info, low-stock threshold, line cap 20)
 
 | NFR | Tactic |
 |---|---|
-| NFR-01 Responsiveness | Mobile-first Tailwind, `overflow-x-hidden`, visual checks at 390/1280 (CLAUDE.md §6a) |
+| NFR-01 Responsiveness | Mobile-first Tailwind, `overflow-x-clip`, visual checks at 390/1280 (CLAUDE.md §6a) |
 | NFR-02 Performance | Server-rendered catalog, `next/image`, 6 small photos, no client data library, API in the same Vercel region as Neon (`gru1` São Paulo if available for both, otherwise `iad1` for both) |
 | NFR-03 Accessibility | shadcn/Base UI accessible primitives, labels, `aria-*` from UI doc §8.5, axe checks in E2E |
 | NFR-04 Localization | `Intl` pt-BR formatters in `apps/web/src/lib/format.ts`, times in America/Sao_Paulo |

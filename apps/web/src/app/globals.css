@@ -97,7 +97,7 @@
   }
   html,
   body {
-    @apply overflow-x-hidden;       /* NFR-01: never scroll sideways */
+    @apply overflow-x-clip;         /* NFR-01: never scroll sideways (clip, not hidden: hidden would break sticky bars) */
   }
   body {
     @apply bg-background text-foreground font-sans antialiased;

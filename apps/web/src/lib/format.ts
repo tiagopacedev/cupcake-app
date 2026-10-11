@@ -33,3 +33,15 @@ export function formatTime(iso: string): string {
 export function formatDayMonth(iso: string): string {
   return dayMonth.format(new Date(iso));
 }
+
+const dayKey = new Intl.DateTimeFormat("en-CA", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  timeZone: STORE.timeZone,
+});
+
+/** Whether the instant falls on today's calendar date in America/Sao_Paulo (BR-19). `now` is injectable for tests. */
+export function isToday(iso: string, now: Date = new Date()): boolean {
+  return dayKey.format(new Date(iso)) === dayKey.format(now);
+}
