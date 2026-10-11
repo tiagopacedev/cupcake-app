@@ -1,0 +1,46 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { FILTER_CHIPS, hrefForFilter, type FilterKey } from "@/lib/filters";
+import { cn } from "@/lib/utils";
+
+/**
+ * Filter chips (04-ui-design-system.md §6.3, US-02): one row, scrolls
+ * horizontally on mobile with the scrollbar hidden, wraps on desktop. The
+ * selected chip is the only indicator of the active filter (no heading). The
+ * filter lives in the URL (`?filter=`), so reload and share keep it.
+ */
+export function FilterChips({ selected }: { selected: FilterKey | null }) {
+  const router = useRouter();
+
+  return (
+    <div
+      role="group"
+      aria-label="Filtrar cupcakes"
+      className="-mx-4 flex gap-2 overflow-x-auto px-4 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:px-0"
+    >
+      {FILTER_CHIPS.map(({ key, label }) => {
+        const isSelected = key === selected;
+        return (
+          <Button
+            key={label}
+            type="button"
+            variant="outline"
+            aria-pressed={isSelected}
+            onClick={() => router.replace(hrefForFilter(key), { scroll: false })}
+            className={cn(
+              "h-10 shrink-0 border-input px-4 font-semibold",
+              isSelected &&
+                "bg-foreground text-background hover:bg-foreground/90 hover:text-background",
+            )}
+          >
+            {key === "bestsellers" && <Star className="size-4" aria-hidden={true} />}
+            {label}
+          </Button>
+        );
+      })}
+    </div>
+  );
+}
