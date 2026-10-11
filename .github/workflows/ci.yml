@@ -1,9 +1,8 @@
 name: CI
 
 # 06-development-workflow.md §4. `quality` and `test` must both be green for
-# a PR to merge (branch protection, E3-01). `audit` is non-blocking. `e2e`
-# isn't wired yet — Playwright/`e2e/` don't exist until E8-01, so it would
-# have nothing to run; adding it then is a small, separate follow-up.
+# a PR to merge (branch protection, E3-01). `audit` is non-blocking. `e2e` runs
+# on pushes to main and on PRs labeled `e2e` (E8-01); not a required check.
 on:
   push:
     branches: [main]
@@ -112,6 +111,73 @@ jobs:
             apps/web/coverage/coverage-summary.json
           if-no-files-found: ignore
           retention-days: 14
+
+  e2e:
+    name: e2e
+    # 06-development-workflow.md §4: on every push to main and on PRs labeled `e2e`.
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'e2e')
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: cupcake
+          POSTGRES_PASSWORD: cupcake
+          POSTGRES_DB: cupcake_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U cupcake -d cupcake_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: "postgresql://cupcake:cupcake@localhost:5432/cupcake_test?sslmode=disable"
+      DIRECT_URL: "postgresql://cupcake:cupcake@localhost:5432/cupcake_test?sslmode=disable"
+      E2E_DATABASE_URL: "postgresql://cupcake:cupcake@localhost:5432/cupcake_test?sslmode=disable"
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: pnpm --filter e2e exec playwright install --with-deps chromium
+
+      - name: Apply migrations to the test database
+        run: pnpm db:deploy
+
+      # Playwright builds and starts the API and the web app itself (e2e/playwright.config.ts).
+      - name: End-to-end tests, visual, accessibility and overflow checks
+        run: pnpm test:e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            e2e/playwright-report
+            e2e/test-results
+          retention-days: 14
+
+      - name: Upload screenshots and axe results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-evidence
+          path: e2e/artifacts
+          if-no-files-found: ignore
+          retention-days: 30
 
   audit:
     name: audit

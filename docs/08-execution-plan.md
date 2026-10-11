@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.7 (11 Oct 2026) |
+| **Version** | 1.8 (11 Oct 2026) |
 | **Status** | **Approved by the owner on 11 Oct 2026.** E0-01/E0-02 done; **E1 (Foundation) done**, all 7 tasks, lint/typecheck/tests green. E0-03–E0-06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) remain owner-side tasks tracked below — still needed before E3 (CI, cloud deploy). |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
 | **Executor** | Claude Code, one task at a time, reviewed by the owner |
@@ -360,8 +360,8 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E7-11 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | "Pedido não encontrado" (also the global not-found page, "Página não encontrada"), reopened without notice, error + retry |
 | E7-12 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | `LatestOrderCard` per AD-02: stored + created today + AWAITING_PICKUP; 404 clears the key; network/5xx hides silently and keeps it. Verified live: 358×64 px above the chips |
 | E7-13 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | Manual check at 360 px on a real order: no horizontal overflow, items and quantities at 14 px, code 30 px, total 24 px, no phone; unit tests cover US-20 AC1–AC2 (items/quantities/"Total a pagar na loja"; "Pedido não encontrado") on top of the E6-06 integration tests |
-| E8-01 | ☐ | | | |
-| E8-02 | ☐ | | | |
+| E8-01 | ✅ | | [#7](https://github.com/tiagopacedev/cupcake-app/pull/7) | `e2e/` workspace: Playwright 1.64, mobile (390×844) and desktop (1280×800) projects, production build of web + API on ports 3100/4100, database reset per test. E2E-1…E2E-5 plus 9 extra tests for the E-level criteria of 05 §5: **75 passed, 1 skipped** (E2E-4 is desktop-only) in 3.4 min, run twice. CI job `e2e` (pushes to main, PRs labeled `e2e`; not a required check). The first runs caught a real gap: the checkout had no `<main>` landmark (fixed) |
+| E8-02 | ✅ | | [#7](https://github.com/tiagopacedev/cupcake-app/pull/7) | `quality.spec.ts`, 8 screens × 2 projects: no horizontal overflow at 360/390/768/1280/1440 px; axe WCAG 2.1 A/AA **0 violations of any severity** on all 16 combinations; screenshots saved for the visual comparison (CI artifact `e2e-evidence`). **Lighthouse mobile on production** (11 Oct, Lighthouse 12.8.2): catalog Performance **89** / Accessibility **100** / Best practices 96 / SEO 100 (FCP 1.2 s, LCP 1.5 s, TBT 290 ms, CLS 0, Speed Index 5.6 s); cart 86 / 100 / 96 / 100. Targets (Perf ≥ 85, A11y ≥ 95) met; reports in `docs/situacao-2/lighthouse/`. Photos of the first catalog row are now preloaded (`priority`) to improve Speed Index; to be re-measured after this deploys. Pixel-diff snapshots intentionally not used (05 §3.6) |
 | E8-03 | ☐ | | | |
 | E8-04 | ☐ | | | |
 | E8-05 | ☐ | | | |
@@ -402,3 +402,4 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | 1.5 | 11 Oct 2026 | E5 (Catalog and cart UI) implemented: SCR-01 and SCR-02, cart store, filters, reconcile; awaiting gate G2 |
 | 1.6 | 11 Oct 2026 | E6 (Orders API) implemented: shared order schema, code generator, atomic order transaction with concurrency tests, public order view |
 | 1.7 | 11 Oct 2026 | E7 (Checkout and Meu pedido UI) implemented: SCR-03, SCR-04, home card, latest-order store; awaiting gate G3 |
+| 1.8 | 11 Oct 2026 | E8-01 (Playwright journeys, CI job) and E8-02 (overflow, axe, Lighthouse) done; E8-03…E8-08 pending |

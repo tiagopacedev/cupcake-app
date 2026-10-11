@@ -16,10 +16,13 @@ export function ProductCard({
   product,
   action,
   notice,
+  priority = false,
 }: {
   product: Product;
   action?: ReactNode;
   notice?: ReactNode;
+  /** Preload the photo: set for the cards visible without scrolling (LCP). */
+  priority?: boolean;
 }) {
   const soldOut = product.stockState === "SOLD_OUT";
   const low = product.stockState === "LOW";
@@ -32,6 +35,7 @@ export function ProductCard({
           src={product.imageUrl}
           alt={product.name}
           fill
+          priority={priority}
           sizes="(min-width: 1024px) 368px, 50vw"
           className={cn("object-cover", soldOut && "opacity-50 grayscale")}
         />

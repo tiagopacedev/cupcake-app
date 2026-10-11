@@ -44,8 +44,9 @@ export default async function HomePage({
           </EmptyState>
         ) : (
           <div className="grid grid-cols-2 gap-x-4 gap-y-6 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-10">
-            {products.map((product) => (
-              <CatalogProductCard key={product.id} product={product} />
+            {products.map((product, index) => (
+              // The first row is visible without scrolling: preload its photos.
+              <CatalogProductCard key={product.id} product={product} priority={index < 2} />
             ))}
           </div>
         )}

@@ -13,3 +13,8 @@ coverage/
 packages/database/src/generated/
 *.tsbuildinfo
 .vercel/
+
+# E2E outputs
+e2e/test-results/
+e2e/playwright-report/
+e2e/artifacts/
