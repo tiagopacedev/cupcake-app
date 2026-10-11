@@ -20,6 +20,8 @@ export const envSchema = z.object({
   // tests that need to trigger 429 without waiting a minute (05-testing §3.2).
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(120),
   RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60_000),
+  // POST /api/orders: stricter, 10 per window per IP (07-api-spec.md §1).
+  ORDERS_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(10),
 });
 
 export type Config = z.infer<typeof envSchema>;

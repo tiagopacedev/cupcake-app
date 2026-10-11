@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.5 (11 Oct 2026) |
+| **Version** | 1.6 (11 Oct 2026) |
 | **Status** | **Approved by the owner on 11 Oct 2026.** E0-01/E0-02 done; **E1 (Foundation) done**, all 7 tasks, lint/typecheck/tests green. E0-03–E0-06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) remain owner-side tasks tracked below — still needed before E3 (CI, cloud deploy). |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
 | **Executor** | Claude Code, one task at a time, reviewed by the owner |
@@ -341,12 +341,12 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E5-09 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | `/cart`: CartLine, totals box, sticky "Continuar", empty/loading/error states. Compared with screenshot 03 at 390 px. Desktop width is not in the mockups: centered `max-w-2xl` (UI doc G-10) |
 | E5-10 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | Stepper (minus disabled at 1), trash with inline "Remover {nome}?" / Cancelar |
 | E5-11 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | `reconcileCart` (pure) + `useCartRefresh` (reused by checkout): quantities reduced, sold-out and vanished products removed, notices. Gap: an inactive product has no name, so a generic *proposed* message is used (UI doc G-9) |
-| E6-01 | ☐ | | | |
-| E6-02 | ☐ | | | |
-| E6-03 | ☐ | | | |
-| E6-04 | ☐ | | | |
-| E6-05 | ☐ | | | |
-| E6-06 | ☐ | | | |
+| E6-01 | ✅ | | [#5](https://github.com/tiagopacedev/cupcake-app/pull/5) | `packages/shared/src/order.ts`: `normalizePhone` (formats of US-12 AC3, DDD 55 kept, landlines/foreign codes rejected), `createOrderSchema` (strict: unknown fields rejected, BR-07), code alphabet/pattern. 33 tests |
+| E6-02 | ✅ | | [#5](https://github.com/tiagopacedev/cupcake-app/pull/5) | `generateOrderCode(random?)` with `crypto.randomInt`. The "10 000 unique" check allows ≤ 2 duplicates: 31⁶ codes make a birthday collision ~5% likely in 10 000 draws, so a strict check would be flaky (collisions are handled by the DB constraint + retry) |
+| E6-03 | ✅ | | [#5](https://github.com/tiagopacedev/cupcake-app/pull/5) | `ProductRepository.decrementStock` (conditional `updateMany` → affected rows), `findStock`; repositories now take `Prisma.TransactionClient`. Covered through the order integration tests |
+| E6-04 | ✅ | | [#5](https://github.com/tiagopacedev/cupcake-app/pull/5) | `POST /api/orders`: route (own 10/min rate limit) → controller (shared schema) → `OrderService.create`; `Location` header; malformed JSON now `400` instead of 500 |
+| E6-05 | ✅ | | [#5](https://github.com/tiagopacedev/cupcake-app/pull/5) | One interactive transaction, decrement in product-id order, every short line listed (request order), rollback on shortage, whole-transaction retry on unique violation (max 5). Proven: 2 parallel orders for the last unit → one 201 + one 409; 12 parallel for 5 units → exactly 5 orders; a collision retry decrements stock once. Concurrency tests run 5× without flakes |
+| E6-06 | ✅ | | [#5](https://github.com/tiagopacedev/cupcake-app/pull/5) | `GET /api/orders/{code}`: first name only, `readyAt` = +15 min, price paid kept after catalog price changes, lowercase works, unknown/malformed → 404 |
 | E7-01 | ☐ | | | |
 | E7-02 | ☐ | | | |
 | E7-03 | ☐ | | | |
@@ -400,3 +400,4 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | 1.3 | 11 Oct 2026 | E0-04/E0-05/E3-02 ticked; E3-03 progress (API runtime fix, release workflow, Neon baseline) |
 | 1.4 | 11 Oct 2026 | E3-03 done, gate G1 approved, tag `v0.1.0`. E4 (Catalog API) complete: contract helper + typed client, `GET /api/products`, stock rules, `GET /api/catalog/filters` |
 | 1.5 | 11 Oct 2026 | E5 (Catalog and cart UI) implemented: SCR-01 and SCR-02, cart store, filters, reconcile; awaiting gate G2 |
+| 1.6 | 11 Oct 2026 | E6 (Orders API) implemented: shared order schema, code generator, atomic order transaction with concurrency tests, public order view |
