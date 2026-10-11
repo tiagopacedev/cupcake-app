@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 /**
- * Rewrites and security headers (02-architecture.md §5 "repository layout",
- * §8 "Security headers"). The browser calls the API through this same-origin
- * `/api/*` rewrite, so it never needs CORS and the API URL stays server-side.
+ * Local-dev `/api` rewrite (02-architecture.md §5, §8). On Vercel,
+ * `vercel.json`'s top-level rewrite routes `/api/*` to the `api` Service
+ * directly — this one never runs there, but is still needed for `pnpm dev`.
  */
 const API_URL = process.env.API_URL ?? "http://localhost:4000";
 

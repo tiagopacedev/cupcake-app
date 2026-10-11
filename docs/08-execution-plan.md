@@ -144,7 +144,7 @@ Critical path: **E1 → E2 → E3 (G1) → E6 → E7 (G3) → E8 (G4) → E9 (G5
 | ID | Task | Implements | Depends on | Outcome | Acceptance criteria | h |
 |---|---|---|---|---|---|---|
 | E3-01 | GitHub Actions CI | T-X-4 · NFR-10 | E2-04 | `ci.yml` jobs `quality` and `test` (Postgres service), Redocly lint, coverage thresholds wired | A PR shows both jobs green; a failing test blocks merge (branch protection on) | 3 |
-| E3-02 | Cloud resources (**owner approves**) | T-X-5 · D-20 | E3-01, E0-05 | Neon project (`main` + `preview` branches), Vercel projects `cupcake-web` (root `apps/web`) and `cupcake-api` (root `apps/api`), env vars set, same region | Owner confirms the resources; env vars match 02 §9; secrets only in Vercel/GitHub | 2 |
+| E3-02 | Cloud resources (**owner approves**) | T-X-5 · D-20 · D-23 | E3-01, E0-05 | Neon project (`main` + `preview` branches), one Vercel project `cupcake-app` with `web` (`apps/web`) + `api` (`apps/api`) Services (`vercel.json`), env vars set, same region | Owner confirms the resources; env vars match 02 §9; secrets only in Vercel/GitHub | 2 |
 | E3-03 | Deploy the walking skeleton | T-X-5 | E3-02 | Release workflow (`migrate deploy` + seed + health smoke), both projects deployed | `https://<web>/api/health` returns `{status:"ok",database:"ok"}`; PR previews build; tag `v0.1.0` | 3 |
 
 **Gate G1 · Skeleton live (24 Oct)**: ☐ CI green and required · ☐ production health OK through the web origin · ☐ migrations + seed applied in Neon · ☐ README has live links · ☐ owner approved.

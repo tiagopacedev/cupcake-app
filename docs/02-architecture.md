@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.0 (Phase 4, 11 Oct 2026) |
+| **Version** | 1.1 (11 Oct 2026, D-23: one Vercel project with Services) |
 | **Status** | Draft for approval |
 | **Related** | [01-prd.md](01-prd.md) (BR, NFR) · [03-data-model.md](03-data-model.md) · [04-ui-design-system.md](04-ui-design-system.md) · [07-api-spec.md](07-api-spec.md) + [openapi.yaml](openapi.yaml) · [05-testing-strategy.md](05-testing-strategy.md) · [06-development-workflow.md](06-development-workflow.md) |
 
@@ -210,10 +210,10 @@ Environment variables, parsed and validated at startup (`config.ts` with Zod); t
 |---|---|---|---|
 | `DATABASE_URL` | api, database | `postgresql://…-pooler…/cupcake?sslmode=require` | Runtime connection (Neon **pooled**) |
 | `DIRECT_URL` | database | `postgresql://…/cupcake?sslmode=require` | Migrations (Neon **direct**) |
-| `WEB_ORIGIN` | api | `https://cupcake-web.vercel.app` | CORS allow-list |
+| `WEB_ORIGIN` | api | `https://cupcake-app.vercel.app` | CORS allow-list |
 | `LOG_LEVEL` | api | `info` | Logger level |
-| `API_URL` | web (server only) | `https://cupcake-api.vercel.app` | Target of the `/api/*` rewrite and of server-side fetches |
-| `NEXT_PUBLIC_SITE_URL` | web | `https://cupcake-web.vercel.app` | Absolute URLs (metadata) |
+| `API_URL` | web (server only) | local: `http://localhost:4000`; Vercel: injected by the `api` Services binding (D-23) | Target of the `/api/*` rewrite and of server-side fetches |
+| `NEXT_PUBLIC_SITE_URL` | web | `https://cupcake-app.vercel.app` | Absolute URLs (metadata) |
 
 Business constants (ready minutes, store info, low-stock threshold, line cap 20) are code constants in `packages/shared`, not environment variables.
 
@@ -223,10 +223,10 @@ Business constants (ready minutes, store info, low-stock threshold, line cap 20)
 |---|---|---|---|---|
 | Local | `pnpm dev` (Next.js :3000) | `pnpm dev` (Fastify :4000) | Docker `postgres:16` (`cupcake_dev`) | Developer |
 | Test / CI | n/a (Playwright starts both apps) | Fastify `inject` + started server | Docker/CI service `postgres:16` (`cupcake_test`) | Every push and PR |
-| Preview | Vercel preview deployment | Vercel preview deployment | Neon branch `preview` (shared by previews) | Every PR |
-| Production | Vercel `cupcake-web` | Vercel `cupcake-api` | Neon `main` branch | Merge to `main` |
+| Preview | Vercel `cupcake-app` preview (`web` service) | Vercel `cupcake-app` preview (`api` service) | Neon branch `preview` (shared by previews) | Every PR |
+| Production | Vercel `cupcake-app` (`web` service) | Vercel `cupcake-app` (`api` service) | Neon `main` branch | Merge to `main` |
 
-**Why Vercel + Neon:** both apps deploy from Git with preview environments and instant rollback; Fastify runs on Vercel with zero configuration as a single function using Fluid compute (fewer cold starts, R-04); Neon is managed PostgreSQL 16 with branching and a free tier, provisioned through the Vercel Marketplace. Nothing to patch or keep running. Two Vercel projects point at the same repository with root directories `apps/web` and `apps/api`.
+**Why Vercel + Neon:** both apps deploy from Git with preview environments and instant rollback; Fastify runs on Vercel with zero configuration as a single function using Fluid compute (fewer cold starts, R-04); Neon is managed PostgreSQL 16 with branching and a free tier. Nothing to patch or keep running. One Vercel project (`cupcake-app`) with two Services (D-23, `vercel.json`): `web` (`apps/web`) and `api` (`apps/api`), one domain per environment. Top-level rewrites send `/api/*` to `api` and everything else to `web` — same-origin by construction, so the browser never needs CORS.
 
 **Migrations:** never run on application start. `prisma migrate deploy` runs as a release step (`06-development-workflow.md` §5) against `DIRECT_URL`, before the production deployment is promoted.
 
@@ -261,3 +261,4 @@ Business constants (ready minutes, store info, low-stock threshold, line cap 20)
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 11 Oct 2026 | Initial architecture: MVC mapping, monorepo, stack versions, order transaction, error model, security, configuration, environments, Vercel + Neon hosting |
+| 1.1 | 11 Oct 2026 | D-23: one Vercel project (`cupcake-app`) with `web`/`api` Services instead of two projects; `API_URL` via Services binding |
