@@ -14,5 +14,12 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     include: ["test/**/*.int.test.ts"],
+    // Only one int test file today (health.int.test.ts), but it shares the
+    // same real, mutable Postgres database as packages/database's int
+    // tests run just before it (06-development-workflow.md §4's CI order) —
+    // see packages/database/vitest.int.config.ts's comment for the exact
+    // cross-file race this avoided there. Setting it here too so a future
+    // second file in this package doesn't reintroduce it.
+    fileParallelism: false,
   },
 });

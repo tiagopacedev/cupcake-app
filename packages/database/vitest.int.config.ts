@@ -14,5 +14,16 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     include: ["test/**/*.int.test.ts"],
+    // These files share one real, mutable Postgres database (no per-test
+    // transaction rollback or schema isolation) and some fixtures collide
+    // across files on purpose — e.g. constraints.int.test.ts's fixture
+    // category and seed.int.test.ts's real "classics" category both use
+    // name 'Clássicos'/slug 'classics'. Vitest's default parallel-file
+    // execution interleaved their truncate/insert calls and produced
+    // spurious unique-constraint and foreign-key failures that have
+    // nothing to do with the code under test. Forcing one file at a time
+    // removes the race; each file's own beforeEach still isolates its
+    // tests from each other via truncateAll.
+    fileParallelism: false,
   },
 });
