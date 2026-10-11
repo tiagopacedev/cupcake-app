@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.4 (11 Oct 2026) |
+| **Version** | 1.5 (11 Oct 2026) |
 | **Status** | **Approved by the owner on 11 Oct 2026.** E0-01/E0-02 done; **E1 (Foundation) done**, all 7 tasks, lint/typecheck/tests green. E0-03–E0-06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) remain owner-side tasks tracked below — still needed before E3 (CI, cloud deploy). |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
 | **Executor** | Claude Code, one task at a time, reviewed by the owner |
@@ -330,17 +330,17 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E4-02 | ✅ | | [#3](https://github.com/tiagopacedev/cupcake-app/pull/3) | `GET /api/products`: route → controller → `CatalogService` → `ProductRepository` (active only, order: category `sortOrder`, `createdAt`, name). Integration tests against real PostgreSQL: seed order, inactive hidden, contract match, no customer data |
 | E4-03 | ✅ | | [#3](https://github.com/tiagopacedev/cupcake-app/pull/3) | `stock.service.ts`: `stockStateOf` (0 / 1 / 5 / 6 boundaries) and `maxQuantityOf` = min(stock, 20); unit tests plus the integration check on the seed (stock 40 → AVAILABLE/20, 3 → LOW/3, 0 → SOLD_OUT/0). `src/services` ≥ 90% coverage threshold now enforced in `apps/api/vitest.config.ts` |
 | E4-04 | ✅ | | [#3](https://github.com/tiagopacedev/cupcake-app/pull/3) | `GET /api/catalog/filters` (categories by `sortOrder`, tags) and `?category=` / `?tag=`: both → 400, malformed slug → 400, unknown slug → `{ products: [] }`, inactive hidden while filtering. Done in one branch/PR with one commit per task (E4 is small and linear) instead of four PRs |
-| E5-01 | ☐ | | | |
-| E5-02 | ☐ | | | |
-| E5-03 | ☐ | | | |
-| E5-04 | ☐ | | | |
-| E5-05 | ☐ | | | |
-| E5-06 | ☐ | | | |
-| E5-07 | ☐ | | | |
-| E5-08 | ☐ | | | |
-| E5-09 | ☐ | | | |
-| E5-10 | ☐ | | | |
-| E5-11 | ☐ | | | |
+| E5-01 | ✅ | 1.5 (E5 total: 1.5 h in this session's estimate; to be corrected by the owner) | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | shadcn components via the CLI (its `cn` import pointed at a third-party npm package; rewritten to `@/lib/utils`, versions pinned, `components/ui` otherwise untouched and Prettier-ignored); AppHeader (catalog + inner), CartLink, StoreFooter (stacked on mobile, one row on desktop), `format.ts` (R$, HH:mm, dd/mm in America/Sao_Paulo). Compared with screenshot 01 at 390 px |
+| E5-02 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | Server-rendered catalog from `GET /api/products`; ProductCard states (bestseller, low, sold out); skeleton `loading.tsx`; failure state with "Tentar de novo"; photos copied to `public/images/products` (closes the open part of E2-03). Verified at 390 px (two 171 px columns) and 1280 px (three 352 px columns, footer in one row). Intended difference: API order vs mockup order (UI doc G-8) |
+| E5-03 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | FilterChips (buttons with `aria-pressed`, `router.replace`, `?filter=`), no heading, hidden scrollbar, empty state "Nenhum cupcake aqui" |
+| E5-04 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | `bestsellers` → `tag=bestseller`, categories → `category=<slug>`; badge on every card with the tag |
+| E5-05 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | Zustand store persisted as `[{productId, quantity}]` in `cupcake.cart`, zod-validated, manual hydration (`CartHydrator`), never throws on corrupt/unavailable storage; 20 unit tests |
+| E5-06 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | `CatalogProductCard`: "+" → stepper, "−" at 1 removes, toast with "Ver carrinho" |
+| E5-07 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | Plus disabled at `maxQuantity`, "Máximo disponível." (`role=status`), cap 20 in the store |
+| E5-08 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | `ConnectedCartLink`: total units, hidden at 0, `aria-label` "Carrinho, N itens" |
+| E5-09 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | `/cart`: CartLine, totals box, sticky "Continuar", empty/loading/error states. Compared with screenshot 03 at 390 px. Desktop width is not in the mockups: centered `max-w-2xl` (UI doc G-10) |
+| E5-10 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | Stepper (minus disabled at 1), trash with inline "Remover {nome}?" / Cancelar |
+| E5-11 | ✅ | | [#4](https://github.com/tiagopacedev/cupcake-app/pull/4) | `reconcileCart` (pure) + `useCartRefresh` (reused by checkout): quantities reduced, sold-out and vanished products removed, notices. Gap: an inactive product has no name, so a generic *proposed* message is used (UI doc G-9) |
 | E6-01 | ☐ | | | |
 | E6-02 | ☐ | | | |
 | E6-03 | ☐ | | | |
@@ -399,3 +399,4 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | 1.2 | 11 Oct 2026 | E1 (Foundation) complete: monorepo, `packages/shared`, `apps/web` and `apps/api` scaffolds, error model, security plugins, local DB/env files. 27 tests passing; two items (`next build` production font fetch, `docker compose up`) could not be verified in this sandbox and need a check in CI/on the owner's machine (see §16 notes) |
 | 1.3 | 11 Oct 2026 | E0-04/E0-05/E3-02 ticked; E3-03 progress (API runtime fix, release workflow, Neon baseline) |
 | 1.4 | 11 Oct 2026 | E3-03 done, gate G1 approved, tag `v0.1.0`. E4 (Catalog API) complete: contract helper + typed client, `GET /api/products`, stock rules, `GET /api/catalog/filters` |
+| 1.5 | 11 Oct 2026 | E5 (Catalog and cart UI) implemented: SCR-01 and SCR-02, cart store, filters, reconcile; awaiting gate G2 |
