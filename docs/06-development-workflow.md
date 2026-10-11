@@ -100,7 +100,7 @@ Vercel project (D-23, `vercel.json` at repo root — one project, two Services):
 | Service | Root directory | Build | Env vars |
 |---|---|---|---|
 | `web` | `apps/web` | Next.js (zero-config) | `NEXT_PUBLIC_SITE_URL`; `API_URL` via Services binding to `api` |
-| `api` | `apps/api` | Fastify zero-config (entry `src/index.ts`; Vercel deploys our `tsc` output from `dist/`, which `scripts/mark-dist-esm.mjs` marks as ESM) | `DATABASE_URL`, `WEB_ORIGIN`, `LOG_LEVEL` |
+| `api` | `apps/api` | Fastify zero-config (entry `src/index.ts`, compiled by Vercel itself). `apps/api` deliberately has no `build` script (it's `build:dist`): with one, Vercel deploys our `tsc` output flattened to the function root, away from `node_modules`, and the function can't load | `DATABASE_URL`, `WEB_ORIGIN`, `LOG_LEVEL` |
 
 Release workflow (`.github/workflows/release.yml`, manual `workflow_dispatch` with a `version` input, run after Vercel has deployed `main`): `prisma migrate deploy` (production `DIRECT_URL` from the GitHub secret of the same name) → `pnpm db:seed` (idempotent) → smoke check `GET /api/health` through the web origin until `database` is `ok` → create and push tag `vX.Y.Z`. The tag is an output of the workflow, never its trigger. Rollback: Vercel Instant Rollback for code; migrations are additive (fix forward).
 
