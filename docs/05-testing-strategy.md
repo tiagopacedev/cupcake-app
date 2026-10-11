@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.0 (Phase 4, 11 Oct 2026) |
+| **Version** | 1.1 (Phase 4, 11 Oct 2026) |
 | **Status** | Draft for approval |
 | **Related** | [01-prd.md](01-prd.md) (AC, BR, NFR) · [02-architecture.md](02-architecture.md) · [07-api-spec.md](07-api-spec.md) · [04-ui-design-system.md](04-ui-design-system.md) · [06-development-workflow.md](06-development-workflow.md) (CI) |
 
@@ -89,6 +89,10 @@ ProductCard states (add, stepper, low, sold out, max reached), FilterChips selec
 
 E2E runs against `next build && next start` + the API on a fresh seeded test database.
 
+Implemented in `e2e/tests/`: `journeys.spec.ts` (E2E-1…E2E-5), `extras.spec.ts` (the other E-level criteria of §5: filter in the URL, stock limit and cart persistence, empty cart, removal confirmation, reopening by code, the latest-order card rules, no payment wording) and `quality.spec.ts` (§4 quality gates, below), each in a mobile (390×844) and a desktop (1280×800) project.
+
+**Quality checks in `quality.spec.ts`** (eight screens, both projects): no horizontal overflow at 360, 390, 768, 1280 and 1440 px (NFR-01); axe WCAG 2.1 A/AA with no serious or critical violation (NFR-03); a screenshot per screen for the visual comparison with `docs/design/screenshots/`. Pixel-diff snapshots are deliberately not used: fonts render differently on a developer's Windows machine and on the CI Linux runner, so a baseline would fail on one of them. Lighthouse mobile is run by hand against production (`docs/situacao-2/lighthouse/`).
+
 ## 4. Coverage and quality gates
 
 | Gate | Threshold | Enforced |
@@ -152,3 +156,4 @@ NFR evidence: NFR-01 visual + manual phones · NFR-02 Lighthouse/autocannon · N
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 11 Oct 2026 | Initial strategy: levels, tools, per-layer cases, gates, AC traceability, manual checklist |
+| 1.1 | 11 Oct 2026 | E8: §3.6 documents the implemented E2E suite and the quality checks (overflow, axe, screenshots; Lighthouse by hand), and why pixel-diff snapshots are not used |

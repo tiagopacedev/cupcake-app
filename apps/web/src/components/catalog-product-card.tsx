@@ -14,7 +14,13 @@ import type { Product } from "@/lib/api/types";
  * `maxQuantity` (min(stock, 20), BR-06) and "Máximo disponível." appears.
  * The server re-validates everything when the order is created (BR-05).
  */
-export function CatalogProductCard({ product }: { product: Product }) {
+export function CatalogProductCard({
+  product,
+  priority = false,
+}: {
+  product: Product;
+  priority?: boolean;
+}) {
   const router = useRouter();
   const quantity = useCartStore(selectQuantity(product.id));
   const add = useCartStore((state) => state.add);
@@ -77,6 +83,7 @@ export function CatalogProductCard({ product }: { product: Product }) {
   return (
     <ProductCard
       product={product}
+      priority={priority}
       action={action}
       notice={
         quantity > 0 && atMax ? (
