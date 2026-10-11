@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.2 (11 Oct 2026) |
+| **Version** | 1.3 (11 Oct 2026) |
 | **Status** | **Approved by the owner on 11 Oct 2026.** E0-01/E0-02 done; **E1 (Foundation) done**, all 7 tasks, lint/typecheck/tests green. E0-03–E0-06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) remain owner-side tasks tracked below — still needed before E3 (CI, cloud deploy). |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
 | **Executor** | Claude Code, one task at a time, reviewed by the owner |
@@ -308,8 +308,8 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E0-01 | ✅ | 0.2 | n/a | Owner approved the plan in chat, 11 Oct 2026 |
 | E0-02 | ✅ | 0.3 | n/a | Owner decided: add LGPD line, approve the 5 proposed strings, remove desktop subtitle everywhere. Applied in `04-ui-design-system.md` v1.2, `00-project-overview.md` D-22/A-08 |
 | E0-03 | ☐ | | | |
-| E0-04 | ☐ | | | |
-| E0-05 | ☐ | | | |
+| E0-04 | ✅ | | n/a | Repo `tiagopacedev/cupcake-app` public; `main` protected (`quality` + `test` required) |
+| E0-05 | ✅ | | n/a | Vercel (Hobby) linked to GitHub; Neon available |
 | E0-06 | ☐ | | | |
 | E1-01 | ✅ | 2 | n/a (repo not on GitHub yet, E0-04) | pnpm workspace, tsconfig.base.json, ESLint 9 flat + Prettier, .nvmrc (24), .editorconfig; `pnpm install/lint/typecheck` pass. Sandbox runs Node 22.22, not 24 LTS (E0-05/CI/Vercel will use 24) |
 | E1-02 | ✅ | 1 | n/a | `store.ts`, `error-codes.ts`, `index.ts`; contract test parses `openapi.yaml`'s `ErrorCode` enum and asserts equality — 8/8 tests pass |
@@ -324,8 +324,8 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E2-04 | ✅ | 2 | n/a | `packages/database/test/seed.int.test.ts`: shape (3/1/6/3-bestsellers, low-stock + sold-out), running twice creates no duplicates, and a changed stock value survives a re-seed. **Could not run in this sandbox** — needs a real generated Prisma Client (`seedCatalog`'s signature), unlike E2-02's raw-`pg` tests; typechecks clean against the stub described in E2-01. Verify with `pnpm test:int` once `prisma generate` succeeds |
 | E2-05 | ✅ | 1 | n/a | `plugins/prisma.ts` (decorates `app.prisma`, built from `config.DATABASE_URL` — a fake override skips the real client in unit tests — disconnects `onClose`), `health.routes.ts` now runs a real `SELECT 1`. `config.ts`: `DATABASE_URL` required, `DIRECT_URL` removed (it's `database`-only per 02-architecture §9, not `api`'s). Split health tests: `health.test.ts` (fake Prisma, unit-level — 3/3 pass for real, confirmed via `pnpm --filter api test`) + new `health.int.test.ts` (real DB up/down, E2-05's AC) — the latter needs the real generated client, same gap as E2-04. `security.test.ts`/`config.test.ts` updated for the new required env var and fake-Prisma override; all 19 apps/api unit tests pass |
 | E3-01 | ✅ | 3 | [#1](https://github.com/tiagopacedev/cupcake-app/pull/1) | `ci.yml`: `quality`/`test`/`audit` jobs, `postgres:16` service, Redocly lint, coverage gate (`--soft` until E4-E7). Merged to `main` as `3f12789`; branch protection on `main` requires `quality` + `test`. Fixed 3 real bugs real CI caught (not reproducible in-sandbox): `shared` package missing a `postinstall` build step; `test:int` script's glob silently excluded by each `vitest.config.ts`'s own `exclude` (gave it a separate `vitest.int.config.ts`); `prisma migrate deploy`'s `_prisma_migrations` table breaking schema-diff assertions, plus a cross-file race on shared fixture data (`fileParallelism: false`). `audit` fails non-blocking on pre-existing CVEs in Prisma's own dev deps |
-| E3-02 | ☐ | | | |
-| E3-03 | ☐ | | | |
+| E3-02 | ✅ | 2 | n/a (direct to `main`, `113a9ad`) | Neon project `cupcake-app` (`sa-east-1`, branches `main` + `preview`); one Vercel project `cupcake-app` with `web` + `api` Services (D-23, `vercel.json`); production env vars set. Follow-ups done in E3-03: preview env vars (Neon `preview`, `DATABASE_URL` Sensitive), function region `gru1` to match Neon. Still owner-side: re-add production `DATABASE_URL` as Sensitive (the API can't convert it) |
+| E3-03 | ◐ | 4 | `feat/e3-03-walking-skeleton` | Four deploy fixes landed on `main` first (`7ed2a9c`…`2e9739e`). Real root cause, found with a local `vercel build`: because `apps/api` had a `build` script, Vercel deployed our `tsc` output flattened to the function root, away from `apps/api/package.json` (→ loaded as CommonJS) and `node_modules` (→ `fastify` not found). Renamed it `build:dist`, so Vercel compiles `src/index.ts` itself, keeping the repo layout (`.mjs`). Latent second bug: `database` exported raw `.ts` (fails in plain Node) → now builds `dist/` like `shared`. Verified: plain `node dist/index.js` serves health; `vercel build` produces `apps/api/src/index.mjs` and traces only `database/dist`. Neon `main` baselined (`migrate resolve`), `preview` migrated + seeded. `release.yml` (dispatch: migrate → seed → smoke → tag). Remaining: merge, production health OK, `DIRECT_URL` GitHub secret (owner), run release → `v0.1.0` |
 | E4-01 | ☐ | | | |
 | E4-02 | ☐ | | | |
 | E4-03 | ☐ | | | |
@@ -396,4 +396,5 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 |---|---|---|
 | 1.0 | 11 Oct 2026 | Initial plan: 11 phases, 72 tasks, dependencies, acceptance criteria, gates G0–G6, tracker |
 | 1.1 | 11 Oct 2026 | Gate G0 partially closed: plan approved, E0-02 design decisions applied; E1 authorized to start |
+| 1.3 | 11 Oct 2026 | E0-04/E0-05/E3-02 ticked; E3-03 progress (API runtime fix, release workflow, Neon baseline) |
 | 1.2 | 11 Oct 2026 | E1 (Foundation) complete: monorepo, `packages/shared`, `apps/web` and `apps/api` scaffolds, error model, security plugins, local DB/env files. 27 tests passing; two items (`next build` production font fetch, `docker compose up`) could not be verified in this sandbox and need a check in CI/on the owner's machine (see §16 notes) |
