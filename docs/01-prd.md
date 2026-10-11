@@ -4,7 +4,7 @@
 |---|---|
 | **Product** | Cupcake App: mobile-first web store for cupcakes with store pickup |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
-| **Version** | 1.2 (Phase 3, 11 Oct 2026) |
+| **Version** | 1.3 (11 Oct 2026) |
 | **Status** | Updated for the approved UI |
 | **Related** | [00-project-overview.md](00-project-overview.md) · [04-ui-design-system.md](04-ui-design-system.md) (approved UI) · affinity map in [diagrams/planning/](diagrams/planning/) |
 
@@ -153,6 +153,7 @@ Card format follows the PIT I template: ID, Title, Requester, Action, Comments, 
   - **AC2:** Given a category filter is selected, when I select "All Cupcakes", then all active products are shown again.
   - **AC3:** Given a category has no active products, when I select it, then I see an empty-state message with an option to view all cupcakes.
   - **AC4:** Given I selected a filter, when I reload the page or share the URL, then the same filter is applied.
+  - **AC5:** Given I scroll down the catalog, when the chips would leave the screen, then they stay pinned at the top, so I can change the filter from anywhere in the list *(owner request, 11 Oct 2026)*.
 - **Business rules:** BR-02, BR-03
 - **Non-functional requirements:** NFR-01, NFR-03
 - **Priority:** A · **Story points:** 2
@@ -780,3 +781,4 @@ Format follows the PIT I model: name, identifier, description, actors, pre- and 
 | 1.0 | 10 Oct 2026 | Initial baseline from approved decisions D-01…D-14 (see overview §7) |
 | 1.1 | 10 Oct 2026 | Phase 2: screen IDs, use case diagram, expanded use cases UC-01…UC-07, traceability to sequence and activity diagrams |
 | 1.2 | 11 Oct 2026 | Approved UI (Phase 3): payment at the store replaces simulated Pix (BR-09…BR-12, NFR-12 rewritten); stock decremented at order creation; ready in ~15 min; new BR-19 (latest order in the browser); US-13/14/15/22 replaced, US-05/11/16–20 updated; T4/T5 regrouped (still 22 stories, 66 points); screens SCR-01…SCR-05 mapped to approved references; UC-03…UC-07 rewritten; backlog and tasks re-estimated (136 h) |
+| 1.3 | 11 Oct 2026 | US-02 AC5: the filter chips stay visible while scrolling (owner request after testing the live app) |

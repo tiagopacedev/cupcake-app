@@ -46,6 +46,13 @@ describe("US-02 filter chips", () => {
     expect(replace).toHaveBeenLastCalledWith("/", { scroll: false });
   });
 
+  it("US-02 AC5: sticks to the top of the screen with an opaque background", () => {
+    render(<FilterChips selected={null} />);
+    const row = screen.getByRole("group");
+    expect(row).toHaveClass("sticky", "top-0", "bg-background");
+    expect(row).toHaveClass("z-10");
+  });
+
   it("hides the scrollbar and allows horizontal scroll on mobile (NFR-01)", () => {
     render(<FilterChips selected={null} />);
     const row = screen.getByRole("group");

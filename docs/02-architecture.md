@@ -153,7 +153,7 @@ Filter changes use `router.replace("/?filter=…", { scroll: false })` and re-re
 
 ### 6.5 Images
 
-Photos are static files in `apps/web/public/images/products/<slug>.jpg`; `Product.imageUrl` stores `/images/products/<slug>.jpg`. Rendered with `next/image` (`sizes="(min-width:1024px) 33vw, 50vw"`).
+Photos are static files in `apps/web/public/images/products/<slug>.jpg`; `Product.imageUrl` stores `/images/products/<slug>.jpg`. Rendered with `next/image` in **`unoptimized` mode** (`sizes="(min-width:1024px) 368px, 50vw"`, the first catalog row with `priority`): the browser fetches `/images/products/<slug>.jpg` directly. Next's `/_next/image` optimizer route returns 404 behind the Vercel Services routing (`vercel.json`), which broke every photo in production, and optimizing 512 px, ~30 KB JPEGs gains almost nothing. The release workflow checks that the first photo of the catalog loads.
 
 ## 7. Error model (NFR-07)
 
@@ -265,3 +265,4 @@ Business constants (ready minutes, store info, low-stock threshold, line cap 20)
 | 1.1 | 11 Oct 2026 | D-23: one Vercel project (`cupcake-app`) with `web`/`api` Services instead of two projects; `API_URL` via Services binding |
 | 1.2 | 11 Oct 2026 | E4: controllers validate with Zod (no `fastify-type-provider-zod`); layout matches the code (`build-app.ts`, one catalog routes file) |
 | 1.3 | 11 Oct 2026 | E6: `ORDERS_RATE_LIMIT_MAX` documented; repositories take a Prisma transaction client so one service call runs them in one transaction |
+| 1.4 | 11 Oct 2026 | §6.5: photos served unoptimized (the `/_next/image` route 404s in production); release smoke test covers a photo |

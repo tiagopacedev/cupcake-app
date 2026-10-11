@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.4 (11 Oct 2026) |
+| **Version** | 1.5 (11 Oct 2026) |
 | **Status** | **Approved** by the product owner on 11 Oct 2026 |
 | **Design source** | Claude Design canvas "Cupcake Store Screens" and design system "Cupcake Store" (exported into [`design/`](design/)) |
 | **Related** | [01-prd.md](01-prd.md) (BR, US, SCR IDs) · [03-data-model.md](03-data-model.md) (seed) · [diagrams/user-flows/](diagrams/user-flows/) |
@@ -199,6 +199,7 @@ Left: `text-xs text-muted-foreground` "Seu pedido" over the code (§4.4). Right:
 - Each chip: `Button variant="outline" className="h-10 shrink-0 border-input px-4 font-semibold"`; "Mais vendidos" has a `Star` icon (`size-4`).
 - Selected chip: same button plus `bg-foreground text-background hover:bg-foreground/90`, `aria-pressed="true"`.
 - Updates `?filter=`; **no heading** repeats the selected filter.
+- **Sticky** (owner request, PRD US-02 AC5): the row is `sticky top-0 z-10 bg-background` and pins to the top of the screen while the catalog scrolls; `-my-2 py-2` keeps the spacing of the reference layout. Flat as ever: no shadow or border when stuck.
 
 ### 6.4 ProductCard
 
@@ -518,3 +519,4 @@ Icons (Lucide): `shopping-bag` (cart), `star` (bestseller, filled on the badge),
 | 1.2 | 11 Oct 2026 | E0-02 open items closed by the owner: removed the desktop-only checkout subtitle (G-1) from everywhere; added the `privacy.notice` LGPD line under "Seus dados" at checkout (G-2, closes A-08); approved the five previously *(proposed)* copy strings as final (G-4) |
 | 1.3 | 11 Oct 2026 | E5: copy additions (§9.2 `soldout.removed`, *proposed* `gone.removed`, singular forms); gaps G-8…G-10 recorded |
 | 1.4 | 11 Oct 2026 | E7: gaps G-11 (`overflow-x: clip`) and G-12; `Notice` has success/warning/error tones with an optional action |
+| 1.5 | 11 Oct 2026 | §6.3: the filter chips are sticky (owner request) |

@@ -24,8 +24,11 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
-    // 02-architecture §6.5: product photos are static files; no remote host needed yet.
-    formats: ["image/avif", "image/webp"],
+    // 02-architecture §6.5: product photos are static 512 px JPEGs (~30 KB) served
+    // straight from /images. Not routed through the /_next/image optimizer: behind
+    // the Vercel Services routing (vercel.json) that route returns 404 in production,
+    // which broke every photo. Optimizing files this small gains almost nothing.
+    unoptimized: true,
   },
 };
 

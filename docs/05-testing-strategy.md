@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.1 (Phase 4, 11 Oct 2026) |
+| **Version** | 1.2 (11 Oct 2026) |
 | **Status** | Draft for approval |
 | **Related** | [01-prd.md](01-prd.md) (AC, BR, NFR) · [02-architecture.md](02-architecture.md) · [07-api-spec.md](07-api-spec.md) · [04-ui-design-system.md](04-ui-design-system.md) · [06-development-workflow.md](06-development-workflow.md) (CI) |
 
@@ -112,7 +112,7 @@ Legend: **U** unit · **I** API integration · **C** component · **E** E2E · *
 | Story | AC → level |
 |---|---|
 | US-01 | AC1 I+E · AC2 C · AC3 C+E(network mocked) · AC4 I |
-| US-02 | AC1 I+C (no heading) · AC2 C · AC3 C · AC4 E |
+| US-02 | AC1 I+C (no heading) · AC2 C · AC3 C · AC4 E · AC5 C+E |
 | US-03 | AC1 I · AC2 C |
 | US-04 | AC1 C+U · AC2 C+U · AC3 C+U |
 | US-05 | AC1 C+E · AC2 C · AC3 C |
@@ -157,3 +157,4 @@ NFR evidence: NFR-01 visual + manual phones · NFR-02 Lighthouse/autocannon · N
 |---|---|---|
 | 1.0 | 11 Oct 2026 | Initial strategy: levels, tools, per-layer cases, gates, AC traceability, manual checklist |
 | 1.1 | 11 Oct 2026 | E8: §3.6 documents the implemented E2E suite and the quality checks (overflow, axe, screenshots; Lighthouse by hand), and why pixel-diff snapshots are not used |
+| 1.2 | 11 Oct 2026 | US-02 AC5 (sticky chips) and "every photo loads" added to the E level |
