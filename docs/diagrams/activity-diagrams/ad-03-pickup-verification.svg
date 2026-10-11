@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="1115px" preserveAspectRatio="none" style="width:1546px;height:1115px;background:#FFFFFF;" version="1.1" viewBox="0 0 1546 1115" width="1546px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="26.9395" id="_title" rx="5" ry="5" style="stroke:none;stroke-width:1.0;" width="542" x="500.75" y="15"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="532" x="505.75" y="33.5625">AD-03 · Order verification and payment at store pickup (UC-06, BR-09, BR-18)</text><rect fill="none" height="15.7295" style="stroke:none;stroke-width:1.0;" width="1511" x="15" y="49.5752"/><ellipse cx="333.5" cy="80.3047" fill="#222222" rx="10" ry="10" style="stroke:#222222;stroke-width:1.0;"/><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="184" x="241.5" y="110.3047"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="164" x="251.5" y="132.8984">Arrive at the store counter</text><rect fill="#FFF6F7" height="51.459" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="216" x="225.5" y="166.0342"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="121" x="235.5" y="188.6279">Present order code</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="196" x="235.5" y="204.3574">(Meu pedido screen or written)</text><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="42" x="65.5" y="886.5171"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="22" x="75.5" y="909.1108">Pay</text><path d="M172,987.9761 L172,1012.5703 L152,1016.5703 L172,1020.5703 L172,1045.1646 A0,0 0 0 0 172,1045.1646 L415,1045.1646 A0,0 0 0 0 415,1045.1646 L415,997.9761 L405,987.9761 L172,987.9761 A0,0 0 0 0 172,987.9761 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><path d="M405,987.9761 L405,997.9761 L415,997.9761 L405,987.9761 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="222" x="178" y="1005.5698">Recording payment and PICKED_UP</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="153" x="178" y="1021.2993">in the app is future work</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="126" x="178" y="1037.0288">(out of MVP scope).</text><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="131" x="21" y="998.7056"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="111" x="31" y="1021.2993">Receive the order</text><ellipse cx="86.5" cy="1076.1646" fill="none" rx="11" ry="11" style="stroke:#222222;stroke-width:1.0;"/><ellipse cx="86.5" cy="1076.1646" fill="#222222" rx="6" ry="6" style="stroke:#111111;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="15" x2="15" y1="49.5752" y2="1103.1646"/><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="344" x="634" y="281.4932"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="324" x="644" y="304.0869">Type the code and open order page /orders/{code}</text><polygon fill="#FFF1D6" points="806,237.4932,818,249.4932,806,261.4932,794,249.4932,806,237.4932" style="stroke:#B07D1F;stroke-width:0.5;"/><rect fill="#FFF6F7" height="51.459" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="268" x="672" y="508.4106"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="112" x="682" y="531.0044">Do not hand over;</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="248" x="682" y="546.7339">offer to take a new order at the counter</text><ellipse cx="806" cy="590.8696" fill="none" rx="11" ry="11" style="stroke:#222222;stroke-width:1.0;"/><ellipse cx="806" cy="590.8696" fill="#222222" rx="6" ry="6" style="stroke:#111111;stroke-width:1.0;"/><polygon fill="#FFF1D6" points="715.5,715.3286,896.5,715.3286,908.5,727.3286,896.5,739.3286,715.5,739.3286,703.5,727.3286,715.5,715.3286" style="stroke:#B07D1F;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="181" x="715.5" y="732.0576">Status = AWAITING_PICKUP?</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="22" x="681.5" y="724.1929">yes</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="180" x="908.5" y="724.1929">no: already picked up, future</text><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="160" x="479" y="759.3286"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="140" x="489" y="781.9224">Gather the listed items</text><rect fill="#FFF6F7" height="51.459" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="215" x="451.5" y="815.0581"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="191" x="461.5" y="837.6519">Charge the total at the counter</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="195" x="461.5" y="853.3813">(any method the store accepts)</text><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="172" x="473" y="942.2466"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="152" x="483" y="964.8403">Hand over the cupcakes</text><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="291" x="907.5" y="759.3286"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="271" x="917.5" y="781.9224">Explain that the order was already collected</text><ellipse cx="1053" cy="826.0581" fill="none" rx="11" ry="11" style="stroke:#222222;stroke-width:1.0;"/><ellipse cx="1053" cy="826.0581" fill="#222222" rx="6" ry="6" style="stroke:#111111;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="445.5" x2="445.5" y1="49.5752" y2="1103.1646"/><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="139" x="1267" y="344.7227"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="119" x="1277" y="367.3164">Find order by code</text><polygon fill="#FFF1D6" points="1240.5,400.4521,1432.5,400.4521,1444.5,412.4521,1432.5,424.4521,1240.5,424.4521,1228.5,412.4521,1240.5,400.4521" style="stroke:#B07D1F;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="16" x="1340.5" y="437.0459">no</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="192" x="1240.5" y="417.1812">Not found and code mistyped?</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="76" x="1444.5" y="409.3164">yes: re-type</text><polygon fill="#FFF1D6" points="1294.5,458.5459,1378.5,458.5459,1390.5,470.5459,1378.5,482.5459,1294.5,482.5459,1282.5,470.5459,1294.5,458.5459" style="stroke:#B07D1F;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="16" x="1340.5" y="495.1396">no</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="84" x="1294.5" y="475.2749">Order found?</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="22" x="1390.5" y="467.4102">yes</text><rect fill="#FFF6F7" height="51.459" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="256" x="1208.5" y="643.8696"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="228" x="1218.5" y="666.4634">Show code, status, items, quantities,</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="236" x="1218.5" y="682.1929">"Total a pagar na loja", first name only</text><line style="stroke:#000000;stroke-width:1.5;" x1="1202.5" x2="1202.5" y1="49.5752" y2="1103.1646"/><line style="stroke:#000000;stroke-width:1.5;" x1="1525.5" x2="1525.5" y1="49.5752" y2="1103.1646"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="333.5" x2="333.5" y1="90.3047" y2="110.3047"/><polygon fill="#5B4A50" points="329.5,100.3047,333.5,110.3047,337.5,100.3047,333.5,104.3047" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="333.5" x2="333.5" y1="146.0342" y2="166.0342"/><polygon fill="#5B4A50" points="329.5,156.0342,333.5,166.0342,337.5,156.0342,333.5,160.0342" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="86.5" x2="86.5" y1="1034.4351" y2="1065.1646"/><polygon fill="#5B4A50" points="82.5,1055.1646,86.5,1065.1646,90.5,1055.1646,86.5,1059.1646" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="806" x2="806" y1="261.4932" y2="281.4932"/><polygon fill="#5B4A50" points="802,271.4932,806,281.4932,810,271.4932,806,275.4932" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="806" x2="806" y1="559.8696" y2="579.8696"/><polygon fill="#5B4A50" points="802,569.8696,806,579.8696,810,569.8696,806,573.8696" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="559" x2="559" y1="795.0581" y2="815.0581"/><polygon fill="#5B4A50" points="555,805.0581,559,815.0581,563,805.0581,559,809.0581" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1053" x2="1053" y1="795.0581" y2="815.0581"/><polygon fill="#5B4A50" points="1049,805.0581,1053,815.0581,1057,805.0581,1053,809.0581" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="703.5" x2="559" y1="727.3286" y2="727.3286"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="559" x2="559" y1="727.3286" y2="759.3286"/><polygon fill="#5B4A50" points="555,749.3286,559,759.3286,563,749.3286,559,753.3286" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="908.5" x2="1053" y1="727.3286" y2="727.3286"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1053" x2="1053" y1="727.3286" y2="759.3286"/><polygon fill="#5B4A50" points="1049,749.3286,1053,759.3286,1057,749.3286,1053,753.3286" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1336.5" x2="1336.5" y1="380.4521" y2="400.4521"/><polygon fill="#5B4A50" points="1332.5,390.4521,1336.5,400.4521,1340.5,390.4521,1336.5,394.4521" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1390.5" x2="1480.5" y1="470.5459" y2="470.5459"/><polygon fill="#5B4A50" points="1476.5,549.6401,1480.5,559.6401,1484.5,549.6401,1480.5,553.6401" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1480.5" x2="1480.5" y1="470.5459" y2="623.8696"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1480.5" x2="1336.5" y1="623.8696" y2="623.8696"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1336.5" x2="1336.5" y1="623.8696" y2="643.8696"/><polygon fill="#5B4A50" points="1332.5,633.8696,1336.5,643.8696,1340.5,633.8696,1336.5,637.8696" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1336.5" x2="1336.5" y1="424.4521" y2="458.5459"/><polygon fill="#5B4A50" points="1332.5,448.5459,1336.5,458.5459,1340.5,448.5459,1336.5,452.5459" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="806" x2="806" y1="317.2227" y2="327.2227"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="806" x2="1336.5" y1="327.2227" y2="327.2227"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1336.5" x2="1336.5" y1="327.2227" y2="344.7227"/><polygon fill="#5B4A50" points="1332.5,334.7227,1336.5,344.7227,1340.5,334.7227,1336.5,338.7227" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1444.5" x2="1520.5" y1="412.4521" y2="412.4521"/><polygon fill="#5B4A50" points="1516.5,337.2227,1520.5,327.2227,1524.5,337.2227,1520.5,333.2227" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1520.5" x2="1520.5" y1="249.4932" y2="412.4521"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1520.5" x2="818" y1="249.4932" y2="249.4932"/><polygon fill="#5B4A50" points="828,245.4932,818,249.4932,828,253.4932,824,249.4932" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="333.5" x2="333.5" y1="217.4932" y2="222.4932"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="333.5" x2="806" y1="222.4932" y2="222.4932"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="806" x2="806" y1="222.4932" y2="237.4932"/><polygon fill="#5B4A50" points="802,227.4932,806,237.4932,810,227.4932,806,231.4932" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1336.5" x2="1336.5" y1="482.5459" y2="495.4783"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1336.5" x2="806" y1="495.4783" y2="495.4783"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="806" x2="806" y1="495.4783" y2="508.4106"/><polygon fill="#5B4A50" points="802,498.4106,806,508.4106,810,498.4106,806,502.4106" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="559" x2="559" y1="866.5171" y2="871.5171"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="559" x2="86.5" y1="871.5171" y2="871.5171"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="86.5" x2="86.5" y1="871.5171" y2="886.5171"/><polygon fill="#5B4A50" points="82.5,876.5171,86.5,886.5171,90.5,876.5171,86.5,880.5171" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="86.5" x2="86.5" y1="922.2466" y2="927.2466"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="86.5" x2="559" y1="927.2466" y2="927.2466"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="559" x2="559" y1="927.2466" y2="942.2466"/><polygon fill="#5B4A50" points="555,932.2466,559,942.2466,563,932.2466,559,936.2466" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="559" x2="559" y1="977.9761" y2="982.9761"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="559" x2="86.5" y1="982.9761" y2="982.9761"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="86.5" x2="86.5" y1="982.9761" y2="998.7056"/><polygon fill="#5B4A50" points="82.5,988.7056,86.5,998.7056,90.5,988.7056,86.5,992.7056" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1336.5" x2="1336.5" y1="695.3286" y2="700.3286"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1336.5" x2="806" y1="700.3286" y2="700.3286"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="806" x2="806" y1="700.3286" y2="715.3286"/><polygon fill="#5B4A50" points="802,705.3286,806,715.3286,810,705.3286,806,709.3286" style="stroke:#5B4A50;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="63" x="198.75" y="62.1689">Customer</text><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="68" x="790" y="62.1689">Store staff</text><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="49" x="1339.5" y="62.1689">System</text><!--MD5=[af3dd97849ff24aa8d8af71a20716700]
+@startuml ad-03-pickup-verification
+!include ../_style.iuml
+title AD-03 · Order verification and payment at store pickup (UC-06, BR-09, BR-18)
+
+|Customer|
+start
+:Arrive at the store counter;
+:Present order code\n(Meu pedido screen or written);
+repeat
+  |Store staff|
+  :Type the code and open order page /orders/{code};
+  |System|
+  :Find order by code;
+repeat while (Not found and code mistyped?) is (yes: re-type) not (no)
+if (Order found?) then (no)
+  |Store staff|
+  :Do not hand over;\noffer to take a new order at the counter;
+  stop
+else (yes)
+endif
+|System|
+:Show code, status, items, quantities,\n"Total a pagar na loja", first name only;
+|Store staff|
+if (Status = AWAITING_PICKUP?) then (yes)
+  :Gather the listed items;
+  :Charge the total at the counter\n(any method the store accepts);
+  |Customer|
+  :Pay;
+  |Store staff|
+  :Hand over the cupcakes;
+  |Customer|
+  :Receive the order;
+  note right
+    Recording payment and PICKED_UP
+    in the app is future work
+    (out of MVP scope).
+  end note
+  stop
+else (no: already picked up, future)
+  |Store staff|
+  :Explain that the order was already collected;
+  stop
+endif
+@enduml
+
+@startuml ad-03-pickup-verification
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam roundCorner 10
+skinparam ArrowColor #5B4A50
+skinparam BorderColor #8C5B67
+skinparam BackgroundColor #FFFFFF
+skinparam ActorBorderColor #8C5B67
+skinparam ActorBackgroundColor #FDE2E4
+skinparam UsecaseBackgroundColor #FFF6F7
+skinparam UsecaseBorderColor #B5485A
+skinparam ClassBackgroundColor #FFF9FA
+skinparam ClassBorderColor #B5485A
+skinparam ClassHeaderBackgroundColor #FDE2E4
+skinparam PackageBackgroundColor #FFFCFD
+skinparam PackageBorderColor #8C5B67
+skinparam NoteBackgroundColor #FFF1D6
+skinparam NoteBorderColor #B07D1F
+skinparam ParticipantBackgroundColor #FFF6F7
+skinparam ParticipantBorderColor #B5485A
+skinparam DatabaseBackgroundColor #E8F0F7
+skinparam DatabaseBorderColor #3F6A8A
+skinparam SequenceLifeLineBorderColor #B9A5AA
+skinparam SequenceGroupBackgroundColor #FFF1F3
+skinparam ActivityBackgroundColor #FFF6F7
+skinparam ActivityBorderColor #B5485A
+skinparam ActivityDiamondBackgroundColor #FFF1D6
+skinparam ActivityDiamondBorderColor #B07D1F
+skinparam SwimlaneTitleFontStyle bold
+title AD-03 · Order verification and payment at store pickup (UC-06, BR-09, BR-18)
+
+|Customer|
+start
+:Arrive at the store counter;
+:Present order code\n(Meu pedido screen or written);
+repeat
+  |Store staff|
+  :Type the code and open order page /orders/{code};
+  |System|
+  :Find order by code;
+repeat while (Not found and code mistyped?) is (yes: re-type) not (no)
+if (Order found?) then (no)
+  |Store staff|
+  :Do not hand over;\noffer to take a new order at the counter;
+  stop
+else (yes)
+endif
+|System|
+:Show code, status, items, quantities,\n"Total a pagar na loja", first name only;
+|Store staff|
+if (Status = AWAITING_PICKUP?) then (yes)
+  :Gather the listed items;
+  :Charge the total at the counter\n(any method the store accepts);
+  |Customer|
+  :Pay;
+  |Store staff|
+  :Hand over the cupcakes;
+  |Customer|
+  :Receive the order;
+  note right
+    Recording payment and PICKED_UP
+    in the app is future work
+    (out of MVP scope).
+  end note
+  stop
+else (no: already picked up, future)
+  |Store staff|
+  :Explain that the order was already collected;
+  stop
+endif
+@enduml
+
+PlantUML version 1.2022.12(Sun Oct 23 15:12:26 BRT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

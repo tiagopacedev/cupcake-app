@@ -1,0 +1,463 @@
+openapi: 3.1.0
+info:
+  title: Cupcake App API
+  version: 1.0.0
+  summary: Catalog and orders for a cupcake store with store pickup and payment at the counter.
+  description: |
+    Contract for `apps/api` (Fastify). Source of truth for request/response shapes;
+    `docs/07-api-spec.md` explains the behavior and business rules (BR-xx in docs/01-prd.md).
+
+    Conventions:
+    - JSON only, UTF-8. Field names in camelCase.
+    - Money is an integer number of BRL cents (R$ 11,90 = 1190). Never floats.
+    - Timestamps are ISO 8601 UTC strings; the UI displays them in America/Sao_Paulo.
+    - Every error uses `ErrorResponse` with a stable `code`.
+    - The browser calls these paths on the web origin (`/api/*` is rewritten to the API).
+  contact:
+    name: Tiago Pace Greggio (RGM 34852191)
+servers:
+  - url: http://localhost:4000
+    description: Local API
+  - url: https://cupcake-web.vercel.app
+    description: Production, through the web app's /api rewrite
+security: []   # public API: no authentication in the MVP (no accounts, no admin)
+tags:
+  - name: Health
+    description: Liveness check used before testing sessions and recordings
+  - name: Catalog
+    description: Filters and active products for the catalog and cart refresh
+  - name: Orders
+    description: Place an order and read the public order view (Meu pedido)
+
+paths:
+  /api/health:
+    get:
+      tags: [Health]
+      operationId: getHealth
+      summary: Liveness and database check
+      responses:
+        "200":
+          description: API and database are reachable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/catalog/filters:
+    get:
+      tags: [Catalog]
+      operationId: listCatalogFilters
+      summary: Categories and tags used by the filter chips (BR-02, BR-03)
+      responses:
+        "200":
+          description: Categories ordered by sortOrder, and tags
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogFilters"
+              example:
+                categories:
+                  - { slug: classics, name: Clássicos }
+                  - { slug: chocolate, name: Chocolate }
+                  - { slug: fruity, name: Frutados }
+                tags:
+                  - { slug: bestseller, name: Mais vendido }
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/products:
+    get:
+      tags: [Catalog]
+      operationId: listProducts
+      summary: Active products, optionally filtered by one category or one tag (US-01…US-04)
+      description: |
+        Without parameters returns every active product (also used to refresh the cart, US-10).
+        `category` and `tag` are mutually exclusive. Inactive products are never returned (BR-04).
+        Products are ordered by category sortOrder, then by the seed order.
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/Slug"
+          example: chocolate
+        - name: tag
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/Slug"
+          example: bestseller
+      responses:
+        "200":
+          description: Product list (may be empty)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductList"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/orders:
+    post:
+      tags: [Orders]
+      operationId: createOrder
+      summary: Place an order and reserve stock (US-11, US-15, BR-10, BR-11, BR-15)
+      description: |
+        Creates the order in one transaction: conditional stock decrement for every line,
+        customer upsert by normalized phone, totals from database prices, unique order code.
+        The order starts as AWAITING_PICKUP. No payment is taken (BR-09).
+        Rate limit: 10 requests per minute per IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderRequest"
+            example:
+              customer: { name: Ana Souza, phone: "(11) 91234-5678" }
+              items:
+                - { productId: 3f6c1d2a-6a4e-4b8e-9a1f-2c3d4e5f6a7b, quantity: 2 }
+                - { productId: 9b8a7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d, quantity: 1 }
+      responses:
+        "201":
+          description: Order created
+          headers:
+            Location:
+              description: Path of the public order resource
+              schema: { type: string, example: /api/orders/CUP-7K3Q9F }
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "409":
+          description: A product is unavailable or stock is insufficient; nothing was created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                insufficientStock:
+                  value:
+                    error:
+                      code: INSUFFICIENT_STOCK
+                      message: Not enough stock for one or more items.
+                      details:
+                        items:
+                          - { productId: 3f6c1d2a-6a4e-4b8e-9a1f-2c3d4e5f6a7b, requested: 2, available: 1 }
+                      requestId: 8f2c1b6e-0d1a-4c55-9a77-1b2c3d4e5f60
+                productNotFound:
+                  value:
+                    error:
+                      code: PRODUCT_NOT_FOUND
+                      message: One or more products are unavailable.
+                      details:
+                        productIds: [3f6c1d2a-6a4e-4b8e-9a1f-2c3d4e5f6a7b]
+                      requestId: 8f2c1b6e-0d1a-4c55-9a77-1b2c3d4e5f61
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/orders/{code}:
+    get:
+      tags: [Orders]
+      operationId: getOrder
+      summary: Public order view for Meu pedido and staff verification (US-16…US-18, US-20, US-22)
+      description: |
+        Returns the customer's first name only; never the phone (BR-16).
+        Malformed and unknown codes both return 404 ORDER_NOT_FOUND.
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CUP-7K3Q9F
+      responses:
+        "200":
+          description: The order
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        "404":
+          $ref: "#/components/responses/OrderNotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+components:
+  schemas:
+    Slug:
+      type: string
+      pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
+      maxLength: 80
+
+    OrderCode:
+      type: string
+      pattern: "^CUP-[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{6}$"
+      example: CUP-7K3Q9F
+
+    MoneyCents:
+      type: integer
+      minimum: 0
+      description: Amount in BRL cents
+      example: 1190
+
+    Health:
+      type: object
+      additionalProperties: false
+      required: [status, database]
+      properties:
+        status: { type: string, enum: [ok] }
+        database: { type: string, enum: [ok] }
+
+    NamedSlug:
+      type: object
+      additionalProperties: false
+      required: [slug, name]
+      properties:
+        slug: { $ref: "#/components/schemas/Slug" }
+        name:
+          type: string
+          description: pt-BR display name
+          example: Clássicos
+
+    CatalogFilters:
+      type: object
+      additionalProperties: false
+      required: [categories, tags]
+      properties:
+        categories:
+          type: array
+          items: { $ref: "#/components/schemas/NamedSlug" }
+        tags:
+          type: array
+          items: { $ref: "#/components/schemas/NamedSlug" }
+
+    StockState:
+      type: string
+      enum: [AVAILABLE, LOW, SOLD_OUT]
+      description: AVAILABLE > 5 units, LOW 1–5 (shows "Restam N"), SOLD_OUT 0 (BR-04)
+
+    Product:
+      type: object
+      additionalProperties: false
+      required: [id, slug, name, description, priceCents, imageUrl, category, tags, stockQuantity, stockState, maxQuantity]
+      properties:
+        id: { type: string, format: uuid }
+        slug: { $ref: "#/components/schemas/Slug" }
+        name: { type: string, example: Chocolate Crush }
+        description: { type: string, example: "Chocolate · ganache" }
+        priceCents: { $ref: "#/components/schemas/MoneyCents" }
+        imageUrl: { type: string, example: /images/products/chocolate-crush.jpg }
+        category: { $ref: "#/components/schemas/NamedSlug" }
+        tags:
+          type: array
+          items: { $ref: "#/components/schemas/NamedSlug" }
+        stockQuantity: { type: integer, minimum: 0, example: 35 }
+        stockState: { $ref: "#/components/schemas/StockState" }
+        maxQuantity:
+          type: integer
+          minimum: 0
+          maximum: 20
+          description: min(stockQuantity, 20), the limit for steppers (BR-06)
+
+    ProductList:
+      type: object
+      additionalProperties: false
+      required: [products]
+      properties:
+        products:
+          type: array
+          items: { $ref: "#/components/schemas/Product" }
+
+    CreateOrderRequest:
+      type: object
+      additionalProperties: false
+      required: [customer, items]
+      properties:
+        customer:
+          type: object
+          additionalProperties: false
+          required: [name, phone]
+          properties:
+            name:
+              type: string
+              minLength: 2
+              maxLength: 80
+              description: Trimmed length 2–80 (BR-14)
+            phone:
+              type: string
+              maxLength: 25
+              description: |
+                Brazilian mobile in any common format: "(11) 91234-5678", "11912345678",
+                "+55 11 91234-5678". Normalized to +55DD9XXXXXXXX (BR-14). Never returned.
+        items:
+          type: array
+          minItems: 1
+          maxItems: 50
+          description: One line per product (productIds must be unique)
+          items:
+            type: object
+            additionalProperties: false
+            required: [productId, quantity]
+            properties:
+              productId: { type: string, format: uuid }
+              quantity: { type: integer, minimum: 1, maximum: 20 }
+
+    OrderItem:
+      type: object
+      additionalProperties: false
+      required: [productId, slug, name, imageUrl, quantity, unitPriceCents, lineTotalCents]
+      properties:
+        productId: { type: string, format: uuid }
+        slug: { $ref: "#/components/schemas/Slug" }
+        name: { type: string, example: Chocolate Crush }
+        imageUrl: { type: string, example: /images/products/chocolate-crush.jpg }
+        quantity: { type: integer, minimum: 1, maximum: 20 }
+        unitPriceCents: { $ref: "#/components/schemas/MoneyCents" }
+        lineTotalCents: { $ref: "#/components/schemas/MoneyCents" }
+
+    Order:
+      type: object
+      additionalProperties: false
+      required: [code, pickupStatus, customerFirstName, createdAt, readyAt, items, totalCents]
+      properties:
+        code: { $ref: "#/components/schemas/OrderCode" }
+        pickupStatus:
+          type: string
+          enum: [AWAITING_PICKUP, PICKED_UP]
+        customerFirstName: { type: string, example: Ana }
+        createdAt: { type: string, format: date-time, example: "2026-10-11T17:35:00.000Z" }
+        readyAt:
+          type: string
+          format: date-time
+          description: createdAt + 15 minutes (BR-12)
+          example: "2026-10-11T17:50:00.000Z"
+        items:
+          type: array
+          minItems: 1
+          items: { $ref: "#/components/schemas/OrderItem" }
+        totalCents:
+          $ref: "#/components/schemas/MoneyCents"
+      example:
+        code: CUP-7K3Q9F
+        pickupStatus: AWAITING_PICKUP
+        customerFirstName: Ana
+        createdAt: "2026-10-11T17:35:00.000Z"
+        readyAt: "2026-10-11T17:50:00.000Z"
+        items:
+          - { productId: 3f6c1d2a-6a4e-4b8e-9a1f-2c3d4e5f6a7b, slug: chocolate-crush, name: Chocolate Crush, imageUrl: /images/products/chocolate-crush.jpg, quantity: 2, unitPriceCents: 1190, lineTotalCents: 2380 }
+          - { productId: 9b8a7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d, slug: birthday-vanilla, name: Birthday Vanilla, imageUrl: /images/products/birthday-vanilla.jpg, quantity: 1, unitPriceCents: 990, lineTotalCents: 990 }
+        totalCents: 3370
+
+    ErrorCode:
+      type: string
+      enum:
+        - VALIDATION_ERROR
+        - ORDER_NOT_FOUND
+        - NOT_FOUND
+        - PRODUCT_NOT_FOUND
+        - INSUFFICIENT_STOCK
+        - RATE_LIMITED
+        - INTERNAL_ERROR
+
+    FieldError:
+      type: object
+      additionalProperties: false
+      required: [path, message]
+      properties:
+        path:
+          type: string
+          description: Dotted path of the invalid field
+          example: customer.phone
+        message:
+          type: string
+          example: Invalid Brazilian mobile number
+
+    StockShortage:
+      type: object
+      additionalProperties: false
+      required: [productId, requested, available]
+      properties:
+        productId: { type: string, format: uuid }
+        requested: { type: integer, minimum: 1 }
+        available: { type: integer, minimum: 0 }
+
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required: [code, message, requestId]
+          properties:
+            code: { $ref: "#/components/schemas/ErrorCode" }
+            message:
+              type: string
+              description: English, for developers. The UI maps `code` to pt-BR copy.
+            details:
+              type: object
+              additionalProperties: false
+              properties:
+                fields:
+                  type: array
+                  items: { $ref: "#/components/schemas/FieldError" }
+                items:
+                  type: array
+                  items: { $ref: "#/components/schemas/StockShortage" }
+                productIds:
+                  type: array
+                  items: { type: string, format: uuid }
+            requestId: { type: string }
+
+  responses:
+    ValidationError:
+      description: Request doesn't match the schema
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+          example:
+            error:
+              code: VALIDATION_ERROR
+              message: Request validation failed.
+              details:
+                fields:
+                  - { path: customer.phone, message: Invalid Brazilian mobile number }
+              requestId: 8f2c1b6e-0d1a-4c55-9a77-1b2c3d4e5f62
+    OrderNotFound:
+      description: Unknown or malformed order code
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+          example:
+            error: { code: ORDER_NOT_FOUND, message: Order not found., requestId: 8f2c1b6e-0d1a-4c55-9a77-1b2c3d4e5f63 }
+    RateLimited:
+      description: Too many requests
+      headers:
+        Retry-After:
+          schema: { type: integer }
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    InternalError:
+      description: Unexpected error (details are only in the server logs)
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }

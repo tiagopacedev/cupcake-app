@@ -1,0 +1,79 @@
+@startuml sd-02-place-order
+!include ../_style.iuml
+title SD-02 · Place order (UC-03, includes UC-07) · endpoints per 07-api-spec
+autonumber
+actor Customer
+participant "CheckoutPage\n(View, SCR-03)" as V
+participant "cartStore /\nlastOrderStore\n(localStorage)" as LS
+participant "orders.routes /\nOrderController" as C
+participant "OrderService" as S
+participant "ProductRepository" as PR
+participant "CustomerRepository" as CUR
+participant "OrderRepository" as OR
+database "PostgreSQL" as DB
+
+Customer -> V : enter name + phone, tap "Fazer pedido"
+activate V
+V -> V : client validation (BR-14)
+alt invalid fields
+  V --> Customer : messages next to fields (alt A)
+else valid
+  V -> V : disable button, show "Enviando…"
+  V -> C : POST /api/orders\n{ customer: {name, phone}, items: [{productId, quantity}] }
+  activate C
+  C -> C : schema validation: name 2..80, phone BR mobile,\nitems 1..n, unique productIds, quantity 1..20
+  alt schema invalid
+    C --> V : 400 VALIDATION_ERROR { fields }
+    V --> Customer : field messages (alt A)
+  else schema valid
+    C -> S : createOrder(customer, items)
+    activate S
+    S -> S : normalize phone → +55DD9XXXXXXXX (BR-14)\ngenerate code CUP-XXXXXX (BR-13)
+    group transaction (BR-10, BR-11)
+      S -> PR : findActiveByIds(productIds)
+      PR -> DB : SELECT id, price_cents FROM products\nWHERE id = ANY($1) AND is_active
+      DB --> PR : rows
+      alt some product missing / inactive
+        S -> S : ROLLBACK
+        S --> C : throw ProductNotFoundError
+        C --> V : 409 PRODUCT_NOT_FOUND { productIds }
+        V --> Customer : notice, back to cart (alt B)
+      else all products found
+        loop each item, ordered by productId (avoids deadlocks)
+          S -> PR : decrementStock(productId, quantity)   (UC-07)
+          PR -> DB : UPDATE products SET stock_quantity = stock_quantity - $q\nWHERE id = $id AND stock_quantity >= $q
+          DB --> PR : rows affected (1 | 0)
+        end
+        alt any update affected 0 rows
+          S -> PR : read current stock of affected products
+          S -> S : ROLLBACK
+          S --> C : throw InsufficientStockError
+          C --> V : 409 INSUFFICIENT_STOCK\n{ items: [{productId, requested, available}] }
+          V --> Customer : affected items, back to cart (alt C, US-19)
+        else all decremented
+          S -> CUR : upsertByPhone(phone, name)   (BR-15)
+          CUR -> DB : INSERT … ON CONFLICT (phone)\nDO UPDATE SET name = $name
+          S -> S : line totals + total from DB prices (BR-07, BR-08)
+          S -> OR : create(order AWAITING_PICKUP, items with unitPriceCents)
+          OR -> DB : INSERT orders; INSERT order_items
+          alt unique violation on code (rare)
+            DB --> OR : error 23505
+            OR --> S : retry whole transaction with a new code (max 5)
+          end
+          S -> S : COMMIT
+          S --> C : order
+          deactivate S
+          C --> V : 201 Order { code, pickupStatus, customerFirstName,\ncreatedAt, readyAt, items, totalCents }
+          deactivate C
+          V -> LS : cart.clear() (BR-17)\nlastOrder.save({ code, createdAt }) (BR-19)
+          V --> Customer : navigate to /orders/{code}?new=1\n(Meu pedido, SCR-04) → UC-05
+        end
+      end
+    end
+  end
+end
+alt network error / 5xx
+  V --> Customer : error + retry, button re-enabled (alt E)
+end
+deactivate V
+@enduml

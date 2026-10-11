@@ -1,0 +1,58 @@
+@startuml sd-01-browse-catalog
+!include ../_style.iuml
+title SD-01 · Browse and filter catalog (UC-01) · endpoints per 07-api-spec
+autonumber
+actor Customer
+participant "CatalogPage\n(View, SCR-01)" as V
+participant "catalog.routes /\nCatalogController" as C
+participant "CatalogService" as S
+participant "Category/Tag\nRepository" as CR
+participant "ProductRepository" as PR
+database "PostgreSQL" as DB
+
+Customer -> V : open store (optional ?filter=chocolate)
+activate V
+V -> V : render loading placeholders
+par filters
+  V -> C : GET /api/catalog/filters
+  activate C
+  C -> S : listFilters()
+  S -> CR : findAllCategories(), findAllTags()
+  CR -> DB : SELECT categories, tags ORDER BY sort_order
+  DB --> CR : rows
+  CR --> S : categories, tags
+  S --> C : filters
+  C --> V : 200 { categories, tags }
+  deactivate C
+else products
+  V -> C : GET /api/products?category=chocolate
+  activate C
+  C -> C : validate query (category | tag, optional)
+  C -> S : listProducts({ category: "chocolate" })
+  S -> PR : findActive({ categorySlug })
+  PR -> DB : SELECT … FROM products JOIN categories\nLEFT JOIN product_tags/tags\nWHERE is_active AND category.slug = $1
+  DB --> PR : rows
+  PR --> S : products (with tags)
+  S -> S : derive stock state per product\n(available / low / sold out, BR-04)
+  S --> C : product list
+  C --> V : 200 { products }
+  deactivate C
+end
+
+alt request failed (network / 5xx)
+  V --> Customer : error message + "try again" (UC-01 alt A)
+else products returned, list empty
+  V --> Customer : empty state + "view all" (UC-01 alt B)
+else products returned
+  V --> Customer : filter chips + product cards\n(sold-out cards disabled)
+end
+deactivate V
+
+== Customer changes filter ==
+Customer -> V : select "Bestsellers"
+V -> V : update URL ?filter=bestsellers
+V -> C : GET /api/products?tag=bestseller
+note right : same path as steps above,\nfiltered by tag slug (BR-03)
+C --> V : 200 { products }
+V --> Customer : bestseller cards
+@enduml

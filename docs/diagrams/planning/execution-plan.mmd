@@ -1,0 +1,28 @@
+%% Execution plan timeline (docs/08-execution-plan.md). Bars = target windows; milestones = gates.
+gantt
+  title Cupcake App · Execution plan (2026)
+  dateFormat YYYY-MM-DD
+  axisFormat %d/%m
+  todayMarker off
+  section Setup
+  E0 Plan approval and decisions   :e0, 2026-10-11, 4d
+  G0 Ready to build                :milestone, g0, 2026-10-14, 0d
+  section Build
+  E1 Foundation                    :e1, after g0, 4d
+  E2 Database                      :e2, after e1, 3d
+  E3 CI and walking skeleton       :e3, after e2, 4d
+  G1 Skeleton live (deadline)      :milestone, g1, 2026-10-24, 0d
+  E4 Catalog API                   :e4, after e3, 2d
+  E6 Orders API                    :e6, 2026-10-26, 5d
+  E5 Catalog and cart UI           :e5, 2026-10-25, 5d
+  G2 Catalog and cart demo         :milestone, g2, 2026-10-29, 0d
+  E7 Checkout and Meu pedido UI    :e7, 2026-10-29, 6d
+  G3 Feature complete              :milestone, g3, 2026-11-03, 0d
+  section Deliver
+  E8 Verification and release      :e8, 2026-11-04, 3d
+  G4 Situação 2 complete           :milestone, g4, 2026-11-06, 0d
+  E9 Recruit testers               :e9a, 2026-10-27, 5d
+  E9 Testing window and fixes      :e9b, 2026-11-07, 8d
+  G5 Situação 3 complete           :milestone, g5, 2026-11-14, 0d
+  E10 Submission                   :e10, 2026-11-15, 2d
+  G6 Submitted                     :milestone, g6, 2026-11-16, 0d

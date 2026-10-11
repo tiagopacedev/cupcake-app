@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="1018px" preserveAspectRatio="none" style="width:819px;height:1018px;background:#FFFFFF;" version="1.1" viewBox="0 0 819 1018" width="819px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="26.9395" id="_title" rx="5" ry="5" style="stroke:none;stroke-width:1.0;" width="480" x="168.25" y="15"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="470" x="173.25" y="33.5625">AD-02 · Latest-order card decision on the home page (UC-04, BR-19)</text><rect fill="none" height="15.7295" style="stroke:none;stroke-width:1.0;" width="786.5" x="15" y="49.5752"/><ellipse cx="376" cy="80.3047" fill="#222222" rx="10" ry="10" style="stroke:#222222;stroke-width:1.0;"/><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="293" x="229.5" y="110.3047"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="273" x="239.5" y="132.8984">Read "cupcake.lastOrder" from localStorage</text><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="80" x="336" y="215.8989"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="60" x="346" y="238.4927">Hide card</text><ellipse cx="376" cy="290.2637" fill="none" rx="11" ry="11" style="stroke:#222222;stroke-width:1.0;"/><ellipse cx="376" cy="290.2637" fill="#222222" rx="6" ry="6" style="stroke:#111111;stroke-width:1.0;"/><polygon fill="#FFF1D6" points="313,166.0342,439,166.0342,451,178.0342,439,190.0342,313,190.0342,301,178.0342,313,166.0342" style="stroke:#B07D1F;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="16" x="380" y="202.6279">no</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="126" x="313" y="182.7632">Stored order exists?</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="22" x="451" y="174.8984">yes</text><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="80" x="336" y="393.1284"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="60" x="346" y="415.7222">Hide card</text><ellipse cx="376" cy="467.4932" fill="none" rx="11" ry="11" style="stroke:#222222;stroke-width:1.0;"/><ellipse cx="376" cy="467.4932" fill="#222222" rx="6" ry="6" style="stroke:#111111;stroke-width:1.0;"/><polygon fill="#FFF1D6" points="262.5,343.2637,489.5,343.2637,501.5,355.2637,489.5,367.2637,262.5,367.2637,250.5,355.2637,262.5,343.2637" style="stroke:#B07D1F;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="16" x="380" y="379.8574">no</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="227" x="262.5" y="359.9927">Created today (America/Sao_Paulo)?</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="22" x="501.5" y="352.1279">yes</text><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="167" x="292.5" y="520.4932"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="147" x="302.5" y="543.0869">GET /api/orders/{code}</text><polygon fill="#FFF1D6" points="231.75,631.9521,300.75,631.9521,312.75,643.9521,300.75,655.9521,231.75,655.9521,219.75,643.9521,231.75,631.9521" style="stroke:#B07D1F;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="24" x="270.25" y="668.5459">404</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="69" x="231.75" y="648.6812">Response?</text><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="149" x="191.75" y="690.0459"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="129" x="201.75" y="712.6396">Remove stored code</text><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="80" x="226.25" y="745.7754"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="60" x="236.25" y="768.3691">Hide card</text><ellipse cx="266.25" cy="812.5049" fill="none" rx="11" ry="11" style="stroke:#222222;stroke-width:1.0;"/><ellipse cx="266.25" cy="812.5049" fill="#222222" rx="6" ry="6" style="stroke:#111111;stroke-width:1.0;"/><polygon fill="#FFF1D6" points="424.25,631.9521,424.25,631.9521,436.25,643.9521,424.25,655.9521,424.25,655.9521,412.25,643.9521,424.25,631.9521" style="stroke:#B07D1F;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="86" x="428.25" y="668.5459">network error</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="24" x="436.25" y="640.8164">200</text><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="127" x="360.75" y="690.0459"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="107" x="370.75" y="712.6396">Hide card silently</text><ellipse cx="424.25" cy="756.7754" fill="none" rx="11" ry="11" style="stroke:#222222;stroke-width:1.0;"/><ellipse cx="424.25" cy="756.7754" fill="#222222" rx="6" ry="6" style="stroke:#111111;stroke-width:1.0;"/><polygon fill="#FFF1D6" points="265,843.5049,487,843.5049,499,855.5049,487,867.5049,265,867.5049,253,855.5049,265,843.5049" style="stroke:#B07D1F;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="222" x="265" y="860.2339">pickupStatus = AWAITING_PICKUP?</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="22" x="231" y="852.3691">yes</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="16" x="499" y="852.3691">no</text><path d="M299,877.5049 L299,902.0991 L279,906.0991 L299,910.0991 L299,934.6934 A0,0 0 0 0 299,934.6934 L542,934.6934 A0,0 0 0 0 542,934.6934 L542,887.5049 L532,877.5049 L299,877.5049 A0,0 0 0 0 299,877.5049 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><path d="M532,877.5049 L532,887.5049 L542,887.5049 L532,877.5049 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="217" x="305" y="895.0986">Only the most recent order is kept.</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="222" x="305" y="910.8281">The card exists only in this browser</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="127" x="305" y="926.5576">(no account, BR-19).</text><rect fill="#FFF6F7" height="51.459" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="258" x="21" y="880.3696"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="198" x="31" y="902.9634">Show card "Seu pedido · code ·</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="238" x="31" y="918.6929">Aguardando retirada" above the filters</text><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="80" x="552" y="877.5049"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="60" x="562" y="900.0986">Hide card</text><polygon fill="#FFF1D6" points="376,940.6934,388,952.6934,376,964.6934,364,952.6934,376,940.6934" style="stroke:#B07D1F;stroke-width:0.5;"/><ellipse cx="376" cy="995.6934" fill="none" rx="11" ry="11" style="stroke:#222222;stroke-width:1.0;"/><ellipse cx="376" cy="995.6934" fill="#222222" rx="6" ry="6" style="stroke:#111111;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="15" x2="15" y1="49.5752" y2="1006.6934"/><rect fill="#FFF6F7" height="35.7295" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="139" x="650" y="576.2227"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="119" x="660" y="598.8164">Find order by code</text><line style="stroke:#000000;stroke-width:1.5;" x1="636" x2="636" y1="49.5752" y2="1006.6934"/><line style="stroke:#000000;stroke-width:1.5;" x1="801" x2="801" y1="49.5752" y2="1006.6934"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="376" x2="376" y1="90.3047" y2="110.3047"/><polygon fill="#5B4A50" points="372,100.3047,376,110.3047,380,100.3047,376,104.3047" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="376" x2="376" y1="251.6284" y2="279.2637"/><polygon fill="#5B4A50" points="372,269.2637,376,279.2637,380,269.2637,376,273.2637" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="376" x2="376" y1="190.0342" y2="215.8989"/><polygon fill="#5B4A50" points="372,205.8989,376,215.8989,380,205.8989,376,209.8989" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="451" x2="463" y1="178.0342" y2="178.0342"/><polygon fill="#5B4A50" points="459,249.2637,463,259.2637,467,249.2637,463,253.2637" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="463" x2="463" y1="178.0342" y2="323.2637"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="463" x2="376" y1="323.2637" y2="323.2637"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="376" x2="376" y1="323.2637" y2="343.2637"/><polygon fill="#5B4A50" points="372,333.2637,376,343.2637,380,333.2637,376,337.2637" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="376" x2="376" y1="146.0342" y2="166.0342"/><polygon fill="#5B4A50" points="372,156.0342,376,166.0342,380,156.0342,376,160.0342" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="376" x2="376" y1="428.8579" y2="456.4932"/><polygon fill="#5B4A50" points="372,446.4932,376,456.4932,380,446.4932,376,450.4932" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="376" x2="376" y1="367.2637" y2="393.1284"/><polygon fill="#5B4A50" points="372,383.1284,376,393.1284,380,383.1284,376,387.1284" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="501.5" x2="513.5" y1="355.2637" y2="355.2637"/><polygon fill="#5B4A50" points="509.5,426.4932,513.5,436.4932,517.5,426.4932,513.5,430.4932" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="513.5" x2="513.5" y1="355.2637" y2="500.4932"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="513.5" x2="376" y1="500.4932" y2="500.4932"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="376" x2="376" y1="500.4932" y2="520.4932"/><polygon fill="#5B4A50" points="372,510.4932,376,520.4932,380,510.4932,376,514.4932" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="266.25" x2="266.25" y1="725.7754" y2="745.7754"/><polygon fill="#5B4A50" points="262.25,735.7754,266.25,745.7754,270.25,735.7754,266.25,739.7754" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="266.25" x2="266.25" y1="781.5049" y2="801.5049"/><polygon fill="#5B4A50" points="262.25,791.5049,266.25,801.5049,270.25,791.5049,266.25,795.5049" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="424.25" x2="424.25" y1="725.7754" y2="745.7754"/><polygon fill="#5B4A50" points="420.25,735.7754,424.25,745.7754,428.25,735.7754,424.25,739.7754" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="266.25" x2="266.25" y1="655.9521" y2="690.0459"/><polygon fill="#5B4A50" points="262.25,680.0459,266.25,690.0459,270.25,680.0459,266.25,684.0459" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="424.25" x2="424.25" y1="655.9521" y2="690.0459"/><polygon fill="#5B4A50" points="420.25,680.0459,424.25,690.0459,428.25,680.0459,424.25,684.0459" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="312.75" x2="412.25" y1="643.9521" y2="643.9521"/><polygon fill="#5B4A50" points="402.25,639.9521,412.25,643.9521,402.25,647.9521,406.25,643.9521" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="719.5" x2="719.5" y1="611.9521" y2="616.9521"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="719.5" x2="266.25" y1="616.9521" y2="616.9521"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="266.25" x2="266.25" y1="616.9521" y2="631.9521"/><polygon fill="#5B4A50" points="262.25,621.9521,266.25,631.9521,270.25,621.9521,266.25,625.9521" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="436.25" x2="545.25" y1="643.9521" y2="643.9521"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="545.25" x2="545.25" y1="643.9521" y2="828.5049"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="545.25" x2="376" y1="828.5049" y2="828.5049"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="376" x2="376" y1="828.5049" y2="843.5049"/><polygon fill="#5B4A50" points="372,833.5049,376,843.5049,380,833.5049,376,837.5049" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="253" x2="150" y1="855.5049" y2="855.5049"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="150" x2="150" y1="855.5049" y2="880.3696"/><polygon fill="#5B4A50" points="146,870.3696,150,880.3696,154,870.3696,150,874.3696" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="499" x2="592" y1="855.5049" y2="855.5049"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="592" x2="592" y1="855.5049" y2="877.5049"/><polygon fill="#5B4A50" points="588,867.5049,592,877.5049,596,867.5049,592,871.5049" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="150" x2="150" y1="931.8286" y2="952.6934"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="150" x2="364" y1="952.6934" y2="952.6934"/><polygon fill="#5B4A50" points="354,948.6934,364,952.6934,354,956.6934,358,952.6934" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="592" x2="592" y1="913.2344" y2="952.6934"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="592" x2="388" y1="952.6934" y2="952.6934"/><polygon fill="#5B4A50" points="398,948.6934,388,952.6934,398,956.6934,394,952.6934" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="376" x2="376" y1="964.6934" y2="984.6934"/><polygon fill="#5B4A50" points="372,974.6934,376,984.6934,380,974.6934,376,978.6934" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="376" x2="376" y1="556.2227" y2="561.2227"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="376" x2="719.5" y1="561.2227" y2="561.2227"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="719.5" x2="719.5" y1="561.2227" y2="576.2227"/><polygon fill="#5B4A50" points="715.5,566.2227,719.5,576.2227,723.5,566.2227,719.5,570.2227" style="stroke:#5B4A50;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="102" x="274.5" y="62.1689">Web app (View)</text><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="155" x="641" y="62.1689">API (Controller + Model)</text><!--MD5=[67808b5211147c6d63e9f8fee305c11b]
+@startuml ad-02-latest-order-card
+!include ../_style.iuml
+title AD-02 · Latest-order card decision on the home page (UC-04, BR-19)
+
+|Web app (View)|
+start
+:Read "cupcake.lastOrder" from localStorage;
+if (Stored order exists?) then (no)
+  :Hide card;
+  stop
+else (yes)
+endif
+if (Created today (America/Sao_Paulo)?) then (no)
+  :Hide card;
+  stop
+else (yes)
+endif
+:GET /api/orders/{code};
+|API (Controller + Model)|
+:Find order by code;
+|Web app (View)|
+if (Response?) then (404)
+  :Remove stored code;
+  :Hide card;
+  stop
+elseif () then (network error)
+  :Hide card silently;
+  stop
+else (200)
+endif
+if (pickupStatus = AWAITING_PICKUP?) then (yes)
+  :Show card "Seu pedido · code ·\nAguardando retirada" above the filters;
+  note right
+    Only the most recent order is kept.
+    The card exists only in this browser
+    (no account, BR-19).
+  end note
+else (no)
+  :Hide card;
+endif
+stop
+@enduml
+
+@startuml ad-02-latest-order-card
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam roundCorner 10
+skinparam ArrowColor #5B4A50
+skinparam BorderColor #8C5B67
+skinparam BackgroundColor #FFFFFF
+skinparam ActorBorderColor #8C5B67
+skinparam ActorBackgroundColor #FDE2E4
+skinparam UsecaseBackgroundColor #FFF6F7
+skinparam UsecaseBorderColor #B5485A
+skinparam ClassBackgroundColor #FFF9FA
+skinparam ClassBorderColor #B5485A
+skinparam ClassHeaderBackgroundColor #FDE2E4
+skinparam PackageBackgroundColor #FFFCFD
+skinparam PackageBorderColor #8C5B67
+skinparam NoteBackgroundColor #FFF1D6
+skinparam NoteBorderColor #B07D1F
+skinparam ParticipantBackgroundColor #FFF6F7
+skinparam ParticipantBorderColor #B5485A
+skinparam DatabaseBackgroundColor #E8F0F7
+skinparam DatabaseBorderColor #3F6A8A
+skinparam SequenceLifeLineBorderColor #B9A5AA
+skinparam SequenceGroupBackgroundColor #FFF1F3
+skinparam ActivityBackgroundColor #FFF6F7
+skinparam ActivityBorderColor #B5485A
+skinparam ActivityDiamondBackgroundColor #FFF1D6
+skinparam ActivityDiamondBorderColor #B07D1F
+skinparam SwimlaneTitleFontStyle bold
+title AD-02 · Latest-order card decision on the home page (UC-04, BR-19)
+
+|Web app (View)|
+start
+:Read "cupcake.lastOrder" from localStorage;
+if (Stored order exists?) then (no)
+  :Hide card;
+  stop
+else (yes)
+endif
+if (Created today (America/Sao_Paulo)?) then (no)
+  :Hide card;
+  stop
+else (yes)
+endif
+:GET /api/orders/{code};
+|API (Controller + Model)|
+:Find order by code;
+|Web app (View)|
+if (Response?) then (404)
+  :Remove stored code;
+  :Hide card;
+  stop
+elseif () then (network error)
+  :Hide card silently;
+  stop
+else (200)
+endif
+if (pickupStatus = AWAITING_PICKUP?) then (yes)
+  :Show card "Seu pedido · code ·\nAguardando retirada" above the filters;
+  note right
+    Only the most recent order is kept.
+    The card exists only in this browser
+    (no account, BR-19).
+  end note
+else (no)
+  :Hide card;
+endif
+stop
+@enduml
+
+PlantUML version 1.2022.12(Sun Oct 23 15:12:26 BRT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

@@ -1,0 +1,66 @@
+%% Affinity map: user stories grouped by theme (source of truth: docs/01-prd.md §8)
+flowchart LR
+  APP(["Cupcake App<br/>22 stories · 66 pts"])
+
+  subgraph T1["T1 · Catalog and discovery · 9 pts"]
+    direction TB
+    US01["US-01 Browse the catalog · A · 3"]
+    US02["US-02 Filter by category · A · 2"]
+    US03["US-03 See bestsellers · B · 2"]
+    US04["US-04 Understand availability · A · 2"]
+  end
+
+  subgraph T2["T2 · Cart · 17 pts"]
+    direction TB
+    US05["US-05 Choose quantity and add · A · 3"]
+    US06["US-06 Respect stock limits · A · 5"]
+    US07["US-07 See the cart count · C · 1"]
+    US08["US-08 Review cart and total · A · 3"]
+    US09["US-09 Edit cart items · A · 3"]
+    US10["US-10 Keep my cart · B · 2"]
+  end
+
+  subgraph T3["T3 · Checkout and identification · 8 pts"]
+    direction TB
+    US11["US-11 Check out without an account · A · 5"]
+    US12["US-12 Clear validation messages · A · 3"]
+  end
+
+  subgraph T4["T4 · Order placement · pay at the store · 12 pts"]
+    direction TB
+    US13["US-13 Review my order before placing it · A · 3"]
+    US14["US-14 Know I pay at the store · B · 1"]
+    US15["US-15 Place the order and reserve stock · A · 8"]
+  end
+
+  subgraph T5["T5 · My order and pickup · 12 pts"]
+    direction TB
+    US16["US-16 Receive my order code · A · 3"]
+    US17["US-17 See pickup instructions · B · 1"]
+    US18["US-18 Reopen my order with the code · B · 3"]
+    US22["US-22 Find my latest order on the home page · B · 3"]
+    US20["US-20 Verify an order at pickup · B · 2"]
+  end
+
+  subgraph T6["T6 · Error handling and resilience · 5 pts"]
+    US19["US-19 Handle stock changes during checkout · A · 5"]
+  end
+
+  subgraph T7["T7 · Store setup · 3 pts"]
+    US21["US-21 Seed the catalog · A · 3"]
+  end
+
+  APP --- T1
+  APP --- T2
+  APP --- T3
+  APP --- T4
+  APP --- T5
+  APP --- T6
+  APP --- T7
+
+  classDef a fill:#FDE2E4,stroke:#B5485A,color:#2B1B1E
+  classDef b fill:#FFF1D6,stroke:#B07D1F,color:#2B2414
+  classDef c fill:#E3F1E7,stroke:#3E7D53,color:#16261B
+  class US01,US02,US04,US05,US06,US08,US09,US11,US12,US13,US15,US16,US19,US21 a
+  class US03,US10,US14,US17,US18,US20,US22 b
+  class US07 c

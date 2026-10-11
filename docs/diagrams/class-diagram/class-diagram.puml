@@ -1,0 +1,102 @@
+@startuml class-diagram
+!include ../_style.iuml
+title Cupcake App · Persistence (Domain) Class Diagram
+hide empty members
+skinparam linetype ortho
+
+enum PickupStatus <<enumeration>> {
+  AWAITING_PICKUP
+  PICKED_UP
+}
+
+class Category {
+  - id : UUID
+  - name : String {unique, 2..50}
+  - slug : String {unique}
+  - sortOrder : Integer
+  - createdAt : DateTime
+  - updatedAt : DateTime
+}
+
+class Tag {
+  - id : UUID
+  - name : String {unique, 2..50}
+  - slug : String {unique}
+  - createdAt : DateTime
+  - updatedAt : DateTime
+}
+
+class Product {
+  - id : UUID
+  - name : String {unique, 2..80}
+  - slug : String {unique}
+  - description : String {10..300}
+  - priceCents : Integer {> 0}
+  - stockQuantity : Integer {>= 0}
+  - imageUrl : String
+  - isActive : Boolean = true
+  - createdAt : DateTime
+  - updatedAt : DateTime
+  --
+  + isSoldOut() : Boolean
+  + canFulfill(quantity : Integer) : Boolean
+}
+
+class ProductTag <<association class>> {
+  - productId : UUID
+  - tagId : UUID
+}
+
+class Customer {
+  - id : UUID
+  - name : String {2..80}
+  - phone : String {unique, E.164 +55}
+  - createdAt : DateTime
+  - updatedAt : DateTime
+  --
+  + firstName() : String
+}
+
+class Order {
+  - id : UUID
+  - code : String {unique, CUP-XXXXXX}
+  - totalCents : Integer {> 0}
+  - pickupStatus : PickupStatus = AWAITING_PICKUP
+  - createdAt : DateTime
+  - updatedAt : DateTime
+  --
+  + readyAt() : DateTime
+  + isFromToday(now : DateTime) : Boolean
+}
+
+class OrderItem {
+  - id : UUID
+  - quantity : Integer {1..20}
+  - unitPriceCents : Integer {> 0}
+  - createdAt : DateTime
+  --
+  + lineTotalCents() : Integer
+}
+
+Category "1" -- "0..*" Product : classifies >
+Product "0..*" -- "0..*" Tag : tagged with >
+(Product, Tag) .. ProductTag
+Customer "1" -- "0..*" Order : places >
+Order "1" *-- "1..*" OrderItem : contains >
+OrderItem "0..*" --> "1" Product : refers to >
+Order ..> PickupStatus
+
+note bottom of Order
+  totalCents is a stored snapshot of Σ lineTotalCents()
+  (deliberate, documented denormalization, see 03-data-model §5).
+  readyAt = createdAt + 15 min (BR-12), derived, not stored.
+  Payment happens at the store and is not recorded (BR-09).
+  Stock is decremented when the order is created (BR-11).
+end note
+
+note bottom of OrderItem
+  unitPriceCents = product price at the time
+  of purchase (historical fact, BR-07).
+  (order, product) is unique.
+end note
+@enduml

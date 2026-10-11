@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finalizar pedido (desktop) · Cupcake Store (UI reference)</title>
+<!-- APPROVED UI REFERENCE (Phase 3). Source: Claude Design canvas "Cupcake Store Screens".
+     Static mockup with sample data. Reproduce layout, spacing, colors, type and copy exactly;
+     data, counts and states come from the API at runtime. See docs/04-ui-design.md. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+a{color:#121117}a:hover{color:#ad1457}
+</style>
+</head>
+<body>
+<div style="min-height: 860px; overflow-x: hidden; background: #ffffff; color: #121117; font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 24px; display: flex; flex-direction: column;">
+
+  <header style="border-bottom: 1px solid #e4e4eb;">
+    <div style="max-width: 1120px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+      <a href="08-desktop-catalog.html" style="font-weight: 800; font-size: 24px; line-height: 30px; letter-spacing: -0.02em; color: #121117; text-decoration: none;">Cupcake Store</a>
+      <a href="08-desktop-catalog.html" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; border-radius: 8px; color: #121117; font-weight: 600; font-size: 15px; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Continuar comprando</a>
+    </div>
+  </header>
+
+  <main style="width: 100%; max-width: 1120px; margin: 0 auto; padding: 48px 24px 64px; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px;">
+    <div style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 32px;">
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <h1 style="margin: 0; font-weight: 800; font-size: 40px; line-height: 46px; letter-spacing: -0.02em;">Finalizar pedido</h1>
+        <p style="margin: 0; font-size: 18px; line-height: 28px; color: #5c5b6b;">Só nome e celular. Sem cadastro.</p>
+      </div>
+      <form style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px;">
+        <div style="display: flex; flex-direction: column; gap: 6px;"><label for="d-name" style="font-weight: 600; font-size: 14px; line-height: 20px;">Nome</label><input id="d-name" autocomplete="name" value="Ana Souza" style="height: 48px; width: 100%; padding: 0 16px; border-radius: 8px; border: 1px solid #8f8e9e; background: #ffffff; color: #121117; font-family: inherit; font-size: 16px;"></div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><label for="d-phone" style="font-weight: 600; font-size: 14px; line-height: 20px;">Celular</label><input id="d-phone" inputmode="tel" autocomplete="tel-national" value="(11) 91234-5678" style="height: 48px; width: 100%; padding: 0 16px; border-radius: 8px; border: 1px solid #8f8e9e; background: #ffffff; color: #121117; font-family: inherit; font-size: 16px; font-variant-numeric: tabular-nums;"></div>
+      </form>
+      <section aria-label="Retirada" style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border: 1px solid #e4e4eb; border-radius: 8px; font-size: 15px; line-height: 22px;">
+        <h2 style="margin: 0; font-weight: 700; font-size: 18px; line-height: 24px;">Retirada</h2>
+        <span style="display: flex; gap: 10px; align-items: flex-start;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 1px;"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>Cupcake Store · Rua das Flores, 123 · Centro · São Paulo, SP</span>
+        <span style="display: flex; gap: 10px; align-items: flex-start;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 1px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Pronto em ~15 min · Ter a dom, 10h às 19h · Pagamento na loja</span>
+      </section>
+    </div>
+
+    <aside aria-label="Resumo do pedido" style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 14px; padding: 24px; border-radius: 8px; background: #f4f4f6;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline;"><h2 style="margin: 0; font-weight: 700; font-size: 20px; line-height: 26px;">Resumo do pedido</h2><a href="08-desktop-catalog.html" style="font-size: 14px; font-weight: 600; color: #121117;">Editar</a></div>
+      <div style="display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 12px; align-items: center;"><img src="../assets/photos/chocolate-crush.jpg" alt="" style="width: 56px; height: 56px; border-radius: 8px; object-fit: cover; display: block;"><div><div style="font-weight: 600; font-size: 15px; line-height: 20px;">Chocolate Crush</div><div style="font-size: 14px; line-height: 20px; color: #5c5b6b; font-variant-numeric: tabular-nums;">2 × R$ 11,90</div></div><span style="font-weight: 600; font-variant-numeric: tabular-nums;">R$ 23,80</span></div>
+      <div style="display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 12px; align-items: center;"><img src="../assets/photos/birthday-vanilla.jpg" alt="" style="width: 56px; height: 56px; border-radius: 8px; object-fit: cover; display: block;"><div><div style="font-weight: 600; font-size: 15px; line-height: 20px;">Birthday Vanilla</div><div style="font-size: 14px; line-height: 20px; color: #5c5b6b; font-variant-numeric: tabular-nums;">1 × R$ 9,90</div></div><span style="font-weight: 600; font-variant-numeric: tabular-nums;">R$ 9,90</span></div>
+      <div style="display: flex; justify-content: space-between; font-size: 15px; border-top: 1px solid #e4e4eb; padding-top: 12px;"><span>Subtotal</span><span style="font-variant-numeric: tabular-nums;">R$ 33,70</span></div>
+      <div style="display: flex; justify-content: space-between; font-size: 15px; color: #5c5b6b;"><span>Retirada na loja</span><span>Grátis</span></div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid #e4e4eb; padding-top: 12px;"><span style="font-weight: 700;">Total</span><span style="font-weight: 800; font-size: 26px; line-height: 32px; font-variant-numeric: tabular-nums;">R$ 33,70</span></div>
+      <a href="05-my-order.html" style="display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 8px; background: #ff7aac; color: #121117; font-weight: 600; font-size: 16px; text-decoration: none;">Fazer pedido</a>
+    </aside>
+  </main>
+</div>
+</body>
+</html>

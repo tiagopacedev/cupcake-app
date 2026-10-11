@@ -1,0 +1,58 @@
+---
+title: Cupcake App · Logical model (3NF)
+---
+erDiagram
+  %% Logical model (3NF): attributes with domains, keys (03-data-model.md §3)
+  Category ||--o{ Product : "classifies"
+  Product ||--o{ ProductTag : "has"
+  Tag ||--o{ ProductTag : "labels"
+  Customer ||--o{ Order : "places"
+  Order ||--|{ OrderItem : "contains"
+  Product ||--o{ OrderItem : "is ordered as"
+
+  Category {
+    Identifier id PK
+    ShortText name UK
+    Slug slug UK
+    SmallInteger sortOrder
+  }
+  Tag {
+    Identifier id PK
+    ShortText name UK
+    Slug slug UK
+  }
+  Product {
+    Identifier id PK
+    Identifier categoryId FK
+    ShortText name UK
+    Slug slug UK
+    Text description
+    MoneyCents priceCents "gt 0"
+    Quantity stockQuantity "ge 0"
+    Url imageUrl
+    Flag isActive
+  }
+  ProductTag {
+    Identifier productId PK,FK
+    Identifier tagId PK,FK
+  }
+  Customer {
+    Identifier id PK
+    PersonName name
+    PhoneE164 phone UK
+  }
+  Order {
+    Identifier id PK
+    OrderCode code UK
+    Identifier customerId FK
+    MoneyCents totalCents "snapshot"
+    PickupStatus pickupStatus "default AWAITING_PICKUP"
+    Timestamp createdAt
+  }
+  OrderItem {
+    Identifier id PK
+    Identifier orderId FK,UK "UK with productId"
+    Identifier productId FK,UK
+    LineQuantity quantity "1..20"
+    MoneyCents unitPriceCents "price at purchase"
+  }

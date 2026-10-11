@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo (desktop) · Cupcake Store (UI reference)</title>
+<!-- APPROVED UI REFERENCE (Phase 3). Source: Claude Design canvas "Cupcake Store Screens".
+     Static mockup with sample data. Reproduce layout, spacing, colors, type and copy exactly;
+     data, counts and states come from the API at runtime. See docs/04-ui-design.md. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+a{color:#121117}a:hover{color:#ad1457}
+</style>
+</head>
+<body>
+<div style="min-height: 1420px; overflow-x: hidden; background: #ffffff; color: #121117; font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 24px; display: flex; flex-direction: column;">
+
+  <header style="border-bottom: 1px solid #e4e4eb;">
+    <div style="max-width: 1120px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+      <a href="08-desktop-catalog.html" style="font-weight: 800; font-size: 24px; line-height: 30px; letter-spacing: -0.02em; color: #121117; text-decoration: none;">Cupcake Store</a>
+      <nav aria-label="Principal" style="display: flex; align-items: center; gap: 8px;">
+        <a href="09-desktop-checkout.html" aria-label="Carrinho, 3 itens" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; border: 1px solid #121117; border-radius: 8px; color: #121117; font-weight: 600; font-size: 15px; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Carrinho<span style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #ff7aac; font-weight: 700; font-size: 12px; line-height: 22px; text-align: center;">3</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main style="width: 100%; max-width: 1120px; margin: 0 auto; padding: 48px 24px 64px; display: flex; flex-direction: column; gap: 28px;">
+    <a href="05-my-order.html" aria-label="Seu pedido CUP-7K3Q9F, aguardando retirada" style="display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 16px; border-radius: 8px; background: #f4f4f6; color: #121117; text-decoration: none; max-width: 480px;">
+      <span style="flex: 1; min-width: 0; display: flex; flex-direction: column;"><span style="font-size: 13px; line-height: 18px; color: #5c5b6b;">Seu pedido</span><span style="font-weight: 700; font-size: 16px; line-height: 22px; letter-spacing: 0.03em; font-variant-numeric: tabular-nums;">CUP-7K3Q9F</span></span>
+      <span style="flex: none; display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 8px; background: #e3ebff; color: #1f4fd1; font-weight: 600; font-size: 12px;">Aguardando retirada</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none;"><path d="m9 18 6-6-6-6"></path></svg>
+    </a>
+
+    <div role="toolbar" aria-label="Filtrar cupcakes" style="display: flex; flex-wrap: wrap; gap: 8px;">
+      <a href="08-desktop-catalog.html" aria-pressed="true" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #121117; background: #121117; color: #ffffff; font-weight: 600; font-size: 14px; text-decoration: none;">Todos</a>
+      <a href="08-desktop-catalog.html" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #8f8e9e; color: #121117; font-weight: 600; font-size: 14px; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>Mais vendidos</a>
+      <a href="08-desktop-catalog.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #8f8e9e; color: #121117; font-weight: 600; font-size: 14px; text-decoration: none;">Clássicos</a>
+      <a href="08-desktop-catalog.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #8f8e9e; color: #121117; font-weight: 600; font-size: 14px; text-decoration: none;">Chocolate</a>
+      <a href="08-desktop-catalog.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #8f8e9e; color: #121117; font-weight: 600; font-size: 14px; text-decoration: none;">Frutados</a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px 24px;">
+      <article style="display: flex; flex-direction: column; gap: 14px; min-width: 0;">
+        <div style="position: relative; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #f4f4f6;"><img src="../assets/photos/birthday-vanilla.jpg" alt="Cupcake de baunilha com confeitos coloridos" style="width: 100%; height: 100%; object-fit: cover; display: block;"><span style="position: absolute; top: 12px; left: 12px; display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 8px; background: #ffffff; font-weight: 600; font-size: 12px;">Mais vendido</span><div role="group" aria-label="Quantidade de Birthday Vanilla" style="position: absolute; right: 12px; bottom: 12px; display: inline-flex; align-items: center; height: 44px; border-radius: 8px; background: #ffffff;"><button type="button" aria-label="Diminuir" style="width: 40px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 8px; background: transparent;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><output style="min-width: 24px; text-align: center; font-weight: 600;">1</output><button type="button" aria-label="Aumentar" style="width: 40px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 8px; background: transparent;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button></div></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;"><h2 style="margin: 0; font-weight: 700; font-size: 18px; line-height: 24px;">Birthday Vanilla</h2><span style="font-weight: 600; font-variant-numeric: tabular-nums;">R$ 9,90</span><p style="margin: 0; font-size: 14px; line-height: 20px; color: #5c5b6b;">Baunilha · confeitos</p></div>
+      </article>
+      <article style="display: flex; flex-direction: column; gap: 14px; min-width: 0;">
+        <div style="position: relative; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #f4f4f6;"><img src="../assets/photos/chocolate-crush.jpg" alt="Cupcake de chocolate com cobertura de chocolate" style="width: 100%; height: 100%; object-fit: cover; display: block;"><span style="position: absolute; top: 12px; left: 12px; display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 8px; background: #ffffff; font-weight: 600; font-size: 12px;">Mais vendido</span><div role="group" aria-label="Quantidade de Chocolate Crush" style="position: absolute; right: 12px; bottom: 12px; display: inline-flex; align-items: center; height: 44px; border-radius: 8px; background: #ffffff;"><button type="button" aria-label="Diminuir" style="width: 40px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 8px; background: transparent;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><output style="min-width: 24px; text-align: center; font-weight: 600;">2</output><button type="button" aria-label="Aumentar" style="width: 40px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 8px; background: transparent;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button></div></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;"><h2 style="margin: 0; font-weight: 700; font-size: 18px; line-height: 24px;">Chocolate Crush</h2><span style="font-weight: 600; font-variant-numeric: tabular-nums;">R$ 11,90</span><p style="margin: 0; font-size: 14px; line-height: 20px; color: #5c5b6b;">Chocolate · ganache</p></div>
+      </article>
+      <article style="display: flex; flex-direction: column; gap: 14px; min-width: 0;">
+        <div style="position: relative; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #f4f4f6;"><img src="../assets/photos/strawberry-kiss.jpg" alt="Cupcake rosa com morango" style="width: 100%; height: 100%; object-fit: cover; display: block;"><span style="position: absolute; top: 12px; left: 12px; display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 8px; background: #ffffff; font-weight: 600; font-size: 12px;">Mais vendido</span><button type="button" aria-label="Adicionar Strawberry Kiss" style="position: absolute; right: 12px; bottom: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 8px; background: #ffffff;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;"><h2 style="margin: 0; font-weight: 700; font-size: 18px; line-height: 24px;">Strawberry Kiss</h2><span style="font-weight: 600; font-variant-numeric: tabular-nums;">R$ 11,90</span><p style="margin: 0; font-size: 14px; line-height: 20px; color: #5c5b6b;">Morango · creme rosa</p></div>
+      </article>
+      <article style="display: flex; flex-direction: column; gap: 14px; min-width: 0;">
+        <div style="position: relative; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #f4f4f6;"><img src="../assets/photos/red-velvet-classic.jpg" alt="Cupcake red velvet com cream cheese" style="width: 100%; height: 100%; object-fit: cover; display: block;"><button type="button" aria-label="Adicionar Red Velvet Classic" style="position: absolute; right: 12px; bottom: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 8px; background: #ffffff;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;"><h2 style="margin: 0; font-weight: 700; font-size: 18px; line-height: 24px;">Red Velvet Classic</h2><span style="font-weight: 600; font-variant-numeric: tabular-nums;">R$ 12,90</span><p style="margin: 0; font-size: 14px; line-height: 20px; color: #5c5b6b;">Cacau · cream cheese</p></div>
+      </article>
+      <article style="display: flex; flex-direction: column; gap: 14px; min-width: 0;">
+        <div style="position: relative; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #f4f4f6;"><img src="../assets/photos/cookies-and-cream.jpg" alt="Cupcake de chocolate com creme de biscoito" style="width: 100%; height: 100%; object-fit: cover; display: block;"><button type="button" aria-label="Adicionar Cookies &amp; Cream" style="position: absolute; right: 12px; bottom: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 8px; background: #ffffff;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;"><h2 style="margin: 0; font-weight: 700; font-size: 18px; line-height: 24px;">Cookies &amp; Cream</h2><div style="display: flex; align-items: center; justify-content: space-between;"><span style="font-weight: 600; font-variant-numeric: tabular-nums;">R$ 12,90</span><span style="display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 8px; background: #fff0c7; color: #7a4e00; font-weight: 600; font-size: 12px;">Restam 3</span></div><p style="margin: 0; font-size: 14px; line-height: 20px; color: #5c5b6b;">Biscoito · creme</p></div>
+      </article>
+      <article style="display: flex; flex-direction: column; gap: 14px; min-width: 0;">
+        <div style="position: relative; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #f4f4f6;"><img src="../assets/photos/lemon-cream.jpg" alt="Cupcake de limão" style="width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.5; filter: grayscale(0.7);"></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;"><h2 style="margin: 0; font-weight: 700; font-size: 18px; line-height: 24px; color: #5c5b6b;">Lemon Cream</h2><div style="display: flex; align-items: center; justify-content: space-between;"><span style="font-weight: 600; color: #5c5b6b; font-variant-numeric: tabular-nums;">R$ 11,90</span><span style="display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 8px; background: #fde4e2; color: #b42318; font-weight: 600; font-size: 12px;">Esgotado</span></div><p style="margin: 0; font-size: 14px; line-height: 20px; color: #5c5b6b;">Limão siciliano · creme</p></div>
+      </article>
+    </div>
+  </main>
+
+  <footer style="margin-top: auto; background: #f4f4f6;">
+    <div style="max-width: 1120px; margin: 0 auto; padding: 32px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; font-size: 14px; line-height: 20px;">
+      <strong style="font-weight: 800; font-size: 18px; letter-spacing: -0.01em;">Cupcake Store</strong>
+      <span style="display: inline-flex; gap: 8px; align-items: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>Rua das Flores, 123 · Centro · São Paulo, SP</span>
+      <span style="display: inline-flex; gap: 8px; align-items: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Ter a dom, 10h às 19h</span>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

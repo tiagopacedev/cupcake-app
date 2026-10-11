@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="1677px" preserveAspectRatio="none" style="width:2332px;height:1677px;background:#FFFFFF;" version="1.1" viewBox="0 0 2332 1677" width="2332px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="26.9395" id="_title" rx="5" ry="5" style="stroke:none;stroke-width:1.0;" width="413" x="952.75" y="5"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="403" x="957.75" y="23.5625">Cupcake App · MVC Package Diagram (logical architecture)</text><!--MD5=[06afcc9fae8594d7dd7d542d3a71c334]
+cluster WEB--><g id="cluster_WEB"><rect fill="#FFFCFD" height="415" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.0;" width="1629" x="7" y="44.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="167" x="738" y="59.5332">apps/web (Next.js) · VIEW</text></g><!--MD5=[404b349d9657336530e1fa777da53ee0]
+cluster WPages--><g id="cluster_WPages"><rect fill="#FFFCFD" height="301" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.0;" width="419" x="47" y="102.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="93" x="210" y="117.5332">pages (routes)</text></g><!--MD5=[dadf3a88f0d1b3206057dedf111690f2]
+cluster WComp--><g id="cluster_WComp"><rect fill="#FFFCFD" height="159" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.0;" width="373" x="506" y="260.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="80" x="652.5" y="275.5332">components</text></g><!--MD5=[e66f03871cca65475dca024968a2528e]
+cluster WLib--><g id="cluster_WLib"><rect fill="#FFFCFD" height="127" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.0;" width="669" x="919" y="276.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="16" x="1245.5" y="291.5332">lib</text></g><!--MD5=[fac864e77539af95038f0151207ed802]
+cluster API--><g id="cluster_API"><rect fill="#FFFCFD" height="876" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.0;" width="896" x="773" y="524.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="114" x="1164" y="539.5332">apps/api (Fastify)</text></g><!--MD5=[6d975ff341ba8838095dabf4f0549e77]
+cluster R--><g id="cluster_R"><rect fill="#FFFCFD" height="112" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.0;" width="356" x="1245" y="582.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="106" x="1370" y="597.5332">routes · ROUTER</text></g><!--MD5=[e96b8e61a3664e46d909620f6fa76336]
+cluster CT--><g id="cluster_CT"><rect fill="#FFFCFD" height="112" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.0;" width="390" x="1217" y="751.4395"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="169" x="1327.5" y="766.0332">controllers · CONTROLLER</text></g><!--MD5=[d49622069896581d394c2cf2b2b21fd8]
+cluster SV--><g id="cluster_SV"><rect fill="#FFFCFD" height="265" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.0;" width="402" x="1219" y="919.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="216" x="1312" y="934.5332">services · MODEL (business rules)</text></g><!--MD5=[a08a316836c7256bfe04002c1e6caa87]
+cluster RP--><g id="cluster_RP"><rect fill="#FFFCFD" height="127" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.0;" width="808" x="813" y="1233.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="222" x="1106" y="1248.5332">repositories · MODEL (persistence)</text></g><!--MD5=[9db7800afa763c48c38192ea47b4631b]
+cluster DBP--><g id="cluster_DBP"><rect fill="#FFFCFD" height="111" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.0;" width="198" x="722" y="1457.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="128" x="757" y="1472.5332">packages/database</text></g><!--MD5=[6510ca47e5d8b57dacda890ac943d682]
+cluster SH--><g id="cluster_SH"><rect fill="#FFFCFD" height="127" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.0;" width="325" x="1709" y="743.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="112" x="1815.5" y="758.5332">packages/shared</text></g><!--MD5=[a24ab22cd0721cba63912cb1a2e0552a]
+entity P1--><g id="elem_P1"><rect fill="#F1F1F1" height="61.459" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="118" x="78" y="144.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="176" y="149.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="174" y="151.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="174" y="155.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="78" x="93" y="177.5332">CatalogPage</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="45" x="93" y="193.2627">SCR-01</text></g><!--MD5=[363690bfff83d946e49026b48e74bf54]
+entity P2--><g id="elem_P2"><rect fill="#F1F1F1" height="61.459" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="97" x="231.5" y="144.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="308.5" y="149.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="306.5" y="151.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="306.5" y="155.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="57" x="246.5" y="177.5332">CartPage</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="48" x="246.5" y="193.2627">SCR-02</text></g><!--MD5=[47a5e7479422b5a6b23a6cd00dae509e]
+entity P3--><g id="elem_P3"><rect fill="#F1F1F1" height="61.459" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="131" x="71.5" y="318.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="182.5" y="323.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="180.5" y="325.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="180.5" y="329.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="91" x="86.5" y="351.5332">CheckoutPage</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="48" x="86.5" y="367.2627">SCR-03</text></g><!--MD5=[d2748a5c4de8c760fa6b1c475e1f3d6e]
+entity P4--><g id="elem_P4"><rect fill="#F1F1F1" height="61.459" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="196" x="238" y="318.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="414" y="323.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="412" y="325.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="412" y="329.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="156" x="253" y="351.5332">OrderPage (Meu pedido)</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="48" x="253" y="367.2627">SCR-04</text></g><!--MD5=[55b6f7fe569c88e778889e4a7d46dc6f]
+entity C1--><g id="elem_C1"><rect fill="#F1F1F1" height="92.918" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="305" x="549.5" y="302.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="834.5" y="307.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="832.5" y="309.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="832.5" y="313.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="186" x="564.5" y="335.5332">AppHeader, LatestOrderCard,</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="265" x="564.5" y="351.2627">FilterChips, ProductCard, QuantityStepper,</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="235" x="564.5" y="366.9922">CartLine, OrderSummary, OrderCode,</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="224" x="564.5" y="382.7217">StoreInfo, Notice, Toast, EmptyState</text></g><!--MD5=[0313ddc4f8ed0f4991a51edae0b1647c]
+entity AC--><g id="elem_AC"><rect fill="#F1F1F1" height="61.459" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="176" x="1388" y="318.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1544" y="323.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1542" y="325.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1542" y="329.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="54" x="1403" y="351.5332">apiClient</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="136" x="1403" y="367.2627">(typed from OpenAPI)</text></g><!--MD5=[c3d963de545692ce062b829afe2e18c4]
+entity CS--><g id="elem_CS"><rect fill="#F1F1F1" height="61.459" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="194" x="1159" y="318.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1333" y="323.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1331" y="325.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1331" y="329.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="154" x="1174" y="351.5332">cartStore, lastOrderStore</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="86" x="1174" y="367.2627">(localStorage)</text></g><!--MD5=[5da16e94968f5292e8ddefe4d9a83c13]
+entity FMT--><g id="elem_FMT"><rect fill="#F1F1F1" height="45.7295" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="161" x="962.5" y="326.4395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1103.5" y="331.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1101.5" y="333.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1101.5" y="337.4395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="121" x="977.5" y="359.0332">format (pt-BR, BRL)</text></g><!--MD5=[938ead9c671cde8e0813fee3e0ff0b93]
+entity ERR--><g id="elem_ERR"><rect fill="#F1F1F1" height="61.459" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="211" x="857.5" y="1091.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1048.5" y="1096.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1046.5" y="1098.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1046.5" y="1102.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="38" x="872.5" y="1124.5332">errors</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="171" x="872.5" y="1140.2627">(AppError + global handler)</text></g><!--MD5=[423859321b02fb764742e96c7e691a59]
+entity R1--><g id="elem_R1"><rect fill="#F1F1F1" height="45.7295" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="128" x="1288" y="624.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1396" y="629.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1394" y="631.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1394" y="635.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="88" x="1303" y="657.5332">catalog.routes</text></g><!--MD5=[fdba6e7774e828d7bdf93a3c3efba6ce]
+entity R2--><g id="elem_R2"><rect fill="#F1F1F1" height="45.7295" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="125" x="1451.5" y="624.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1556.5" y="629.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1554.5" y="631.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1554.5" y="635.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="85" x="1466.5" y="657.5332">orders.routes</text></g><!--MD5=[36dc586d67e0f1d076b0ce70c9875d3e]
+entity CC--><g id="elem_CC"><rect fill="#F1F1F1" height="45.7295" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="149" x="1260.5" y="793.4395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1389.5" y="798.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1387.5" y="800.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1387.5" y="804.4395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="109" x="1275.5" y="826.0332">CatalogController</text></g><!--MD5=[a46c1622ac9a4e2815def09cb506a25d]
+entity OC--><g id="elem_OC"><rect fill="#F1F1F1" height="45.7295" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="138" x="1445" y="793.4395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1563" y="798.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1561" y="800.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1561" y="804.4395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="98" x="1460" y="826.0332">OrderController</text></g><!--MD5=[1194ee1088c4a1f787c0b58111daa5b9]
+entity CSV--><g id="elem_CSV"><rect fill="#F1F1F1" height="45.7295" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="133" x="1262.5" y="969.4395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1375.5" y="974.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1373.5" y="976.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1373.5" y="980.4395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="93" x="1277.5" y="1002.0332">CatalogService</text></g><!--MD5=[cfe62683cb61becda573fcf5c63120f7]
+entity OSV--><g id="elem_OSV"><rect fill="#F1F1F1" height="61.459" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="167" x="1430.5" y="961.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1577.5" y="966.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1575.5" y="968.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1575.5" y="972.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="82" x="1445.5" y="994.5332">OrderService</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="127" x="1445.5" y="1010.2627">(create, getByCode)</text></g><!--MD5=[2bcc424f5696fff84e4fc079b65edf34]
+entity SSV--><g id="elem_SSV"><rect fill="#F1F1F1" height="61.459" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="120" x="1252" y="1091.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1352" y="1096.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1350" y="1098.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1350" y="1102.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="80" x="1267" y="1124.5332">StockService</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="51" x="1267" y="1140.2627">(UC-07)</text></g><!--MD5=[2351bbbb3f6d0a84cf05e128b2a0f454]
+entity UT--><g id="elem_UT"><rect fill="#F1F1F1" height="77.1885" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="189" x="1407.5" y="1083.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1576.5" y="1088.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1574.5" y="1090.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1574.5" y="1094.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="149" x="1422.5" y="1116.5332">orderCode, phone utils,</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="138" x="1422.5" y="1132.2627">store config (address,</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="137" x="1422.5" y="1147.9922">hours, ready minutes)</text></g><!--MD5=[38ef18a94f639c07b4f0e7390b96b50b]
+entity PR--><g id="elem_PR"><rect fill="#F1F1F1" height="45.7295" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="154" x="1266" y="1283.4395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1400" y="1288.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1398" y="1290.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1398" y="1294.4395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="114" x="1281" y="1316.0332">ProductRepository</text></g><!--MD5=[eededf54308d81e7e31ccb1d80761058]
+entity CR--><g id="elem_CR"><rect fill="#F1F1F1" height="61.459" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="172" x="856" y="1275.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1008" y="1280.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1006" y="1282.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1006" y="1286.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="132" x="871" y="1308.5332">CategoryRepository /</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="89" x="871" y="1324.2627">TagRepository</text></g><!--MD5=[58af7c812558edf471c42c8b4144eb60]
+entity CUR--><g id="elem_CUR"><rect fill="#F1F1F1" height="45.7295" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="167" x="1063.5" y="1283.4395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1210.5" y="1288.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1208.5" y="1290.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1208.5" y="1294.4395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="127" x="1078.5" y="1316.0332">CustomerRepository</text></g><!--MD5=[b09b8d8a80e91aadad20eb2cc89b8c8d]
+entity OR--><g id="elem_OR"><rect fill="#F1F1F1" height="45.7295" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="142" x="1455" y="1283.4395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1577" y="1288.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1575" y="1290.4395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1575" y="1294.4395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="102" x="1470" y="1316.0332">OrderRepository</text></g><!--MD5=[7842cb4300efb401920d8f72ebe921e6]
+entity PS--><g id="elem_PS"><rect fill="#F1F1F1" height="61.459" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="165" x="738.5" y="1491.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="883.5" y="1496.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="881.5" y="1498.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="881.5" y="1502.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="93" x="753.5" y="1524.5332">Prisma schema</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="125" x="753.5" y="1540.2627">+ migrations + seed</text></g><!--MD5=[2d6e56821ec5eb47b1d8edf662e7ea78]
+entity SHV--><g id="elem_SHV"><rect fill="#F1F1F1" height="61.459" rx="5" ry="5" style="stroke:#181818;stroke-width:0.5;" width="257" x="1752.5" y="785.9395"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1989.5" y="790.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1987.5" y="792.9395"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1987.5" y="796.9395"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="217" x="1767.5" y="818.5332">zod schemas (BR-14), error codes,</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="152" x="1767.5" y="834.2627">store config, phone utils</text></g><!--MD5=[f6b3c4ec609d704a8f29c3992fcc8101]
+entity PG--><g id="elem_PG"><path d="M774.5,1625.9395 C774.5,1615.9395 821,1615.9395 821,1615.9395 C821,1615.9395 867.5,1615.9395 867.5,1625.9395 L867.5,1650.6689 C867.5,1660.6689 821,1660.6689 821,1660.6689 C821,1660.6689 774.5,1660.6689 774.5,1650.6689 L774.5,1625.9395 " fill="#E8F0F7" style="stroke:#3F6A8A;stroke-width:0.5;"/><path d="M774.5,1625.9395 C774.5,1635.9395 821,1635.9395 821,1635.9395 C821,1635.9395 867.5,1635.9395 867.5,1625.9395 " fill="none" style="stroke:#3F6A8A;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="73" x="784.5" y="1652.5332">PostgreSQL</text></g><g id="elem_GMN57"><path d="M2058.5,792.9395 L2058.5,840.1279 A5,5 0 0 0 2063.5,845.1279 L2320.5,845.1279 A5,5 0 0 0 2325.5,840.1279 L2325.5,797.9395 L2315.5,787.9395 L2063.5,787.9395 A5,5 0 0 0 2058.5,792.9395 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><path d="M2315.5,787.9395 L2315.5,795.4395 A2.5,2.5 0 0 0 2318,797.9395 L2325.5,797.9395 L2315.5,787.9395 " fill="#FFF1D6" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="215" x="2064.5" y="805.5332">Controllers: validate input, call one</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="212" x="2064.5" y="821.2627">service, map result/error to HTTP.</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="246" x="2064.5" y="836.9922">No business logic, no database access.</text></g><g id="elem_GMN60"><path d="M1693,968.9395 L1693,1016.1279 A5,5 0 0 0 1698,1021.1279 L1938,1021.1279 A5,5 0 0 0 1943,1016.1279 L1943,973.9395 L1933,963.9395 L1698,963.9395 A5,5 0 0 0 1693,968.9395 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><path d="M1933,963.9395 L1933,971.4395 A2.5,2.5 0 0 0 1935.5,973.9395 L1943,973.9395 L1933,963.9395 " fill="#FFF1D6" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="175" x="1699" y="981.5332">Services hold BR-01…BR-19.</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="216" x="1699" y="997.2627">Order creation (stock decrement +</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="229" x="1699" y="1012.9922">order insert) runs in one transaction.</text></g><!--MD5=[a9cc09e41c40ccbb3e729f1fae5f7ad1]
+link WPages to WComp--><g id="link_WPages_WComp"><path d="M466.0568,221.2056 C466.3471,222.2316 466.6411,223.2588 466.9385,224.2868 C467.5333,226.3429 468.1418,228.4021 468.7624,230.462 C471.245,238.7016 473.9216,246.9515 476.6889,255.0466 C482.2234,271.237 488.1206,286.8082 493.5538,300.4395 C496.2703,307.2551 498.8709,313.5857 501.2521,319.2662 C502.4426,322.1065 503.5784,324.7842 504.6464,327.2787 C504.9134,327.9024 505.1762,328.5146 505.4345,329.115 C505.5637,329.4152 505.6917,329.7125 505.8186,330.0068 C505.8504,330.0803 505.882,330.1537 505.9136,330.2269 " fill="none" id="WPages-to-WComp" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="505.9136,330.2269,506.0202,320.3786,503.9325,325.6361,498.675,323.5484,505.9136,330.2269" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[3f7a28aea19df19bb524a61fbcacf1e8]
+link WPages to WLib--><g id="link_WPages_WLib"><path d="M466.0846,209.4908 C466.3719,209.7173 466.6621,209.9417 466.9552,210.1642 C467.5415,210.6091 468.1395,211.0459 468.7491,211.4749 C471.1873,213.1907 473.8101,214.7798 476.6054,216.2502 C482.1961,219.1911 488.477,221.6573 495.3525,223.713 C509.1035,227.8246 525.2326,230.2945 542.9739,231.6363 C578.4566,234.3201 620.3881,232.492 662.6413,230.262 C747.1475,225.802 832.94,219.7345 871,244.9395 C892.46,259.1545 906.3625,284.4495 914.9475,306.4745 C916.0206,309.2276 917.0107,311.9296 917.922,314.5525 C918.1498,315.2082 918.3727,315.859 918.5908,316.5044 C918.6998,316.8271 918.8076,317.1485 918.9143,317.4684 " fill="none" id="WPages-to-WLib" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="918.9143,317.4684,919.864,307.6655,917.3336,312.7249,912.2742,310.1945,918.9143,317.4684" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[9a947d5e7c52e5eb59a1c5cb604ccc33]
+link AC to R--><g id="link_AC_R"><path d="M1458.1,380.1595 C1439.6,408.5195 1408.22,450.5895 1371,475.9395 C1332.67,502.0495 1301.63,473.2595 1272,508.9395 C1262.2675,520.662 1256.1744,534.9726 1252.5189,549.8874 C1250.6912,557.3448 1249.4729,564.9533 1248.7137,572.4649 C1248.524,574.3427 1248.3629,576.2146 1248.2281,578.0765 C1248.1608,579.0074 1248.1,579.9359 1248.0455,580.8614 C1248.0183,581.3241 1247.9926,581.7861 1247.9685,582.2473 C1247.9564,582.4779 1247.9447,582.7083 1247.9334,582.9385 " fill="none" id="AC-to-R" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1247.9334,582.9385,1252.3699,574.1455,1248.1786,577.9445,1244.3796,573.7532,1247.9334,582.9385" style="stroke:#5B4A50;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="90" x="1356" y="497.5332">HTTPS / JSON</text></g><!--MD5=[f0008d185350c28827e0a130ca0b32e2]
+link R1 to CC--><g id="link_R1_CC"><path d="M1349.74,671.0495 C1346.66,701.2795 1341.12,755.4695 1337.78,788.1795 " fill="none" id="R1-to-CC" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1337.27,793.2395,1342.1481,784.6835,1337.7689,788.2644,1334.188,783.8852,1337.27,793.2395" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[7ff3b93f2cff783490b57725d900a12c]
+link R2 to OC--><g id="link_R2_OC"><path d="M1514,671.0495 C1514,701.2795 1514,755.4695 1514,788.1795 " fill="none" id="R2-to-OC" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1514,793.2395,1518,784.2395,1514,788.2395,1510,784.2395,1514,793.2395" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[91dc16410f5846f4a86e4ec4cae0ec52]
+link CC to CSV--><g id="link_CC_CSV"><path d="M1334.24,839.4795 C1333.15,871.1595 1331.13,929.5495 1329.95,963.9895 " fill="none" id="CC-to-CSV" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1329.76,969.3095,1334.0669,960.4522,1329.9318,964.3124,1326.0716,960.1773,1329.76,969.3095" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[68e1e373586f5fb86f136a3aa6607d90]
+link OC to OSV--><g id="link_OC_OSV"><path d="M1514,839.4795 C1514,869.0195 1514,921.7995 1514,956.7195 " fill="none" id="OC-to-OSV" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1514,961.7295,1518,952.7295,1514,956.7295,1510,952.7295,1514,961.7295" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[1351e5ec4eef45a82665786426771d41]
+link OSV to SSV--><g id="link_OSV_SSV"><path d="M1467.4,1022.9695 C1436.18,1042.7495 1395.07,1068.7995 1362.98,1089.1395 " fill="none" id="OSV-to-SSV" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1358.71,1091.8395,1368.453,1090.3993,1362.933,1089.1625,1364.1699,1083.6425,1358.71,1091.8395" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[37a1a3396f80662e4a2f0d870c7133de]
+link OSV to UT--><g id="link_OSV_UT"><path d="M1511.22,1023.1295 C1509.67,1039.5995 1507.72,1060.3795 1506.02,1078.5795 " fill="none" id="OSV-to-UT" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1505.54,1083.6395,1510.3718,1075.0573,1506.012,1078.6618,1502.4075,1074.302,1505.54,1083.6395" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[2e8e613ce4262ebc85540529fce1bdca]
+link CSV to PR--><g id="link_CSV_PR"><path d="M1277.41,1015.5895 C1249.62,1030.5095 1217.87,1053.1395 1202,1083.9395 C1178.18,1130.1595 1172.28,1158.2695 1202,1200.9395 C1214.46,1218.8195 1229.41,1206.5595 1248,1217.9395 C1275.61,1234.8395 1302.3,1260.5095 1320.32,1279.6795 " fill="none" id="CSV-to-PR" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1323.8,1283.4195,1320.6015,1274.1044,1320.3956,1279.7575,1314.7424,1279.5515,1323.8,1283.4195" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[ed5d7f02655d8df182e4d174d163e6c1]
+link CSV to CR--><g id="link_CSV_CR"><path d="M1278.97,1015.4495 C1227.33,1038.5295 1152.93,1072.9495 1143,1083.9395 C1105.85,1125.0395 1140.09,1162.6995 1100,1200.9395 C1081.79,1218.3095 1068.05,1205.8295 1046,1217.9395 C1019.82,1232.3195 994.11,1253.8595 974.8,1271.9795 " fill="none" id="CSV-to-CR" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="971.03,1275.5495,980.3185,1272.2747,974.6639,1272.1151,974.8235,1266.4605,971.03,1275.5495" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[be23975e6fa01a54b983242624a4a026]
+link OSV to CUR--><g id="link_OSV_CUR"><path d="M1430.24,1017.9595 C1424.41,1019.6495 1418.62,1021.3195 1413,1022.9395 C1319.18,1049.9195 1269.5,1013.4195 1202,1083.9395 C1150.56,1137.6795 1144.99,1231.7495 1145.67,1278.0695 " fill="none" id="OSV-to-CUR" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1145.78,1283.2095,1149.5992,1274.1313,1145.68,1278.2105,1141.6008,1274.2912,1145.78,1283.2095" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[218ec6308932afe12af7f703af69c1ba]
+link OSV to OR--><g id="link_OSV_OR"><path d="M1430.49,1017.9295 C1350.5,1041.7795 1241.04,1075.6195 1235,1083.9395 C1204.42,1125.9995 1199.8,1162.6695 1235,1200.9395 C1265.65,1234.2595 1396.91,1198.9395 1438,1217.9395 C1466.97,1231.3295 1491.87,1258.5195 1507.72,1279.0595 " fill="none" id="OSV-to-OR" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1510.77,1283.0695,1508.5098,1273.4835,1507.7449,1279.0884,1502.14,1278.3235,1510.77,1283.0695" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[6797c5f979df363c0934a44d49f91e2d]
+link SSV to PR--><g id="link_SSV_PR"><path d="M1317.05,1153.0895 C1322.95,1187.6995 1332.62,1244.4695 1338.34,1278.0695 " fill="none" id="SSV-to-PR" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1339.22,1283.2595,1341.6457,1273.714,1338.3772,1278.331,1333.7601,1275.0625,1339.22,1283.2595" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[9b0dc70279df0195fc8487be46c24924]
+link RP to PS--><g id="link_RP_PS"><path d="M821,1361.5118 C821,1362.0486 821,1362.5877 821,1363.1291 C821,1367.4602 821,1371.9384 821,1376.5232 C821,1413.202 821,1456.7095 821,1486.4195 " fill="none" id="RP-to-PS" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="821,1491.6395,825,1482.6395,821,1486.6395,817,1482.6395,821,1491.6395" style="stroke:#5B4A50;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="81" x="822" y="1438.5332">Prisma Client</text></g><!--MD5=[1f40099b1ed9ea268c25d69cffd12d70]
+link PS to PG--><g id="link_PS_PG"><path d="M821,1553.0895 C821,1570.9095 821,1593.3995 821,1610.6695 " fill="none" id="PS-to-PG" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="821,1615.8595,825,1606.8595,821,1610.8595,817,1606.8595,821,1615.8595" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[6c44a8ffe35f275db7e5e0f8ce2a5d17]
+link CT to ERR--><g id="link_CT_ERR"><path d="M1216.7939,826.9626 C1211.9205,832.6172 1205.0576,840.5802 1196.7008,850.2766 C1179.9872,869.6695 1157.2981,895.9957 1132.5987,924.6545 C1083.2,981.972 1025.76,1048.6195 992,1087.7895 " fill="none" id="CT-to-ERR" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="988.47,1091.8895,997.3733,1087.6786,991.7322,1088.1002,991.3105,1082.4591,988.47,1091.8895" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[ca4117539b2c24f00c44167a3a327513]
+link SV to ERR--><g id="link_SV_ERR"><path d="M1218.9086,1027.1932 C1218.7577,1027.3407 1218.6069,1027.4871 1218.4561,1027.6325 C1218.1546,1027.9232 1217.8534,1028.2096 1217.5524,1028.4917 C1216.9505,1029.0559 1216.3495,1029.603 1215.7494,1030.1336 C1213.3492,1032.2558 1210.9635,1034.1127 1208.586,1035.7359 C1203.8309,1038.9821 1199.1083,1041.2932 1194.3672,1042.9213 C1184.885,1046.1776 1175.3288,1046.702 1165.29,1046.512 C1145.2125,1046.132 1123.205,1042.8945 1096,1052.9395 C1069.39,1062.7695 1041.28,1076.6795 1017.79,1089.3995 " fill="none" id="SV-to-ERR" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1013.15,1091.9295,1022.9654,1091.1179,1017.5362,1089.5292,1019.1249,1084.1,1013.15,1091.9295" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[fa2c395d075393f3ee791cf5952c73fe]
+link WEB to SH--><g id="link_WEB_SH"><path d="M1636.0306,229.0572 C1636.1448,229.8103 1636.26,230.57 1636.3761,231.3362 C1636.6084,232.8686 1636.8444,234.4269 1637.0842,236.0104 C1637.5637,239.1773 1638.0579,242.4448 1638.5658,245.8063 C1640.5975,259.2527 1642.8481,274.2048 1645.25,290.2507 C1654.8575,354.4345 1666.885,436.1195 1677,508.9395 C1686.305,575.9095 1696.14,651.2045 1703.7287,710.407 C1705.6259,725.2076 1707.3827,739.0024 1708.9558,751.41 " fill="none" id="WEB-to-SH" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1708.9558,751.41,1711.792,741.9783,1708.3269,746.4497,1703.8556,742.9845,1708.9558,751.41" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[1b83ffa9905e6e4c8d8815c219a2609b]
+link API to SH--><g id="link_API_SH"><path d="M1669.0643,672.9144 C1669.1414,673.1436 1669.2189,673.3741 1669.2968,673.6058 C1669.6085,674.5325 1669.9269,675.4789 1670.2514,676.4438 C1675.4441,691.882 1682.2281,712.052 1689.0113,732.2195 C1695.7944,752.387 1702.5766,772.552 1707.7655,787.9801 C1708.0898,788.9443 1708.4079,789.8901 1708.7193,790.8162 C1708.7972,791.0477 1708.8747,791.278 1708.9517,791.5071 " fill="none" id="API-to-SH" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="1708.9517,791.5071,1709.874,781.7015,1707.3578,786.7679,1702.2914,784.2517,1708.9517,791.5071" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[1948cfbb113903a1b45dbcc1de577608]
+link CT to GMN57--><g id="link_CT_GMN57"><path d="M1232.6219,751.1349 C1232.672,750.9932 1232.7224,750.8516 1232.7732,750.7101 C1232.8746,750.4271 1232.9772,750.1445 1233.0811,749.8624 C1233.4966,748.7339 1233.9318,747.6126 1234.3875,746.5007 C1235.299,744.2769 1236.2926,742.0903 1237.3754,739.9576 C1239.5411,735.6921 1242.0638,731.642 1245,727.9395 C1250.37,721.1595 1254.07,721.3795 1262.5,719.4395 C1302.89,710.1495 1968.11,710.1495 2008.5,719.4395 C2062.05,731.7595 2116.92,763.8195 2152.53,787.7395 " fill="none" id="CT-GMN57" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/></g><!--MD5=[14fbbe4f007cb09c99fad2d4868c5039]
+link SV to GMN60--><g id="link_SV_GMN60"><path d="M1230.6242,919.8464 C1230.6481,919.7206 1230.6721,919.5952 1230.6962,919.4702 C1230.7445,919.2202 1230.7933,918.9719 1230.8427,918.7254 C1230.9416,918.2323 1231.0428,917.7461 1231.1464,917.2673 C1231.5607,915.352 1232.0133,913.5543 1232.5076,911.9015 C1233.4961,908.5959 1234.6513,905.8695 1236,903.9395 C1240.95,896.8495 1245.07,897.3795 1253.5,895.4395 C1290.53,886.9195 1558.3,887.6795 1595.5,895.4395 C1658.2,908.5095 1724.89,940.2595 1768.72,963.8895 " fill="none" id="SV-GMN60" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/></g><!--MD5=[694b2800e8605290adaf34440ef4d5c0]
+@startuml package-diagram
+!include ../_style.iuml
+title Cupcake App · MVC Package Diagram (logical architecture)
+skinparam packageStyle rectangle
+
+package "apps/web (Next.js) · VIEW" as WEB {
+  package "pages (routes)" as WPages {
+    [CatalogPage\nSCR-01] as P1
+    [CartPage\nSCR-02] as P2
+    [CheckoutPage\nSCR-03] as P3
+    [OrderPage (Meu pedido)\nSCR-04] as P4
+  }
+  package "components" as WComp {
+    [AppHeader, LatestOrderCard,\nFilterChips, ProductCard, QuantityStepper,\nCartLine, OrderSummary, OrderCode,\nStoreInfo, Notice, Toast, EmptyState] as C1
+  }
+  package "lib" as WLib {
+    [apiClient\n(typed from OpenAPI)] as AC
+    [cartStore, lastOrderStore\n(localStorage)] as CS
+    [format (pt-BR, BRL)] as FMT
+  }
+}
+
+package "apps/api (Fastify)" as API {
+  package "routes · ROUTER" as R {
+    [catalog.routes] as R1
+    [orders.routes] as R2
+  }
+  package "controllers · CONTROLLER" as CT {
+    [CatalogController] as CC
+    [OrderController] as OC
+  }
+  package "services · MODEL (business rules)" as SV {
+    [CatalogService] as CSV
+    [OrderService\n(create, getByCode)] as OSV
+    [StockService\n(UC-07)] as SSV
+    [orderCode, phone utils,\nstore config (address,\nhours, ready minutes)] as UT
+  }
+  package "repositories · MODEL (persistence)" as RP {
+    [ProductRepository] as PR
+    [CategoryRepository /\nTagRepository] as CR
+    [CustomerRepository] as CUR
+    [OrderRepository] as OR
+  }
+  [errors\n(AppError + global handler)] as ERR
+}
+
+package "packages/database" as DBP {
+  [Prisma schema\n+ migrations + seed] as PS
+}
+
+package "packages/shared" as SH {
+  [zod schemas (BR-14), error codes,\nstore config, phone utils] as SHV
+}
+
+database "PostgreSQL" as PG
+
+WPages ..> WComp
+WPages ..> WLib
+AC ..> R : HTTPS / JSON
+R1 ..> CC
+R2 ..> OC
+CC ..> CSV
+OC ..> OSV
+OSV ..> SSV
+OSV ..> UT
+CSV ..> PR
+CSV ..> CR
+OSV ..> CUR
+OSV ..> OR
+SSV ..> PR
+RP ..> PS : Prisma Client
+PS ..> PG
+CT ..> ERR
+SV ..> ERR
+WEB ..> SH
+API ..> SH
+
+note right of CT
+  Controllers: validate input, call one
+  service, map result/error to HTTP.
+  No business logic, no database access.
+end note
+note right of SV
+  Services hold BR-01…BR-19.
+  Order creation (stock decrement +
+  order insert) runs in one transaction.
+end note
+@enduml
+
+@startuml package-diagram
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam roundCorner 10
+skinparam ArrowColor #5B4A50
+skinparam BorderColor #8C5B67
+skinparam BackgroundColor #FFFFFF
+skinparam ActorBorderColor #8C5B67
+skinparam ActorBackgroundColor #FDE2E4
+skinparam UsecaseBackgroundColor #FFF6F7
+skinparam UsecaseBorderColor #B5485A
+skinparam ClassBackgroundColor #FFF9FA
+skinparam ClassBorderColor #B5485A
+skinparam ClassHeaderBackgroundColor #FDE2E4
+skinparam PackageBackgroundColor #FFFCFD
+skinparam PackageBorderColor #8C5B67
+skinparam NoteBackgroundColor #FFF1D6
+skinparam NoteBorderColor #B07D1F
+skinparam ParticipantBackgroundColor #FFF6F7
+skinparam ParticipantBorderColor #B5485A
+skinparam DatabaseBackgroundColor #E8F0F7
+skinparam DatabaseBorderColor #3F6A8A
+skinparam SequenceLifeLineBorderColor #B9A5AA
+skinparam SequenceGroupBackgroundColor #FFF1F3
+skinparam ActivityBackgroundColor #FFF6F7
+skinparam ActivityBorderColor #B5485A
+skinparam ActivityDiamondBackgroundColor #FFF1D6
+skinparam ActivityDiamondBorderColor #B07D1F
+skinparam SwimlaneTitleFontStyle bold
+title Cupcake App · MVC Package Diagram (logical architecture)
+skinparam packageStyle rectangle
+
+package "apps/web (Next.js) · VIEW" as WEB {
+  package "pages (routes)" as WPages {
+    [CatalogPage\nSCR-01] as P1
+    [CartPage\nSCR-02] as P2
+    [CheckoutPage\nSCR-03] as P3
+    [OrderPage (Meu pedido)\nSCR-04] as P4
+  }
+  package "components" as WComp {
+    [AppHeader, LatestOrderCard,\nFilterChips, ProductCard, QuantityStepper,\nCartLine, OrderSummary, OrderCode,\nStoreInfo, Notice, Toast, EmptyState] as C1
+  }
+  package "lib" as WLib {
+    [apiClient\n(typed from OpenAPI)] as AC
+    [cartStore, lastOrderStore\n(localStorage)] as CS
+    [format (pt-BR, BRL)] as FMT
+  }
+}
+
+package "apps/api (Fastify)" as API {
+  package "routes · ROUTER" as R {
+    [catalog.routes] as R1
+    [orders.routes] as R2
+  }
+  package "controllers · CONTROLLER" as CT {
+    [CatalogController] as CC
+    [OrderController] as OC
+  }
+  package "services · MODEL (business rules)" as SV {
+    [CatalogService] as CSV
+    [OrderService\n(create, getByCode)] as OSV
+    [StockService\n(UC-07)] as SSV
+    [orderCode, phone utils,\nstore config (address,\nhours, ready minutes)] as UT
+  }
+  package "repositories · MODEL (persistence)" as RP {
+    [ProductRepository] as PR
+    [CategoryRepository /\nTagRepository] as CR
+    [CustomerRepository] as CUR
+    [OrderRepository] as OR
+  }
+  [errors\n(AppError + global handler)] as ERR
+}
+
+package "packages/database" as DBP {
+  [Prisma schema\n+ migrations + seed] as PS
+}
+
+package "packages/shared" as SH {
+  [zod schemas (BR-14), error codes,\nstore config, phone utils] as SHV
+}
+
+database "PostgreSQL" as PG
+
+WPages ..> WComp
+WPages ..> WLib
+AC ..> R : HTTPS / JSON
+R1 ..> CC
+R2 ..> OC
+CC ..> CSV
+OC ..> OSV
+OSV ..> SSV
+OSV ..> UT
+CSV ..> PR
+CSV ..> CR
+OSV ..> CUR
+OSV ..> OR
+SSV ..> PR
+RP ..> PS : Prisma Client
+PS ..> PG
+CT ..> ERR
+SV ..> ERR
+WEB ..> SH
+API ..> SH
+
+note right of CT
+  Controllers: validate input, call one
+  service, map result/error to HTTP.
+  No business logic, no database access.
+end note
+note right of SV
+  Services hold BR-01…BR-19.
+  Order creation (stock decrement +
+  order insert) runs in one transaction.
+end note
+@enduml
+
+PlantUML version 1.2022.12(Sun Oct 23 15:12:26 BRT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

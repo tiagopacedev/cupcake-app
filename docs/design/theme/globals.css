@@ -1,0 +1,108 @@
+/* =====================================================================
+   Cupcake Store · global stylesheet (approved Phase 3 UI)
+   Copy to apps/web/src/app/globals.css. This file IS the design system:
+   every color, radius and elevation decision lives here, expressed through
+   the standard shadcn/ui CSS variables on top of Tailwind CSS v4.
+
+   Rules (docs/04-ui-design-system.md §4):
+   - Use shadcn/ui components with their standard variants and sizes.
+   - Use Tailwind's default spacing, type and color scales. No custom
+     utilities, no custom component variants, no arbitrary hex values.
+   - Change the look by editing the variables below, not by restyling
+     components one by one.
+   ===================================================================== */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* shadcn/ui standard: dark-mode variant (the app ships light mode only). */
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* One radius for the whole UI: 8px. */
+  --radius: 0.5rem;
+
+  /* Neutrals */
+  --background: #ffffff;            /* page, cards */
+  --foreground: #121117;            /* ink: text, icons, selected chip, toast */
+  --card: #ffffff;
+  --card-foreground: #121117;
+  --popover: #ffffff;
+  --popover-foreground: #121117;
+
+  /* Brand: pink fill with ink text (7.7:1). Pink is never used as text. */
+  --primary: #ff7aac;
+  --primary-foreground: #121117;
+
+  /* Quiet panels: latest-order card, summaries, totals box, footer */
+  --secondary: #f4f4f6;
+  --secondary-foreground: #121117;
+  --muted: #f4f4f6;
+  --muted-foreground: #5c5b6b;      /* descriptors, unit prices, meta (6.6:1) */
+
+  /* Hover fill for outline/ghost controls */
+  --accent: #ffe8f1;
+  --accent-foreground: #121117;
+
+  --destructive: #b42318;           /* errors, sold out (6.5:1) */
+
+  --border: #e4e4eb;                /* dividers, card outlines (decorative) */
+  --input: #8f8e9e;                 /* inputs, outline buttons, chips, steppers (3.2:1) */
+  --ring: #2b5ce6;                  /* focus */
+}
+
+@theme inline {
+  /* Font: next/font/google Plus_Jakarta_Sans exposes --font-plus-jakarta-sans. */
+  --font-sans: var(--font-plus-jakarta-sans), "Segoe UI", system-ui, sans-serif;
+
+  /* shadcn/ui radius scale, flattened: every rounded-* step is 8px.
+     rounded-full stays available for the cart count and the success check. */
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+
+  /* Flat UI: no shadows on buttons, inputs or cards (shadcn uses shadow-xs/sm).
+     shadow-lg is kept for the toast (Sonner). */
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+
+  /* shadcn/ui standard color mapping */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body {
+    @apply overflow-x-hidden;       /* NFR-01: never scroll sideways */
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  a:hover {
+    @apply text-pink-700;           /* link hover (Tailwind palette, 6.0:1) */
+  }
+}
