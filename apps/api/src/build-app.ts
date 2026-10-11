@@ -6,6 +6,7 @@ import requestIdPlugin, { genRequestId } from "./plugins/request-id.js";
 import securityPlugin from "./plugins/security.js";
 import prismaPlugin from "./plugins/prisma.js";
 import healthRoutes from "./routes/health.routes.js";
+import catalogRoutes from "./routes/catalog.routes.js";
 import { globalErrorHandler, notFoundHandler } from "./errors/error-handler.js";
 
 export interface BuildAppOverrides {
@@ -38,6 +39,7 @@ export async function buildApp(
   app.setNotFoundHandler(notFoundHandler);
 
   await app.register(healthRoutes, { prefix: "/api" });
+  await app.register(catalogRoutes, { prefix: "/api" });
 
   return app;
 }

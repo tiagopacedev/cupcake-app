@@ -44,9 +44,10 @@ jobs:
       - name: Lint OpenAPI contract
         run: pnpm lint:openapi
 
-      # E4-01 adds `gen:api`'s generated schema.d.ts and a CI diff check
-      # against it (06-development-workflow.md §4's full `quality` row) —
-      # not here yet, that file doesn't exist until that task.
+      - name: API client types are up to date (gen:api)
+        run: |
+          pnpm --filter web gen:api
+          git diff --exit-code -- apps/web/src/lib/api/schema.d.ts
 
   test:
     name: test
