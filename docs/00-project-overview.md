@@ -6,7 +6,7 @@
 | **Course** | Engenharia de Software · Projeto Integrador Transdisciplinar II (PIT II) |
 | **Student** | Tiago Pace Greggio · RGM 34852191 |
 | **Final due date** | **Tue 17 Nov 2026** |
-| **Version** | 1.4 (11 Oct 2026, execution plan approved — gate G0) |
+| **Version** | 1.5 (11 Oct 2026, D-23: one Vercel project with Services) |
 
 ## 1. Purpose
 
@@ -105,6 +105,7 @@ Details and rationale: [`02-architecture.md`](02-architecture.md); API contract:
 | D-20 | 11 Oct | **Hosting: Vercel + Neon.** Next.js and Fastify as two Vercel projects (Fastify zero-config function, Fluid compute); PostgreSQL 16 on Neon; browser calls the API through a same-origin `/api` rewrite | Git deploys, previews, rollback, free tiers, no servers (R-04); see 02-architecture §10 |
 | D-21 | 11 Oct | **Contract first:** `openapi.yaml` is authored by hand and drives web types (`openapi-typescript`) and contract tests; shared Zod schemas for validation; Prisma ORM 7 (not the Prisma 8 RC) | Spec-driven development; Prisma 8 lacks atomic decrement and nested writes |
 | D-22 | 11 Oct | **Execution plan approved (gate G0, E0-01).** E0-02 open items closed: add an LGPD purpose line at checkout (closes A-08); approve the five *(proposed)* copy strings as final; **remove** the desktop-only checkout subtitle "Só nome e celular. Sem cadastro." everywhere (supersedes UI doc G-1) | Owner approval, 11 Oct 2026; see `04-ui-design-system.md` v1.2 changelog |
+| D-23 | 11 Oct | **Amends D-20: one Vercel project (`cupcake-app`), not two.** `web` and `api` as Vercel Services (`vercel.json`); top-level rewrites send `/api/*` to `api`, everything else to `web`; `web` reaches `api` via a Services binding (`API_URL`), not a static URL | Owner's request; one domain, same-origin by construction (no per-PR CORS/URL reconciliation); see 02-architecture §10 |
 
 ## 8. Assumptions and open items
 

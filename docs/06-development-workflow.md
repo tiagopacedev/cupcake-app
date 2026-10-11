@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.0 (Phase 4, 11 Oct 2026) |
+| **Version** | 1.1 (11 Oct 2026, D-23: one Vercel project with Services) |
 | **Status** | Draft for approval |
 | **Related** | [CLAUDE.md](../CLAUDE.md) · [02-architecture.md](02-architecture.md) §10 (environments) · [05-testing-strategy.md](05-testing-strategy.md) · [01-prd.md](01-prd.md) §9 (backlog) |
 
@@ -92,15 +92,15 @@ A PR can merge only when `quality` and `test` are green.
 
 | Environment | How it's deployed | Database |
 |---|---|---|
-| Preview | Vercel Git integration: every PR builds `cupcake-web` and `cupcake-api` previews; the web preview's `API_URL` points at the API preview | Neon branch `preview` (migrated by the release workflow on demand) |
-| Production | Merge to `main` → Vercel production deployments of both projects | Neon `main` |
+| Preview | Vercel Git integration: every PR builds one `cupcake-app` preview (both Services, one domain) — `web`'s `API_URL` comes from the Services binding, not a per-PR value | Neon branch `preview` (migrated by the release workflow on demand) |
+| Production | Merge to `main` → Vercel production deployment of `cupcake-app` (both Services) | Neon `main` |
 
-Vercel project settings:
+Vercel project (D-23, `vercel.json` at repo root — one project, two Services):
 
-| Project | Root directory | Build | Env vars |
+| Service | Root directory | Build | Env vars |
 |---|---|---|---|
-| `cupcake-web` | `apps/web` | `pnpm --filter web build` (framework: Next.js) | `API_URL`, `NEXT_PUBLIC_SITE_URL` |
-| `cupcake-api` | `apps/api` | Fastify zero-config (entry `src/index.ts`) | `DATABASE_URL`, `WEB_ORIGIN`, `LOG_LEVEL` |
+| `web` | `apps/web` | Next.js (zero-config) | `NEXT_PUBLIC_SITE_URL`; `API_URL` via Services binding to `api` |
+| `api` | `apps/api` | Fastify zero-config (entry `src/index.ts`) | `DATABASE_URL`, `WEB_ORIGIN`, `LOG_LEVEL` |
 
 Release workflow (manual `workflow_dispatch` or tag `v*`): `prisma migrate deploy` (production `DIRECT_URL` from GitHub secrets) → smoke check `GET /api/health` on the production API → tag `vX.Y.Z`. Rollback: Vercel Instant Rollback for code; migrations are additive (fix forward).
 
@@ -140,3 +140,4 @@ Secrets live in Vercel and GitHub only; `.env.example` lists every variable with
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 11 Oct 2026 | Initial workflow: setup, scripts, GitHub Flow, Conventional Commits, CI jobs, migrations and seed policy, Vercel/Neon deployment, Claude Code loop, release checklist |
+| 1.1 | 11 Oct 2026 | D-23: one Vercel project (`cupcake-app`) with `web`/`api` Services instead of two projects |
