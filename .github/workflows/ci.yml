@@ -1,0 +1,135 @@
+name: CI
+
+# 06-development-workflow.md §4. `quality` and `test` must both be green for
+# a PR to merge (branch protection, E3-01). `audit` is non-blocking. `e2e`
+# isn't wired yet — Playwright/`e2e/` don't exist until E8-01, so it would
+# have nothing to run; adding it then is a small, separate follow-up.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  NODE_VERSION: "24"
+  PNPM_VERSION: "10.28.0"
+
+jobs:
+  quality:
+    name: quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Format check
+        run: pnpm format
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint OpenAPI contract
+        run: pnpm lint:openapi
+
+      # E4-01 adds `gen:api`'s generated schema.d.ts and a CI diff check
+      # against it (06-development-workflow.md §4's full `quality` row) —
+      # not here yet, that file doesn't exist until that task.
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: cupcake
+          POSTGRES_PASSWORD: cupcake
+          POSTGRES_DB: cupcake_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U cupcake -d cupcake_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: "postgresql://cupcake:cupcake@localhost:5432/cupcake_test?sslmode=disable"
+      DIRECT_URL: "postgresql://cupcake:cupcake@localhost:5432/cupcake_test?sslmode=disable"
+      WEB_ORIGIN: "http://localhost:3000"
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Apply migrations to the test database
+        run: pnpm db:deploy
+
+      - name: Unit + component tests
+        run: pnpm test
+
+      - name: Integration tests (real PostgreSQL)
+        run: pnpm test:int
+
+      - name: Coverage
+        run: |
+          pnpm -r run test:coverage
+          node scripts/check-coverage.mjs --soft
+
+      - name: Upload coverage summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-summary
+          path: |
+            packages/shared/coverage/coverage-summary.json
+            packages/database/coverage/coverage-summary.json
+            apps/api/coverage/coverage-summary.json
+            apps/web/coverage/coverage-summary.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+  audit:
+    name: audit
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit production dependencies
+        run: pnpm audit --prod

@@ -9,10 +9,12 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "postinstall": "prisma generate",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --exclude '**/*.int.test.ts'",
-    "test:int": "vitest run test/**/*.int.test.ts",
+    "test:coverage": "vitest run --coverage",
+    "test:int": "vitest run --config vitest.int.config.ts",
     "build": "tsc",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
@@ -28,6 +30,7 @@
   "devDependencies": {
     "@types/node": "24.19.2",
     "@types/pg": "8.23.1",
+    "@vitest/coverage-v8": "5.0.3",
     "dotenv": "18.0.7",
     "prisma": "7.10.0",
     "tsx": "4.23.15",
