@@ -34,6 +34,8 @@ interface CartState {
   /** Sets a line's quantity, clamped to 1…max; use `remove` to take it out (US-09). */
   setQuantity: (productId: string, quantity: number, max: number) => void;
   remove: (productId: string) => void;
+  /** Replaces every line at once; used when the cart is reconciled with the server (US-10). */
+  replaceLines: (lines: CartLine[]) => void;
   clear: () => void;
 }
 
@@ -93,6 +95,7 @@ export const useCartStore = create<CartState>()(
         })),
       remove: (productId) =>
         set((state) => ({ lines: state.lines.filter((line) => line.productId !== productId) })),
+      replaceLines: (lines) => set({ lines }),
       clear: () => set({ lines: [] }),
     }),
     {
