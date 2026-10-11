@@ -74,6 +74,20 @@ export function globalErrorHandler(
     return;
   }
 
+  // Malformed body (e.g. invalid JSON) that Fastify rejects before our schema runs.
+  if (fastifyError.statusCode === 400) {
+    const body: ErrorResponseBody = {
+      error: {
+        code: "VALIDATION_ERROR",
+        message: "Request failed validation.",
+        details: { fields: [{ path: "(body)", message: "Invalid request body" }] },
+        requestId,
+      },
+    };
+    reply.status(400).send(body);
+    return;
+  }
+
   if (fastifyError.statusCode === 404) {
     const body: ErrorResponseBody = {
       error: { code: "NOT_FOUND", message: "Route not found.", requestId },

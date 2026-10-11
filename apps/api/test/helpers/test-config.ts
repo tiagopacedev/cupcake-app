@@ -16,6 +16,7 @@ export function testConfig(overrides: Partial<Config> = {}): Config {
     DATABASE_URL: "postgresql://cupcake:cupcake@localhost:5432/cupcake_test?sslmode=disable",
     RATE_LIMIT_MAX: 120,
     RATE_LIMIT_WINDOW_MS: 60_000,
+    ORDERS_RATE_LIMIT_MAX: 10,
     ...overrides,
   };
 }

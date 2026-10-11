@@ -212,6 +212,7 @@ Environment variables, parsed and validated at startup (`config.ts` with Zod); t
 | `DIRECT_URL` | database | `postgresql://…/cupcake?sslmode=require` | Migrations (Neon **direct**) |
 | `WEB_ORIGIN` | api | `https://cupcake-app.vercel.app` | CORS allow-list |
 | `LOG_LEVEL` | api | `info` | Logger level |
+| `ORDERS_RATE_LIMIT_MAX` | api (optional) | `10` | `POST /api/orders` requests per minute per IP (07 §1); tests lower it to trigger 429 |
 | `API_URL` | web (server only) | local: `http://localhost:4000`; Vercel: injected by the `api` Services binding (D-23) | Target of the `/api/*` rewrite and of server-side fetches |
 | `NEXT_PUBLIC_SITE_URL` | web | `https://cupcake-app.vercel.app` | Absolute URLs (metadata) |
 
@@ -263,3 +264,4 @@ Business constants (ready minutes, store info, low-stock threshold, line cap 20)
 | 1.0 | 11 Oct 2026 | Initial architecture: MVC mapping, monorepo, stack versions, order transaction, error model, security, configuration, environments, Vercel + Neon hosting |
 | 1.1 | 11 Oct 2026 | D-23: one Vercel project (`cupcake-app`) with `web`/`api` Services instead of two projects; `API_URL` via Services binding |
 | 1.2 | 11 Oct 2026 | E4: controllers validate with Zod (no `fastify-type-provider-zod`); layout matches the code (`build-app.ts`, one catalog routes file) |
+| 1.3 | 11 Oct 2026 | E6: `ORDERS_RATE_LIMIT_MAX` documented; repositories take a Prisma transaction client so one service call runs them in one transaction |

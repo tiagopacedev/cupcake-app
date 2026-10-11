@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.1 (11 Oct 2026) |
+| **Version** | 1.2 (11 Oct 2026) |
 | **Status** | Draft for approval |
 | **Contract** | [`openapi.yaml`](openapi.yaml) (OpenAPI 3.1, validated with Redocly CLI) |
 | **Related** | [02-architecture.md](02-architecture.md) (error model, security) · [01-prd.md](01-prd.md) (BR, US) · [04-ui-design-system.md](04-ui-design-system.md) §9.5 (error → pt-BR) |
@@ -126,7 +126,7 @@ Response `200` is `{ "products": [ … ] }` (`ProductList` in `openapi.yaml`, ne
 | Status | Body | When |
 |---|---|---|
 | `201` | `Order` + `Location: /api/orders/{code}` | Created; stock reserved |
-| `400` | `VALIDATION_ERROR` with `details.fields[]` | Schema failure |
+| `400` | `VALIDATION_ERROR` with `details.fields[]` | Schema failure, unknown fields (e.g. a client price, BR-07) and malformed JSON (`path: "(body)"`) |
 | `409` | `PRODUCT_NOT_FOUND` with `details.productIds[]` | Missing or inactive product; nothing changed |
 | `409` | `INSUFFICIENT_STOCK` with `details.items[] {productId, requested, available}` | Any line exceeds stock; nothing changed. Lists **every** short line. |
 | `429` | `RATE_LIMITED` | > 10 orders/min from one IP |
@@ -150,6 +150,7 @@ The client then clears the cart, stores `{ code, createdAt }` as the latest orde
 }
 ```
 
+- `items` are sorted by product name, the same in the `POST` and `GET` responses (the cart order isn't stored).
 - `customerFirstName` = first word of the stored name; the phone and internal ids are never returned (BR-16).
 - `readyAt = createdAt + 15 min` (BR-12). `items` keep the **unit price paid** (BR-07); `name`/`imageUrl` are the product's current values.
 - The code is upper-cased before lookup (`cup-7k3q9f` works). Malformed or unknown → `404 ORDER_NOT_FOUND`.
@@ -200,3 +201,4 @@ Regenerate whenever `openapi.yaml` changes (CI fails if the committed file is st
 |---|---|---|
 | 1.0 | 11 Oct 2026 | Initial contract: health, filters, products, create order, get order; error codes; rate limits |
 | 1.1 | 11 Oct 2026 | E4: §3.3 states the `{ "products": [...] }` envelope that `openapi.yaml` already defined |
+| 1.2 | 11 Oct 2026 | E6: order items sorted by name; unknown fields and malformed JSON are `400` |
