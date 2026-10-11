@@ -1,25 +1,46 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { act } from "react";
 import { AppHeader } from "./app-header";
+import { CartLink } from "./cart-link";
 import { StoreFooter } from "./store-footer";
+import { useCartStore } from "@/lib/cart-store";
 
-describe("US-07 catalog header cart button", () => {
-  it("hides the count at 0 and labels the link plainly", () => {
-    render(<AppHeader variant="catalog" cartCount={0} />);
-    const cart = screen.getByRole("link", { name: "Carrinho" });
+beforeEach(() => useCartStore.setState({ lines: [], hydrated: true }));
+
+describe("US-07 cart badge in the catalog header", () => {
+  it("shows total units, not distinct products (AC1)", () => {
+    useCartStore.setState({
+      lines: [
+        { productId: "a", quantity: 2 },
+        { productId: "b", quantity: 3 },
+      ],
+    });
+    render(<AppHeader variant="catalog" />);
+    const cart = screen.getByRole("link", { name: "Carrinho, 5 itens" });
     expect(cart).toHaveAttribute("href", "/cart");
+    expect(cart).toHaveTextContent("Carrinho5");
+  });
+
+  it("shows no number when the cart is empty (AC2)", () => {
+    render(<AppHeader variant="catalog" />);
+    const cart = screen.getByRole("link", { name: "Carrinho" });
     expect(cart).not.toHaveTextContent(/\d/);
   });
 
-  it("shows the unit count and an accessible label when there are items", () => {
-    render(<AppHeader variant="catalog" cartCount={4} />);
-    const cart = screen.getByRole("link", { name: "Carrinho, 4 itens" });
-    expect(cart).toHaveTextContent("Carrinho4");
-  });
-
-  it("uses the singular for one item", () => {
-    render(<AppHeader variant="catalog" cartCount={1} />);
+  it("updates immediately when the cart changes", () => {
+    render(<AppHeader variant="catalog" />);
+    act(() => useCartStore.getState().add("a", 5));
     expect(screen.getByRole("link", { name: "Carrinho, 1 item" })).toBeInTheDocument();
+  });
+});
+
+describe("CartLink labels", () => {
+  it("uses the plain label at 0 and the plural from 2 units", () => {
+    const { rerender } = render(<CartLink count={0} />);
+    expect(screen.getByRole("link", { name: "Carrinho" })).toBeInTheDocument();
+    rerender(<CartLink count={2} />);
+    expect(screen.getByRole("link", { name: "Carrinho, 2 itens" })).toBeInTheDocument();
   });
 });
 

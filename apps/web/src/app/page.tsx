@@ -4,7 +4,7 @@ import { AppHeader } from "@/components/app-header";
 import { EmptyState } from "@/components/empty-state";
 import { FilterChips } from "@/components/filter-chips";
 import { LoadError } from "@/components/load-error";
-import { ProductCard } from "@/components/product-card";
+import { CatalogProductCard } from "@/components/catalog-product-card";
 import { StoreFooter } from "@/components/store-footer";
 import { Button } from "@/components/ui/button";
 import { fetchProducts } from "@/lib/catalog";
@@ -13,7 +13,7 @@ import { parseFilter, queryForFilter } from "@/lib/filters";
 /**
  * SCR-01 Catálogo (docs/04-ui-design-system.md §7.1), server-rendered from
  * `GET /api/products` for the `?filter=` in the URL (US-01…US-03). The
- * latest-order card and the add controls arrive with E5-06 and E7.
+ * latest-order card arrives with E7.
  */
 export default async function HomePage({
   searchParams,
@@ -43,7 +43,7 @@ export default async function HomePage({
         ) : (
           <div className="grid grid-cols-2 gap-x-4 gap-y-6 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-10">
             {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <CatalogProductCard key={product.id} product={product} />
             ))}
           </div>
         )}

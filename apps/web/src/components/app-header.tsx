@@ -2,10 +2,10 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { STORE } from "shared";
 import { Button } from "@/components/ui/button";
-import { CartLink } from "@/components/cart-link";
+import { ConnectedCartLink } from "@/components/connected-cart-link";
 
 type AppHeaderProps =
-  | { variant: "catalog"; cartCount?: number }
+  | { variant: "catalog" }
   | { variant: "inner"; title: string; backHref: string; backLabel?: string };
 
 /**
@@ -33,7 +33,7 @@ export function AppHeader(props: AppHeaderProps) {
         <Link href="/" className="text-xl font-extrabold tracking-tight lg:text-2xl">
           {STORE.name}
         </Link>
-        <CartLink count={props.cartCount} />
+        <ConnectedCartLink />
       </div>
     </header>
   );

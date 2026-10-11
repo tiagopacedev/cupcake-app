@@ -10,9 +10,17 @@ import type { Product } from "@/lib/api/types";
  * Catalog card (04-ui-design-system.md §6.4): photo with the bestseller badge,
  * name, price, descriptor and the stock state. `action` is the add button or
  * stepper (E5-06), pinned to the photo corner; a sold-out product never gets
- * one (BR-04).
+ * one (BR-04). `notice` renders under the text, e.g. the stock-limit message.
  */
-export function ProductCard({ product, action }: { product: Product; action?: ReactNode }) {
+export function ProductCard({
+  product,
+  action,
+  notice,
+}: {
+  product: Product;
+  action?: ReactNode;
+  notice?: ReactNode;
+}) {
   const soldOut = product.stockState === "SOLD_OUT";
   const low = product.stockState === "LOW";
   const bestseller = product.tags.some((tag) => tag.slug === "bestseller");
@@ -58,6 +66,7 @@ export function ProductCard({ product, action }: { product: Product; action?: Re
         </div>
         <p className="text-sm text-muted-foreground">{product.description}</p>
       </div>
+      {notice}
     </article>
   );
 }
