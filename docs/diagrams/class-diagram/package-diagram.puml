@@ -1,0 +1,88 @@
+@startuml package-diagram
+!include ../_style.iuml
+title Cupcake App · MVC Package Diagram (logical architecture)
+skinparam packageStyle rectangle
+
+package "apps/web (Next.js) · VIEW" as WEB {
+  package "pages (routes)" as WPages {
+    [CatalogPage\nSCR-01] as P1
+    [CartPage\nSCR-02] as P2
+    [CheckoutPage\nSCR-03] as P3
+    [OrderPage (Meu pedido)\nSCR-04] as P4
+  }
+  package "components" as WComp {
+    [AppHeader, LatestOrderCard,\nFilterChips, ProductCard, QuantityStepper,\nCartLine, OrderSummary, OrderCode,\nStoreInfo, Notice, Toast, EmptyState] as C1
+  }
+  package "lib" as WLib {
+    [apiClient\n(typed from OpenAPI)] as AC
+    [cartStore, lastOrderStore\n(localStorage)] as CS
+    [format (pt-BR, BRL)] as FMT
+  }
+}
+
+package "apps/api (Fastify)" as API {
+  package "routes · ROUTER" as R {
+    [catalog.routes] as R1
+    [orders.routes] as R2
+  }
+  package "controllers · CONTROLLER" as CT {
+    [CatalogController] as CC
+    [OrderController] as OC
+  }
+  package "services · MODEL (business rules)" as SV {
+    [CatalogService] as CSV
+    [OrderService\n(create, getByCode)] as OSV
+    [StockService\n(UC-07)] as SSV
+    [orderCode, phone utils,\nstore config (address,\nhours, ready minutes)] as UT
+  }
+  package "repositories · MODEL (persistence)" as RP {
+    [ProductRepository] as PR
+    [CategoryRepository /\nTagRepository] as CR
+    [CustomerRepository] as CUR
+    [OrderRepository] as OR
+  }
+  [errors\n(AppError + global handler)] as ERR
+}
+
+package "packages/database" as DBP {
+  [Prisma schema\n+ migrations + seed] as PS
+}
+
+package "packages/shared" as SH {
+  [zod schemas (BR-14), error codes,\nstore config, phone utils] as SHV
+}
+
+database "PostgreSQL" as PG
+
+WPages ..> WComp
+WPages ..> WLib
+AC ..> R : HTTPS / JSON
+R1 ..> CC
+R2 ..> OC
+CC ..> CSV
+OC ..> OSV
+OSV ..> SSV
+OSV ..> UT
+CSV ..> PR
+CSV ..> CR
+OSV ..> CUR
+OSV ..> OR
+SSV ..> PR
+RP ..> PS : Prisma Client
+PS ..> PG
+CT ..> ERR
+SV ..> ERR
+WEB ..> SH
+API ..> SH
+
+note right of CT
+  Controllers: validate input, call one
+  service, map result/error to HTTP.
+  No business logic, no database access.
+end note
+note right of SV
+  Services hold BR-01…BR-19.
+  Order creation (stock decrement +
+  order insert) runs in one transaction.
+end note
+@enduml

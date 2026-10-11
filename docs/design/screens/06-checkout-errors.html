@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finalizar pedido com erros · Cupcake Store (UI reference)</title>
+<!-- APPROVED UI REFERENCE (Phase 3). Source: Claude Design canvas "Cupcake Store Screens".
+     Static mockup with sample data. Reproduce layout, spacing, colors, type and copy exactly;
+     data, counts and states come from the API at runtime. See docs/04-ui-design.md. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+a{color:#121117}a:hover{color:#ad1457}
+</style>
+</head>
+<body>
+<div style="position: relative; width: 390px; height: 1000px; overflow: hidden; background: #ffffff; color: #121117; font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 24px; display: flex; flex-direction: column;">
+
+  <header style="display: flex; align-items: center; gap: 4px; padding: 8px 16px 8px 8px; border-bottom: 1px solid #e4e4eb;">
+    <a href="03-cart.html" aria-label="Voltar" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg></a>
+    <h1 style="margin: 0; font-weight: 800; font-size: 20px; line-height: 26px; letter-spacing: -0.01em;">Finalizar pedido</h1>
+  </header>
+
+  <main style="flex: 1; display: flex; flex-direction: column; gap: 24px; padding: 20px 16px 24px;">
+    <div role="alert" style="display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 16px; border-radius: 8px; background: #fde4e2; font-size: 14px; line-height: 20px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b42318" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none;"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+      <span style="flex: 1;">Chocolate Crush: só 1 disponível.</span>
+      <a href="03-cart.html" style="flex: none; display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border-radius: 8px; border: 1px solid #8f8e9e; background: #ffffff; color: #121117; font-weight: 600; font-size: 14px; text-decoration: none;">Revisar</a>
+    </div>
+
+    <section aria-label="Seus dados" style="display: flex; flex-direction: column; gap: 14px;">
+      <h2 style="margin: 0; font-weight: 700; font-size: 18px; line-height: 24px;">Seus dados</h2>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="name-e" style="font-weight: 600; font-size: 14px; line-height: 20px;">Nome</label>
+        <input id="name-e" autocomplete="name" value="A" aria-invalid="true" aria-describedby="name-e-msg" style="height: 48px; width: 100%; padding: 0 16px; border-radius: 8px; border: 1px solid #b42318; background: #ffffff; color: #121117; font-family: inherit; font-size: 16px;">
+        <span id="name-e-msg" style="font-weight: 500; font-size: 14px; line-height: 20px; color: #b42318;">Informe seu nome.</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="phone-e" style="font-weight: 600; font-size: 14px; line-height: 20px;">Celular</label>
+        <input id="phone-e" inputmode="tel" autocomplete="tel-national" value="(11) 1234-5678" aria-invalid="true" aria-describedby="phone-e-msg" style="height: 48px; width: 100%; padding: 0 16px; border-radius: 8px; border: 1px solid #b42318; background: #ffffff; color: #121117; font-family: inherit; font-size: 16px; font-variant-numeric: tabular-nums;">
+        <span id="phone-e-msg" style="font-weight: 500; font-size: 14px; line-height: 20px; color: #b42318;">Celular inválido. Ex.: (11) 91234-5678</span>
+      </div>
+    </section>
+
+    <section aria-label="Resumo do pedido" style="display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 8px; background: #f4f4f6;">
+      <h2 style="margin: 0; font-weight: 700; font-size: 18px; line-height: 24px;">Resumo do pedido</h2>
+      <div style="display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 12px; align-items: center;"><img src="../assets/photos/chocolate-crush.jpg" alt="" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; display: block;"><div><div style="font-weight: 600; font-size: 15px; line-height: 20px;">Chocolate Crush</div><div style="font-size: 14px; line-height: 20px; color: #b42318; font-variant-numeric: tabular-nums;">2 × R$ 11,90 · só 1 disponível</div></div><span style="font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums;">R$ 23,80</span></div>
+      <div style="display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 12px; align-items: center;"><img src="../assets/photos/strawberry-kiss.jpg" alt="" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; display: block;"><div><div style="font-weight: 600; font-size: 15px; line-height: 20px;">Strawberry Kiss</div><div style="font-size: 14px; line-height: 20px; color: #5c5b6b; font-variant-numeric: tabular-nums;">1 × R$ 11,90</div></div><span style="font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums;">R$ 11,90</span></div>
+      <div style="display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 12px; align-items: center;"><img src="../assets/photos/birthday-vanilla.jpg" alt="" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; display: block;"><div><div style="font-weight: 600; font-size: 15px; line-height: 20px;">Birthday Vanilla</div><div style="font-size: 14px; line-height: 20px; color: #5c5b6b; font-variant-numeric: tabular-nums;">1 × R$ 9,90</div></div><span style="font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums;">R$ 9,90</span></div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid #e4e4eb; padding-top: 12px;"><span style="font-weight: 700;">Total</span><span style="font-weight: 800; font-size: 22px; line-height: 28px; font-variant-numeric: tabular-nums;">R$ 45,60</span></div>
+    </section>
+  </main>
+
+  <div style="position: sticky; bottom: 0; padding: 12px 16px 20px; background: #ffffff; border-top: 1px solid #e4e4eb; border-style: none">
+    <button type="button" aria-disabled="true" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; border: 0; border-radius: 8px; background: #ececf1; color: #5c5b6b; font-family: inherit; font-weight: 600; font-size: 16px;"><span style="width: 18px; height: 18px; border-radius: 999px; border: 2px solid #5c5b6b; border-right-color: transparent;"></span>Enviando…</button>
+  </div>
+</div>
+</body>
+</html>

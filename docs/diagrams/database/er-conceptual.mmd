@@ -1,0 +1,10 @@
+---
+title: Cupcake App · Conceptual model
+---
+erDiagram
+  %% Conceptual ER model: entities and relationships only (03-data-model.md §2)
+  CATEGORY ||--o{ PRODUCT : "classifies"
+  PRODUCT }o--o{ TAG : "is tagged with"
+  CUSTOMER ||--o{ ORDER : "places"
+  ORDER ||--|{ ORDER_ITEM : "contains"
+  PRODUCT ||--o{ ORDER_ITEM : "is ordered as"

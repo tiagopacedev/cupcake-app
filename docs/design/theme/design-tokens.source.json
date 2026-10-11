@@ -1,0 +1,284 @@
+{
+ "name": "Cupcake Store",
+ "version": 2,
+ "color": {
+  "themes": [
+   {
+    "id": "light",
+    "name": "Light"
+   }
+  ],
+  "tokens": [
+   {
+    "name": "ink",
+    "value": "#121117",
+    "usage": "Primary text, icons, selected filter fill, outline button text. 18.8:1 on paper, 17.1:1 on surface."
+   },
+   {
+    "name": "paper",
+    "value": "#ffffff",
+    "usage": "Page and card background; text on ink fills."
+   },
+   {
+    "name": "surface",
+    "value": "#f4f4f6",
+    "usage": "Quiet panels: order summary, code card, footer, empty-state tiles. Ink 17.1:1, muted 6.0:1 on it."
+   },
+   {
+    "name": "muted",
+    "value": "#5c5b6b",
+    "usage": "Secondary text: descriptors, unit prices, hints, timestamps. 6.6:1 on paper, 6.0:1 on surface."
+   },
+   {
+    "name": "line",
+    "value": "#e4e4eb",
+    "usage": "1px dividers and card outlines. Decorative only."
+   },
+   {
+    "name": "border",
+    "value": "#8f8e9e",
+    "usage": "1px borders of interactive controls: inputs, outline buttons, filter chips, steppers. 3.2:1 on paper."
+   },
+   {
+    "name": "pink",
+    "value": "#ff7aac",
+    "usage": "Brand accent: primary button fill (ink text, 7.7:1), cart count badge. Never text."
+   },
+   {
+    "name": "pink-soft",
+    "value": "#ffe8f1",
+    "usage": "Hover fill for outline controls, subtle highlight background."
+   },
+   {
+    "name": "pink-text",
+    "value": "#ad1457",
+    "usage": "Pink as text or link underline on paper (7.0:1)."
+   },
+   {
+    "name": "success",
+    "value": "#17734b",
+    "usage": "Success icon and text. On success-soft 5.1:1."
+   },
+   {
+    "name": "success-soft",
+    "value": "#dff5e9",
+    "usage": "Success badge background."
+   },
+   {
+    "name": "warning",
+    "value": "#7a4e00",
+    "usage": "Low stock text. On warning-soft 6.4:1."
+   },
+   {
+    "name": "warning-soft",
+    "value": "#fff0c7",
+    "usage": "Low stock badge and warning notice background."
+   },
+   {
+    "name": "danger",
+    "value": "#b42318",
+    "usage": "Errors and sold out. On danger-soft 5.4:1, on paper 6.5:1."
+   },
+   {
+    "name": "danger-soft",
+    "value": "#fde4e2",
+    "usage": "Error notice background."
+   },
+   {
+    "name": "info",
+    "value": "#1f4fd1",
+    "usage": "Info icon and status text. On info-soft 5.7:1."
+   },
+   {
+    "name": "info-soft",
+    "value": "#e3ebff",
+    "usage": "Status badge background (Aguardando retirada)."
+   },
+   {
+    "name": "focus",
+    "value": "#2b5ce6",
+    "usage": "Keyboard focus ring, 2px, offset 2px. 5.6:1 on paper, 5.1:1 on surface."
+   },
+   {
+    "name": "disabled-bg",
+    "value": "#ececf1",
+    "usage": "Disabled button fill with muted text."
+   }
+  ]
+ },
+ "type": {
+  "fonts": [],
+  "families": {
+   "sans": "\"Plus Jakarta Sans\", \"Segoe UI\", system-ui, -apple-system, sans-serif"
+  },
+  "groups": [
+   {
+    "name": "Headings",
+    "family": "sans",
+    "styles": [
+     {
+      "name": "display",
+      "fontSize": "40px",
+      "lineHeight": "46px",
+      "fontWeight": 800,
+      "letterSpacing": "-0.02em",
+      "sample": "Cupcakes feitos hoje",
+      "usage": "Desktop page titles."
+     },
+     {
+      "name": "title",
+      "fontSize": "28px",
+      "lineHeight": "34px",
+      "fontWeight": 800,
+      "letterSpacing": "-0.02em",
+      "sample": "Escolha seus cupcakes",
+      "usage": "Mobile page titles."
+     },
+     {
+      "name": "heading",
+      "fontSize": "20px",
+      "lineHeight": "26px",
+      "fontWeight": 700,
+      "letterSpacing": "-0.01em",
+      "sample": "Resumo do pedido",
+      "usage": "Section headings, wordmark on mobile (22px)."
+     },
+     {
+      "name": "product",
+      "fontSize": "16px",
+      "lineHeight": "22px",
+      "fontWeight": 700,
+      "sample": "Chocolate Crush",
+      "usage": "Product names on cards and lines."
+     },
+     {
+      "name": "code",
+      "fontSize": "28px",
+      "lineHeight": "34px",
+      "fontWeight": 800,
+      "letterSpacing": "0.04em",
+      "sample": "CUP-7K3Q9F",
+      "usage": "Order code."
+     }
+    ]
+   },
+   {
+    "name": "Text",
+    "family": "sans",
+    "styles": [
+     {
+      "name": "body",
+      "fontSize": "16px",
+      "lineHeight": "24px",
+      "fontWeight": 400,
+      "sample": "Retire na loja e pague na hora.",
+      "usage": "Default text and inputs."
+     },
+     {
+      "name": "body-strong",
+      "fontSize": "16px",
+      "lineHeight": "24px",
+      "fontWeight": 600,
+      "sample": "Fazer pedido",
+      "usage": "Buttons, totals labels."
+     },
+     {
+      "name": "price",
+      "fontSize": "15px",
+      "lineHeight": "22px",
+      "fontWeight": 600,
+      "sample": "R$ 11,90",
+      "usage": "Prices, tabular figures."
+     },
+     {
+      "name": "small",
+      "fontSize": "14px",
+      "lineHeight": "20px",
+      "fontWeight": 400,
+      "sample": "Chocolate · ganache",
+      "usage": "Descriptors, hints, meta."
+     },
+     {
+      "name": "label",
+      "fontSize": "14px",
+      "lineHeight": "20px",
+      "fontWeight": 600,
+      "sample": "Celular",
+      "usage": "Form labels, chips."
+     },
+     {
+      "name": "caption",
+      "fontSize": "12px",
+      "lineHeight": "16px",
+      "fontWeight": 600,
+      "sample": "Mais vendido",
+      "usage": "Badges."
+     }
+    ]
+   }
+  ]
+ },
+ "spacing": {
+  "tokens": [
+   {
+    "name": "space-1",
+    "value": "4px",
+    "usage": "Tight gaps inside badges."
+   },
+   {
+    "name": "space-2",
+    "value": "8px",
+    "usage": "Chip gaps, icon-text gaps."
+   },
+   {
+    "name": "space-3",
+    "value": "12px",
+    "usage": "Gaps inside cards and rows."
+   },
+   {
+    "name": "space-4",
+    "value": "16px",
+    "usage": "Mobile gutter, grid gap, panel padding."
+   },
+   {
+    "name": "space-5",
+    "value": "24px",
+    "usage": "Between sections; desktop grid gap."
+   },
+   {
+    "name": "space-6",
+    "value": "32px",
+    "usage": "Between page title and content."
+   },
+   {
+    "name": "space-7",
+    "value": "48px",
+    "usage": "Desktop section spacing."
+   }
+  ]
+ },
+ "radius": {
+  "tokens": [
+   {
+    "name": "radius",
+    "value": "8px",
+    "usage": "Every corner: buttons, inputs, chips, cards, photos, panels, badges, toasts."
+   },
+   {
+    "name": "radius-round",
+    "value": "999px",
+    "usage": "Only the cart count badge and the success check circle."
+   }
+  ]
+ },
+ "shadow": {
+  "note": "Buttons and cards are flat. The only elevation is the toast.",
+  "tokens": [
+   {
+    "name": "shadow-toast",
+    "value": "0 8px 24px rgba(18, 17, 23, 0.16)",
+    "usage": "Toast only."
+   }
+  ]
+ }
+}

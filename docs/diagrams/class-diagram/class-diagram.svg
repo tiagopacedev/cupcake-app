@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="1228px" preserveAspectRatio="none" style="width:1096px;height:1228px;background:#FFFFFF;" version="1.1" viewBox="0 0 1096 1228" width="1096px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="26.9395" id="_title" rx="5" ry="5" style="stroke:none;stroke-width:1.0;" width="361" x="360.75" y="5"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="351" x="365.75" y="23.5625">Cupcake App · Persistence (Domain) Class Diagram</text><!--MD5=[1f69c49f4e195823da2aca24896d2014]
+class PickupStatus--><g id="elem_PickupStatus"><rect codeLine="6" fill="#FFF9FA" height="80.918" id="PickupStatus" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="131" x="248.5" y="502.4395"/><rect fill="#FDE2E4" height="41.459" rx="5" ry="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="131" x="248.5" y="502.4395"/><rect fill="#FDE2E4" height="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="131" x="248.5" y="538.8984"/><rect codeLine="6" fill="none" height="80.918" id="PickupStatus" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="131" x="248.5" y="502.4395"/><ellipse cx="267.9" cy="523.1689" fill="#EB937F" rx="10" ry="10" style="stroke:#181818;stroke-width:1.0;"/><path d="M270.3688,527.6689 L264.4625,527.6689 L264.4625,518.1846 L270.3688,518.1846 L270.3688,519.8408 L266.3375,519.8408 L266.3375,521.8877 L269.9938,521.8877 L269.9938,523.5439 L266.3375,523.5439 L266.3375,526.0127 L270.3688,526.0127 L270.3688,527.6689 Z " fill="#000000"/><text fill="#000000" font-family="Helvetica" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="93" x="280.1" y="520.0332">«enumeration»</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="79" x="287.1" y="535.7627">PickupStatus</text><line style="stroke:#B5485A;stroke-width:0.5;" x1="249.5" x2="378.5" y1="543.8984" y2="543.8984"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="119" x="254.5" y="560.4922">AWAITING_PICKUP</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="71" x="254.5" y="576.2217">PICKED_UP</text></g><!--MD5=[a96594a83e2ecdc78cbf17c2ddf01934]
+class Category--><g id="elem_Category"><rect codeLine="11" fill="#FFF9FA" height="132.377" id="Category" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="206" x="7" y="476.9395"/><rect fill="#FDE2E4" height="30" rx="5" ry="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="206" x="7" y="476.9395"/><rect fill="#FDE2E4" height="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="206" x="7" y="501.9395"/><rect codeLine="11" fill="none" height="132.377" id="Category" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="206" x="7" y="476.9395"/><ellipse cx="77.5" cy="491.9395" fill="#ADD1B2" rx="10" ry="10" style="stroke:#181818;stroke-width:1.0;"/><path d="M79.3594,496.1738 Q78.9219,496.3926 78.4219,496.502 Q77.9375,496.627 77.4063,496.627 Q75.4844,496.627 74.4688,495.3613 Q73.4688,494.0957 73.4688,491.7051 Q73.4688,489.3145 74.4688,488.0488 Q75.4844,486.7832 77.4063,486.7832 Q77.9375,486.7832 78.4375,486.9082 Q78.9375,487.0176 79.3594,487.252 L79.3594,489.3301 Q78.875,488.8926 78.4219,488.6895 Q77.9688,488.4707 77.4844,488.4707 Q76.4688,488.4707 75.9375,489.2988 Q75.4063,490.1113 75.4063,491.7051 Q75.4063,493.3145 75.9375,494.127 Q76.4688,494.9395 77.4844,494.9395 Q77.9688,494.9395 78.4219,494.7363 Q78.875,494.5332 79.3594,494.0801 L79.3594,496.1738 Z " fill="#000000"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="57" x="96.5" y="496.6685">Category</text><line style="stroke:#B5485A;stroke-width:0.5;" x1="8" x2="212" y1="506.9395" y2="506.9395"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="517.3042"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="55" x="26" y="523.5332">id : UUID</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="533.0337"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="181" x="26" y="539.2627">name : String {unique, 2..50}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="548.7632"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="133" x="26" y="554.9922">slug : String {unique}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="564.4927"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="116" x="26" y="570.7217">sortOrder : Integer</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="580.2222"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="130" x="26" y="586.4512">createdAt : DateTime</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="595.9517"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="134" x="26" y="602.1807">updatedAt : DateTime</text></g><!--MD5=[39d6d2ea03de602dbf4d534e70c872a9]
+class Tag--><g id="elem_Tag"><rect codeLine="20" fill="#FFF9FA" height="116.6475" id="Tag" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="206" x="59" y="1104.9395"/><rect fill="#FDE2E4" height="30" rx="5" ry="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="206" x="59" y="1104.9395"/><rect fill="#FDE2E4" height="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="206" x="59" y="1129.9395"/><rect codeLine="20" fill="none" height="116.6475" id="Tag" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="206" x="59" y="1104.9395"/><ellipse cx="146.5" cy="1119.9395" fill="#ADD1B2" rx="10" ry="10" style="stroke:#181818;stroke-width:1.0;"/><path d="M148.3594,1124.1738 Q147.9219,1124.3926 147.4219,1124.502 Q146.9375,1124.627 146.4063,1124.627 Q144.4844,1124.627 143.4688,1123.3613 Q142.4688,1122.0957 142.4688,1119.7051 Q142.4688,1117.3145 143.4688,1116.0488 Q144.4844,1114.7832 146.4063,1114.7832 Q146.9375,1114.7832 147.4375,1114.9082 Q147.9375,1115.0176 148.3594,1115.252 L148.3594,1117.3301 Q147.875,1116.8926 147.4219,1116.6895 Q146.9688,1116.4707 146.4844,1116.4707 Q145.4688,1116.4707 144.9375,1117.2988 Q144.4063,1118.1113 144.4063,1119.7051 Q144.4063,1121.3145 144.9375,1122.127 Q145.4688,1122.9395 146.4844,1122.9395 Q146.9688,1122.9395 147.4219,1122.7363 Q147.875,1122.5332 148.3594,1122.0801 L148.3594,1124.1738 Z " fill="#000000"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="23" x="165.5" y="1124.6685">Tag</text><line style="stroke:#B5485A;stroke-width:0.5;" x1="60" x2="264" y1="1134.9395" y2="1134.9395"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="67" y="1145.3042"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="55" x="78" y="1151.5332">id : UUID</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="67" y="1161.0337"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="181" x="78" y="1167.2627">name : String {unique, 2..50}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="67" y="1176.7632"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="133" x="78" y="1182.9922">slug : String {unique}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="67" y="1192.4927"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="130" x="78" y="1198.7217">createdAt : DateTime</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="67" y="1208.2222"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="134" x="78" y="1214.4512">updatedAt : DateTime</text></g><!--MD5=[72136138052d025cffdce3c22fbd185f]
+class Product--><g id="elem_Product"><rect codeLine="28" fill="#FFF9FA" height="234.7539" id="Product" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="258" x="33" y="668.9395"/><rect fill="#FDE2E4" height="30" rx="5" ry="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="258" x="33" y="668.9395"/><rect fill="#FDE2E4" height="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="258" x="33" y="693.9395"/><rect codeLine="28" fill="none" height="234.7539" id="Product" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="258" x="33" y="668.9395"/><ellipse cx="134" cy="683.9395" fill="#ADD1B2" rx="10" ry="10" style="stroke:#181818;stroke-width:1.0;"/><path d="M135.8594,688.1738 Q135.4219,688.3926 134.9219,688.502 Q134.4375,688.627 133.9063,688.627 Q131.9844,688.627 130.9688,687.3613 Q129.9688,686.0957 129.9688,683.7051 Q129.9688,681.3145 130.9688,680.0488 Q131.9844,678.7832 133.9063,678.7832 Q134.4375,678.7832 134.9375,678.9082 Q135.4375,679.0176 135.8594,679.252 L135.8594,681.3301 Q135.375,680.8926 134.9219,680.6895 Q134.4688,680.4707 133.9844,680.4707 Q132.9688,680.4707 132.4375,681.2988 Q131.9063,682.1113 131.9063,683.7051 Q131.9063,685.3145 132.4375,686.127 Q132.9688,686.9395 133.9844,686.9395 Q134.4688,686.9395 134.9219,686.7363 Q135.375,686.5332 135.8594,686.0801 L135.8594,688.1738 Z " fill="#000000"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="48" x="153" y="688.6685">Product</text><line style="stroke:#B5485A;stroke-width:0.5;" x1="34" x2="290" y1="698.9395" y2="698.9395"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="41" y="709.3042"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="55" x="52" y="715.5332">id : UUID</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="41" y="725.0337"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="181" x="52" y="731.2627">name : String {unique, 2..80}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="41" y="740.7632"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="133" x="52" y="746.9922">slug : String {unique}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="41" y="756.4927"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="178" x="52" y="762.7217">description : String {10..300}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="41" y="772.2222"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="161" x="52" y="778.4512">priceCents : Integer {&gt; 0}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="41" y="787.9517"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="186" x="52" y="794.1807">stockQuantity : Integer {&gt;= 0}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="41" y="803.6812"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="103" x="52" y="809.9102">imageUrl : String</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="41" y="819.4106"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="153" x="52" y="825.6396">isActive : Boolean = true</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="41" y="835.1401"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="130" x="52" y="841.3691">createdAt : DateTime</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="41" y="850.8696"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="134" x="52" y="857.0986">updatedAt : DateTime</text><line style="stroke:#B5485A;stroke-width:1.0;" x1="34" x2="290" y1="864.2344" y2="864.2344"/><ellipse cx="44" cy="877.5991" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="132" x="52" y="880.8281">isSoldOut() : Boolean</text><ellipse cx="44" cy="893.3286" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="233" x="52" y="896.5576">canFulfill(quantity : Integer) : Boolean</text></g><!--MD5=[eec7f2387ddb4c63745877d9f10fc93a]
+class ProductTag--><g id="elem_ProductTag"><rect codeLine="44" fill="#FFF9FA" height="80.918" id="ProductTag" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="149" x="198.5" y="963.9395"/><rect fill="#FDE2E4" height="41.459" rx="5" ry="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="149" x="198.5" y="963.9395"/><rect fill="#FDE2E4" height="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="149" x="198.5" y="1000.3984"/><rect codeLine="44" fill="none" height="80.918" id="ProductTag" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="149" x="198.5" y="963.9395"/><ellipse cx="212.5" cy="984.6689" fill="#ADD1B2" rx="10" ry="10" style="stroke:#181818;stroke-width:1.0;"/><path d="M214.3594,988.9033 Q213.9219,989.1221 213.4219,989.2314 Q212.9375,989.3564 212.4063,989.3564 Q210.4844,989.3564 209.4688,988.0908 Q208.4688,986.8252 208.4688,984.4346 Q208.4688,982.0439 209.4688,980.7783 Q210.4844,979.5127 212.4063,979.5127 Q212.9375,979.5127 213.4375,979.6377 Q213.9375,979.7471 214.3594,979.9814 L214.3594,982.0596 Q213.875,981.6221 213.4219,981.4189 Q212.9688,981.2002 212.4844,981.2002 Q211.4688,981.2002 210.9375,982.0283 Q210.4063,982.8408 210.4063,984.4346 Q210.4063,986.0439 210.9375,986.8564 Q211.4688,987.6689 212.4844,987.6689 Q212.9688,987.6689 213.4219,987.4658 Q213.875,987.2627 214.3594,986.8096 L214.3594,988.9033 Z " fill="#000000"/><text fill="#000000" font-family="Helvetica" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="123" x="223.5" y="981.5332">«association class»</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="71" x="249.5" y="997.2627">ProductTag</text><line style="stroke:#B5485A;stroke-width:0.5;" x1="199.5" x2="346.5" y1="1005.3984" y2="1005.3984"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="206.5" y="1015.7632"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="103" x="217.5" y="1021.9922">productId : UUID</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="206.5" y="1031.4927"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="74" x="217.5" y="1037.7217">tagId : UUID</text></g><!--MD5=[2ce0c9fb7f55b1e256ab28a8ea6b25ec]
+class Customer--><g id="elem_Customer"><rect codeLine="49" fill="#FFF9FA" height="140.377" id="Customer" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="242" x="398" y="44.9395"/><rect fill="#FDE2E4" height="30" rx="5" ry="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="242" x="398" y="44.9395"/><rect fill="#FDE2E4" height="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="242" x="398" y="69.9395"/><rect codeLine="49" fill="none" height="140.377" id="Customer" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="242" x="398" y="44.9395"/><ellipse cx="484.5" cy="59.9395" fill="#ADD1B2" rx="10" ry="10" style="stroke:#181818;stroke-width:1.0;"/><path d="M486.3594,64.1738 Q485.9219,64.3926 485.4219,64.502 Q484.9375,64.627 484.4063,64.627 Q482.4844,64.627 481.4688,63.3613 Q480.4688,62.0957 480.4688,59.7051 Q480.4688,57.3145 481.4688,56.0488 Q482.4844,54.7832 484.4063,54.7832 Q484.9375,54.7832 485.4375,54.9082 Q485.9375,55.0176 486.3594,55.252 L486.3594,57.3301 Q485.875,56.8926 485.4219,56.6895 Q484.9688,56.4707 484.4844,56.4707 Q483.4688,56.4707 482.9375,57.2988 Q482.4063,58.1113 482.4063,59.7051 Q482.4063,61.3145 482.9375,62.127 Q483.4688,62.9395 484.4844,62.9395 Q484.9688,62.9395 485.4219,62.7363 Q485.875,62.5332 486.3594,62.0801 L486.3594,64.1738 Z " fill="#000000"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="61" x="503.5" y="64.6685">Customer</text><line style="stroke:#B5485A;stroke-width:0.5;" x1="399" x2="639" y1="74.9395" y2="74.9395"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="406" y="85.3042"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="55" x="417" y="91.5332">id : UUID</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="406" y="101.0337"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="130" x="417" y="107.2627">name : String {2..80}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="406" y="116.7632"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="217" x="417" y="122.9922">phone : String {unique, E.164 +55}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="406" y="132.4927"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="130" x="417" y="138.7217">createdAt : DateTime</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="406" y="148.2222"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="134" x="417" y="154.4512">updatedAt : DateTime</text><line style="stroke:#B5485A;stroke-width:1.0;" x1="399" x2="639" y1="161.5869" y2="161.5869"/><ellipse cx="409" cy="174.9517" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="118" x="417" y="178.1807">firstName() : String</text></g><!--MD5=[cf4d6237fcae255cd2e1656cf84a30e2]
+class Order--><g id="elem_Order"><rect codeLine="59" fill="#FFF9FA" height="171.8359" id="Order" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="331" x="353.5" y="244.9395"/><rect fill="#FDE2E4" height="30" rx="5" ry="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="331" x="353.5" y="244.9395"/><rect fill="#FDE2E4" height="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="331" x="353.5" y="269.9395"/><rect codeLine="59" fill="none" height="171.8359" id="Order" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="331" x="353.5" y="244.9395"/><ellipse cx="497" cy="259.9395" fill="#ADD1B2" rx="10" ry="10" style="stroke:#181818;stroke-width:1.0;"/><path d="M498.8594,264.1738 Q498.4219,264.3926 497.9219,264.502 Q497.4375,264.627 496.9063,264.627 Q494.9844,264.627 493.9688,263.3613 Q492.9688,262.0957 492.9688,259.7051 Q492.9688,257.3145 493.9688,256.0488 Q494.9844,254.7832 496.9063,254.7832 Q497.4375,254.7832 497.9375,254.9082 Q498.4375,255.0176 498.8594,255.252 L498.8594,257.3301 Q498.375,256.8926 497.9219,256.6895 Q497.4688,256.4707 496.9844,256.4707 Q495.9688,256.4707 495.4375,257.2988 Q494.9063,258.1113 494.9063,259.7051 Q494.9063,261.3145 495.4375,262.127 Q495.9688,262.9395 496.9844,262.9395 Q497.4688,262.9395 497.9219,262.7363 Q498.375,262.5332 498.8594,262.0801 L498.8594,264.1738 Z " fill="#000000"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="36" x="516" y="264.6685">Order</text><line style="stroke:#B5485A;stroke-width:0.5;" x1="354.5" x2="683.5" y1="274.9395" y2="274.9395"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="361.5" y="285.3042"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="55" x="372.5" y="291.5332">id : UUID</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="361.5" y="301.0337"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="234" x="372.5" y="307.2627">code : String {unique, CUP-XXXXXX}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="361.5" y="316.7632"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="156" x="372.5" y="322.9922">totalCents : Integer {&gt; 0}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="361.5" y="332.4927"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="306" x="372.5" y="338.7217">pickupStatus : PickupStatus = AWAITING_PICKUP</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="361.5" y="348.2222"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="130" x="372.5" y="354.4512">createdAt : DateTime</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="361.5" y="363.9517"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="134" x="372.5" y="370.1807">updatedAt : DateTime</text><line style="stroke:#B5485A;stroke-width:1.0;" x1="354.5" x2="683.5" y1="377.3164" y2="377.3164"/><ellipse cx="364.5" cy="390.6812" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="128" x="372.5" y="393.9102">readyAt() : DateTime</text><ellipse cx="364.5" cy="406.4106" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="250" x="372.5" y="409.6396">isFromToday(now : DateTime) : Boolean</text></g><!--MD5=[003718b22fee2486eeba0fa029a176b7]
+class OrderItem--><g id="elem_OrderItem"><rect codeLine="71" fill="#FFF9FA" height="124.6475" id="OrderItem" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="209" x="414.5" y="480.4395"/><rect fill="#FDE2E4" height="30" rx="5" ry="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="209" x="414.5" y="480.4395"/><rect fill="#FDE2E4" height="5" style="stroke:#FDE2E4;stroke-width:0.5;" width="209" x="414.5" y="505.4395"/><rect codeLine="71" fill="none" height="124.6475" id="OrderItem" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="209" x="414.5" y="480.4395"/><ellipse cx="484" cy="495.4395" fill="#ADD1B2" rx="10" ry="10" style="stroke:#181818;stroke-width:1.0;"/><path d="M485.8594,499.6738 Q485.4219,499.8926 484.9219,500.002 Q484.4375,500.127 483.9063,500.127 Q481.9844,500.127 480.9688,498.8613 Q479.9688,497.5957 479.9688,495.2051 Q479.9688,492.8145 480.9688,491.5488 Q481.9844,490.2832 483.9063,490.2832 Q484.4375,490.2832 484.9375,490.4082 Q485.4375,490.5176 485.8594,490.752 L485.8594,492.8301 Q485.375,492.3926 484.9219,492.1895 Q484.4688,491.9707 483.9844,491.9707 Q482.9688,491.9707 482.4375,492.7988 Q481.9063,493.6113 481.9063,495.2051 Q481.9063,496.8145 482.4375,497.627 Q482.9688,498.4395 483.9844,498.4395 Q484.4688,498.4395 484.9219,498.2363 Q485.375,498.0332 485.8594,497.5801 L485.8594,499.6738 Z " fill="#000000"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="62" x="503" y="500.1685">OrderItem</text><line style="stroke:#B5485A;stroke-width:0.5;" x1="415.5" x2="622.5" y1="510.4395" y2="510.4395"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="422.5" y="520.8042"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="55" x="433.5" y="527.0332">id : UUID</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="422.5" y="536.5337"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="150" x="433.5" y="542.7627">quantity : Integer {1..20}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="422.5" y="552.2632"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="184" x="433.5" y="558.4922">unitPriceCents : Integer {&gt; 0}</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="422.5" y="567.9927"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="130" x="433.5" y="574.2217">createdAt : DateTime</text><line style="stroke:#B5485A;stroke-width:1.0;" x1="415.5" x2="622.5" y1="581.3574" y2="581.3574"/><ellipse cx="425.5" cy="594.7222" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="155" x="433.5" y="597.9512">lineTotalCents() : Integer</text></g><ellipse cx="162" cy="1004.4395" fill="#5B4A50" rx="2" ry="2" style="stroke:#5B4A50;stroke-width:1.0;"/><g id="elem_GMN21"><path d="M658.5,503.4395 L658.5,582.0869 A5,5 0 0 0 663.5,587.0869 L1084.5,587.0869 A5,5 0 0 0 1089.5,582.0869 L1089.5,508.4395 L1079.5,498.4395 L675.5,498.4395 L671.5,417.1695 L667.5,498.4395 L663.5,498.4395 A5,5 0 0 0 658.5,503.4395 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><path d="M1079.5,498.4395 L1079.5,505.9395 A2.5,2.5 0 0 0 1082,508.4395 L1089.5,508.4395 L1079.5,498.4395 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="326" x="664.5" y="516.0332">totalCents is a stored snapshot of Σ lineTotalCents()</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="410" x="664.5" y="531.7627">(deliberate, documented denormalization, see 03-data-model §5).</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="362" x="664.5" y="547.4922">readyAt = createdAt + 15 min (BR-12), derived, not stored.</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="369" x="664.5" y="563.2217">Payment happens at the store and is not recorded (BR-09).</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="352" x="664.5" y="578.9512">Stock is decremented when the order is created (BR-11).</text></g><g id="elem_GMN24"><path d="M378.5,762.9395 L378.5,810.1279 A5,5 0 0 0 383.5,815.1279 L654.5,815.1279 A5,5 0 0 0 659.5,810.1279 L659.5,767.9395 L649.5,757.9395 L523,757.9395 L519,605.6495 L515,757.9395 L383.5,757.9395 A5,5 0 0 0 378.5,762.9395 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><path d="M649.5,757.9395 L649.5,765.4395 A2.5,2.5 0 0 0 652,767.9395 L659.5,767.9395 L649.5,757.9395 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="260" x="384.5" y="775.5332">unitPriceCents = product price at the time</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="221" x="384.5" y="791.2627">of purchase (historical fact, BR-07).</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="165" x="384.5" y="806.9922">(order, product) is unique.</text></g><!--MD5=[0ac59114ebbab47606c35a2ab805ad75]
+link Category to Product--><g id="link_Category_Product"><path codeLine="80" d="M123,609.1595 C123,627.5995 123,648.2195 123,668.6795 " fill="none" id="Category-Product" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#000000" points="128,635.7842,130.9389,626.7391,125.0611,626.7391,128,635.7842" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="57" x="137" y="635.5132">classifies</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="5" x="119.1484" y="629.8356">1</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="23" x="96.607" y="657.8901">0..*</text></g><!--MD5=[3eaa03be9033d5d109736125b883d343]
+link Product to apoint12--><g id="link_Product_apoint12"><path d="M162,904.0495 C162,949.0995 162,992.1695 162,1002.2395 " fill="none" id="Product-apoint12" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#000000" points="79,950.0142,81.9389,940.9691,76.0611,940.9691,79,950.0142" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="73" x="88" y="949.7432">tagged with</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="23" x="138.2992" y="924.2968">0..*</text></g><!--MD5=[8cd405cb3508c499d64088976b45d833]
+link apoint12 to Tag--><g id="link_apoint12_Tag"><path d="M162,1006.4495 C162,1016.7295 162,1064.5095 162,1104.6895 " fill="none" id="apoint12-Tag" style="stroke:#5B4A50;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="23" x="137.5266" y="1093.8642">0..*</text></g><!--MD5=[1af3a3c7199d64d54750ab076043980b]
+link apoint12 to ProductTag--><g id="link_apoint12_ProductTag"><path d="M164.32,1004.9395 C169.49,1004.9395 182.73,1004.9395 198.26,1004.9395 " fill="none" id="apoint12-ProductTag" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/></g><!--MD5=[135794f54b59c9e5883929d048383f81]
+link Customer to Order--><g id="link_Customer_Order"><path codeLine="83" d="M519,185.0695 C519,204.1595 519,225.0595 519,244.9295 " fill="none" id="Customer-Order" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#000000" points="524,211.8642,526.9389,202.8191,521.0611,202.8191,524,211.8642" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="40" x="533" y="211.5932">places</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="5" x="513.7422" y="205.687">1</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="23" x="494.9398" y="233.9439">0..*</text></g><!--MD5=[ab24261687246172a5e73b125d43b3a9]
+reverse link Order to OrderItem--><g id="link_Order_OrderItem"><path codeLine="84" d="M519,430.1695 C519,430.1695 519,480.1895 519,480.1895 " fill="none" id="Order-backto-OrderItem" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#5B4A50" points="519,417.1695,515,423.1695,519,429.1695,523,423.1695,519,417.1695" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#000000" points="457,452.0442,459.9389,442.9991,454.0611,442.9991,457,452.0442" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="52" x="466" y="451.7732">contains</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="5" x="513.8008" y="437.2679">1</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="20" x="497.7813" y="469.2874">1..*</text></g><!--MD5=[663c18ce459b41abc4dbff87433befbf]
+link OrderItem to Product--><g id="link_OrderItem_Product"><path codeLine="85" d="M414.38,594.9395 C346.17,594.9395 269.75,594.9395 269.75,594.9395 C269.75,594.9395 269.75,663.6995 269.75,663.6995 " fill="none" id="OrderItem-to-Product" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#5B4A50" points="269.75,668.6995,273.7757,659.7109,269.7643,663.6995,265.7757,659.6881,269.75,668.6995" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#000000" points="239.1643,605.951,248.5951,604.7216,246.0714,599.4131,239.1643,605.951" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="54" x="252.68" y="608.5332">refers to</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="23" x="383.5782" y="595.5594">0..*</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="5" x="271.8215" y="657.9114">1</text></g><!--MD5=[64728b9f6d1393b19a2cb2b857dd1cdb]
+link Order to PickupStatus--><g id="link_Order_PickupStatus"><path codeLine="86" d="M366.5,417.1695 C366.5,417.1695 366.5,497.3495 366.5,497.3495 " fill="none" id="Order-to-PickupStatus" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="366.5,502.3495,370.5,493.3495,366.5,497.3495,362.5,493.3495,366.5,502.3495" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[b64ceb279c55519ecb274f408987c628]
+@startuml class-diagram
+!include ../_style.iuml
+title Cupcake App · Persistence (Domain) Class Diagram
+hide empty members
+skinparam linetype ortho
+
+enum PickupStatus <<enumeration>> {
+  AWAITING_PICKUP
+  PICKED_UP
+}
+
+class Category {
+  - id : UUID
+  - name : String {unique, 2..50}
+  - slug : String {unique}
+  - sortOrder : Integer
+  - createdAt : DateTime
+  - updatedAt : DateTime
+}
+
+class Tag {
+  - id : UUID
+  - name : String {unique, 2..50}
+  - slug : String {unique}
+  - createdAt : DateTime
+  - updatedAt : DateTime
+}
+
+class Product {
+  - id : UUID
+  - name : String {unique, 2..80}
+  - slug : String {unique}
+  - description : String {10..300}
+  - priceCents : Integer {> 0}
+  - stockQuantity : Integer {>= 0}
+  - imageUrl : String
+  - isActive : Boolean = true
+  - createdAt : DateTime
+  - updatedAt : DateTime
+  - -
+  + isSoldOut() : Boolean
+  + canFulfill(quantity : Integer) : Boolean
+}
+
+class ProductTag <<association class>> {
+  - productId : UUID
+  - tagId : UUID
+}
+
+class Customer {
+  - id : UUID
+  - name : String {2..80}
+  - phone : String {unique, E.164 +55}
+  - createdAt : DateTime
+  - updatedAt : DateTime
+  - -
+  + firstName() : String
+}
+
+class Order {
+  - id : UUID
+  - code : String {unique, CUP-XXXXXX}
+  - totalCents : Integer {> 0}
+  - pickupStatus : PickupStatus = AWAITING_PICKUP
+  - createdAt : DateTime
+  - updatedAt : DateTime
+  - -
+  + readyAt() : DateTime
+  + isFromToday(now : DateTime) : Boolean
+}
+
+class OrderItem {
+  - id : UUID
+  - quantity : Integer {1..20}
+  - unitPriceCents : Integer {> 0}
+  - createdAt : DateTime
+  - -
+  + lineTotalCents() : Integer
+}
+
+Category "1" - - "0..*" Product : classifies >
+Product "0..*" - - "0..*" Tag : tagged with >
+(Product, Tag) .. ProductTag
+Customer "1" - - "0..*" Order : places >
+Order "1" *- - "1..*" OrderItem : contains >
+OrderItem "0..*" - -> "1" Product : refers to >
+Order ..> PickupStatus
+
+note bottom of Order
+  totalCents is a stored snapshot of Σ lineTotalCents()
+  (deliberate, documented denormalization, see 03-data-model §5).
+  readyAt = createdAt + 15 min (BR-12), derived, not stored.
+  Payment happens at the store and is not recorded (BR-09).
+  Stock is decremented when the order is created (BR-11).
+end note
+
+note bottom of OrderItem
+  unitPriceCents = product price at the time
+  of purchase (historical fact, BR-07).
+  (order, product) is unique.
+end note
+@enduml
+
+@startuml class-diagram
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam roundCorner 10
+skinparam ArrowColor #5B4A50
+skinparam BorderColor #8C5B67
+skinparam BackgroundColor #FFFFFF
+skinparam ActorBorderColor #8C5B67
+skinparam ActorBackgroundColor #FDE2E4
+skinparam UsecaseBackgroundColor #FFF6F7
+skinparam UsecaseBorderColor #B5485A
+skinparam ClassBackgroundColor #FFF9FA
+skinparam ClassBorderColor #B5485A
+skinparam ClassHeaderBackgroundColor #FDE2E4
+skinparam PackageBackgroundColor #FFFCFD
+skinparam PackageBorderColor #8C5B67
+skinparam NoteBackgroundColor #FFF1D6
+skinparam NoteBorderColor #B07D1F
+skinparam ParticipantBackgroundColor #FFF6F7
+skinparam ParticipantBorderColor #B5485A
+skinparam DatabaseBackgroundColor #E8F0F7
+skinparam DatabaseBorderColor #3F6A8A
+skinparam SequenceLifeLineBorderColor #B9A5AA
+skinparam SequenceGroupBackgroundColor #FFF1F3
+skinparam ActivityBackgroundColor #FFF6F7
+skinparam ActivityBorderColor #B5485A
+skinparam ActivityDiamondBackgroundColor #FFF1D6
+skinparam ActivityDiamondBorderColor #B07D1F
+skinparam SwimlaneTitleFontStyle bold
+title Cupcake App · Persistence (Domain) Class Diagram
+hide empty members
+skinparam linetype ortho
+
+enum PickupStatus <<enumeration>> {
+  AWAITING_PICKUP
+  PICKED_UP
+}
+
+class Category {
+  - id : UUID
+  - name : String {unique, 2..50}
+  - slug : String {unique}
+  - sortOrder : Integer
+  - createdAt : DateTime
+  - updatedAt : DateTime
+}
+
+class Tag {
+  - id : UUID
+  - name : String {unique, 2..50}
+  - slug : String {unique}
+  - createdAt : DateTime
+  - updatedAt : DateTime
+}
+
+class Product {
+  - id : UUID
+  - name : String {unique, 2..80}
+  - slug : String {unique}
+  - description : String {10..300}
+  - priceCents : Integer {> 0}
+  - stockQuantity : Integer {>= 0}
+  - imageUrl : String
+  - isActive : Boolean = true
+  - createdAt : DateTime
+  - updatedAt : DateTime
+  - -
+  + isSoldOut() : Boolean
+  + canFulfill(quantity : Integer) : Boolean
+}
+
+class ProductTag <<association class>> {
+  - productId : UUID
+  - tagId : UUID
+}
+
+class Customer {
+  - id : UUID
+  - name : String {2..80}
+  - phone : String {unique, E.164 +55}
+  - createdAt : DateTime
+  - updatedAt : DateTime
+  - -
+  + firstName() : String
+}
+
+class Order {
+  - id : UUID
+  - code : String {unique, CUP-XXXXXX}
+  - totalCents : Integer {> 0}
+  - pickupStatus : PickupStatus = AWAITING_PICKUP
+  - createdAt : DateTime
+  - updatedAt : DateTime
+  - -
+  + readyAt() : DateTime
+  + isFromToday(now : DateTime) : Boolean
+}
+
+class OrderItem {
+  - id : UUID
+  - quantity : Integer {1..20}
+  - unitPriceCents : Integer {> 0}
+  - createdAt : DateTime
+  - -
+  + lineTotalCents() : Integer
+}
+
+Category "1" - - "0..*" Product : classifies >
+Product "0..*" - - "0..*" Tag : tagged with >
+(Product, Tag) .. ProductTag
+Customer "1" - - "0..*" Order : places >
+Order "1" *- - "1..*" OrderItem : contains >
+OrderItem "0..*" - -> "1" Product : refers to >
+Order ..> PickupStatus
+
+note bottom of Order
+  totalCents is a stored snapshot of Σ lineTotalCents()
+  (deliberate, documented denormalization, see 03-data-model §5).
+  readyAt = createdAt + 15 min (BR-12), derived, not stored.
+  Payment happens at the store and is not recorded (BR-09).
+  Stock is decremented when the order is created (BR-11).
+end note
+
+note bottom of OrderItem
+  unitPriceCents = product price at the time
+  of purchase (historical fact, BR-07).
+  (order, product) is unique.
+end note
+@enduml
+
+PlantUML version 1.2022.12(Sun Oct 23 15:12:26 BRT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

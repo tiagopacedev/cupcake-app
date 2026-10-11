@@ -1,0 +1,68 @@
+---
+title: Cupcake App · Physical model (PostgreSQL 16)
+---
+erDiagram
+  %% Physical model (PostgreSQL 16), mirrors physical-model.sql (03-data-model.md §6)
+  categories ||--o{ products : "category_id RESTRICT"
+  products ||--o{ product_tags : "product_id CASCADE"
+  tags ||--o{ product_tags : "tag_id CASCADE"
+  customers ||--o{ orders : "customer_id RESTRICT"
+  orders ||--|{ order_items : "order_id CASCADE"
+  products ||--o{ order_items : "product_id RESTRICT"
+
+  categories {
+    uuid id PK
+    varchar_50 name UK
+    varchar_50 slug UK
+    smallint sort_order
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  tags {
+    uuid id PK
+    varchar_50 name UK
+    varchar_50 slug UK
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  products {
+    uuid id PK
+    uuid category_id FK
+    varchar_80 name UK
+    varchar_80 slug UK
+    varchar_300 description
+    integer price_cents "CHECK gt 0"
+    integer stock_quantity "CHECK ge 0"
+    varchar_500 image_url
+    boolean is_active
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  product_tags {
+    uuid product_id PK,FK
+    uuid tag_id PK,FK
+  }
+  customers {
+    uuid id PK
+    varchar_80 name
+    varchar_14 phone UK "CHECK E.164 BR mobile"
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  orders {
+    uuid id PK
+    varchar_10 code UK "CHECK CUP-XXXXXX"
+    uuid customer_id FK
+    integer total_cents "CHECK gt 0"
+    pickup_status pickup_status "enum, default AWAITING_PICKUP"
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  order_items {
+    uuid id PK
+    uuid order_id FK
+    uuid product_id FK
+    integer quantity "CHECK 1..20"
+    integer unit_price_cents "CHECK gt 0"
+    timestamptz created_at
+  }

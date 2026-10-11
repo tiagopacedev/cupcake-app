@@ -1,0 +1,65 @@
+@startuml ad-01-purchase-journey
+!include ../_style.iuml
+title AD-01 · Customer purchase journey (UC-01 → UC-05)
+
+|Customer|
+start
+:Open the store;
+|Web app (View)|
+:Load filters and active products;
+if (Catalog loaded?) then (no)
+  :Show error + "Tentar de novo";
+  stop
+else (yes)
+endif
+:Show latest-order card if an order from today\nis awaiting pickup (see AD-02);
+:Show product cards with stock state;
+|Customer|
+repeat
+  :Optionally select a filter;
+  :Choose quantity on an available product;
+  |Web app (View)|
+  :Limit quantity to min(stock, 20)\n(BR-05, BR-06);
+  :Add / merge into browser cart,\nupdate badge, show toast (BR-17);
+  |Customer|
+repeat while (Add more cupcakes?) is (yes)
+->no;
+:Open cart;
+|Web app (View)|
+:Refresh products; adjust or remove lines\nwhose stock changed (BR-17);
+if (Cart empty?) then (yes)
+  :Show empty cart + "Ver cupcakes";
+  stop
+else (no)
+endif
+:Show lines (photo, qty, line total),\nsubtotal and total (BR-07, BR-08);
+|Customer|
+:Edit quantities / remove items (optional);
+:Continue to checkout;
+|Web app (View)|
+:Show form, pickup address, "Pronto em ~15 min",\n"Pagamento na loja" and full order summary;
+repeat
+  |Customer|
+  :Enter / correct name and phone;
+  |Web app (View)|
+  :Validate fields (BR-14);
+repeat while (Any field invalid?) is (yes: show field messages) not (no)
+:Send POST /orders;
+|API (Controller + Model)|
+:Re-validate data and products;
+:In one transaction: decrement stock atomically,\nupsert customer, create order AWAITING_PICKUP\n(UC-07, BR-10, BR-11, BR-15);
+if (Created?) then (no)
+  :Return error\n(VALIDATION_ERROR / PRODUCT_NOT_FOUND /\nINSUFFICIENT_STOCK);
+  |Web app (View)|
+  :Show affected items; back to cart;
+  stop
+else (yes)
+endif
+|Web app (View)|
+:Clear cart (BR-17); save order code\nin the browser (BR-19);
+:Show Meu pedido: "Pedido feito!", code,\nitems, total to pay at the store, address;
+|Customer|
+:Go to the store within ~15 min;
+:Show the code, pay at the counter,\ncollect the order (see AD-03);
+stop
+@enduml

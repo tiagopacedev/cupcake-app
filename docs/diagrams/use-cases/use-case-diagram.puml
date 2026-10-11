@@ -1,0 +1,51 @@
+@startuml use-case-diagram
+!include ../_style.iuml
+title Cupcake App · General Use Case Diagram (UC-01…UC-07)
+left to right direction
+
+actor "Customer" as Customer
+actor "Store staff" as Staff
+actor "Store owner" as Owner #EEEEEE;line:999999
+
+rectangle "Cupcake App" {
+  usecase "UC-01\nBrowse catalog" as UC01
+  usecase "Filter by category\nor Bestsellers" as UCF
+  usecase "UC-02\nManage cart" as UC02
+  usecase "UC-03\nPlace order\n(name + phone,\npay at the store)" as UC03
+  usecase "UC-07\nValidate and reserve\nstock" as UC07
+  usecase "UC-04\nReopen latest order\n(home card)" as UC04
+  usecase "UC-05\nView order\n(Meu pedido)" as UC05
+  usecase "Copy order code" as UCC
+  usecase "UC-06\nVerify order and\ncollect payment at pickup" as UC06
+
+  usecase "Manage catalog\nand stock\n«future»" as UCX1 #F2F2F2;line:AAAAAA;text:888888
+  usecase "Record payment and\npickup (PICKED_UP)\n«future»" as UCX2 #F2F2F2;line:AAAAAA;text:888888
+}
+
+Customer --> UC01
+Customer --> UC02
+Customer --> UC03
+Customer --> UC04
+Customer --> UC05
+Customer --> UC06
+
+UCF .> UC01 : <<extend>>
+UC03 .> UC07 : <<include>>
+UC04 .> UC05 : <<include>>
+UCC .> UC05 : <<extend>>
+UC06 .> UC05 : <<include>>
+
+UC06 <-- Staff
+UCX2 <-- Staff
+UCX1 <-- Owner
+
+note right of UCX1
+  Out of MVP scope (PRD §4).
+  The catalog is maintained by the
+  seed script (US-21).
+end note
+note bottom of UC03
+  No online payment: the customer
+  pays at the counter (BR-09).
+end note
+@enduml

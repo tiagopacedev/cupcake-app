@@ -1,0 +1,34 @@
+@startuml deployment-diagram
+!include ../_style.iuml
+title Cupcake App · Deployment diagram (production)
+left to right direction
+
+node "Customer / staff device" as Dev {
+  artifact "Browser\n(mobile-first web app)\nlocalStorage: cart, lastOrder" as Browser
+}
+
+cloud "Vercel (project: cupcake-web)" as VW {
+  node "Next.js 16 app\n(apps/web)\nServer + Client Components" as Web
+}
+
+cloud "Vercel (project: cupcake-api)" as VA {
+  node "Vercel Function (Fluid compute)\nFastify 5 app (apps/api)" as Api
+}
+
+cloud "Neon (Vercel Marketplace)" as N {
+  database "PostgreSQL 16\nbranch: main (production)\npooled + direct URLs" as Db
+}
+
+node "GitHub" as GH {
+  artifact "Repository\n(monorepo)" as Repo
+  artifact "GitHub Actions CI\n(lint, types, tests,\nPostgres service)" as CI
+}
+
+Browser --> Web : HTTPS\npages, /api/* (same origin)
+Web --> Api : HTTPS\nrewrite /api/* → API_URL\n(server fetch for SSR)
+Api --> Db : TLS · Prisma 7 + pg adapter\n(pooled URL)
+CI ..> Db : prisma migrate deploy\n(direct URL, on release)
+Repo --> CI : push / PR
+Repo ..> VW : Git integration\n(preview per PR, prod on main)
+Repo ..> VA : Git integration\n(preview per PR, prod on main)
+@enduml

@@ -1,0 +1,19 @@
+%% Navigation map: routes and links between screens (approved Phase 3 UI)
+flowchart LR
+  H["/ (SCR-01)<br/>?filter=bestsellers|classics|chocolate|fruity"]
+  C["/cart (SCR-02)"]
+  K["/checkout (SCR-03)"]
+  O["/orders/:code (SCR-04)<br/>?new=1 after checkout"]
+  N["not found / error (SCR-05)"]
+  H -- "header: Carrinho" --> C
+  H -- "latest-order card" --> O
+  C -- "back arrow" --> H
+  C -- "Continuar" --> K
+  K -- "back arrow / Editar" --> C
+  K -- "Fazer pedido" --> O
+  K -. "empty cart guard" .-> C
+  O -- "back arrow / Voltar ao início" --> H
+  O -. "unknown code" .-> N
+  N -- "Voltar ao início" --> H
+  classDef r fill:#FFFFFF,stroke:#121117,color:#121117
+  class H,C,K,O,N r

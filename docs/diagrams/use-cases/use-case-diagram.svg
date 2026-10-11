@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="1340px" preserveAspectRatio="none" style="width:728px;height:1340px;background:#FFFFFF;" version="1.1" viewBox="0 0 728 1340" width="728px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="26.9395" id="_title" rx="5" ry="5" style="stroke:none;stroke-width:1.0;" width="406" x="154" y="5"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="396" x="159" y="23.5625">Cupcake App · General Use Case Diagram (UC-01…UC-07)</text><!--MD5=[697a51a120efb9be5a6d2286951c8054]
+cluster Cupcake App--><g id="cluster_Cupcake App"><rect fill="#FFFCFD" height="1187" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.0;" width="277" x="176" y="101.4395"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="87" x="271" y="116.0332">Cupcake App</text></g><g id="elem_UC01"><ellipse cx="314.3675" cy="160.6843" fill="#FFF6F7" rx="79.3675" ry="25.2449" style="stroke:#B5485A;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="39" x="294.8675" y="155.5486">UC-01</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="96" x="266.3675" y="171.2781">Browse catalog</text></g><g id="elem_UCF"><ellipse cx="314.5477" cy="262.2354" fill="#FFF6F7" rx="88.0477" ry="25.2959" style="stroke:#B5485A;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="108" x="257.5477" y="257.9175">Filter by category</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="86" x="268.5477" y="273.647">or Bestsellers</text></g><g id="elem_UC02"><ellipse cx="314.4325" cy="1030.6843" fill="#FFF6F7" rx="65.9325" ry="25.2449" style="stroke:#B5485A;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="42" x="293.4325" y="1025.5486">UC-02</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="77" x="275.9325" y="1041.2781">Manage cart</text></g><g id="elem_UC03"><ellipse cx="314.6102" cy="495.4292" fill="#FFF6F7" rx="83.6102" ry="47.4897" style="stroke:#B5485A;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="42" x="293.6102" y="474.5639">UC-03</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="71" x="279.1102" y="490.2934">Place order</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="100" x="264.6102" y="506.0229">(name + phone,</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="102" x="263.6102" y="521.7524">pay at the store)</text></g><g id="elem_UC07"><ellipse cx="314.4949" cy="359.3067" fill="#FFF6F7" rx="101.9949" ry="36.3673" style="stroke:#B5485A;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="41" x="293.9949" y="346.3063">UC-07</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="128" x="250.4949" y="362.0357">Validate and reserve</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="33" x="297.9949" y="377.7652">stock</text></g><g id="elem_UC04"><ellipse cx="314.4594" cy="614.3067" fill="#FFF6F7" rx="98.4594" ry="36.3673" style="stroke:#B5485A;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="42" x="293.4594" y="601.3063">UC-04</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="123" x="252.9594" y="617.0357">Reopen latest order</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="76" x="276.4594" y="632.7652">(home card)</text></g><g id="elem_UC05"><ellipse cx="314.5894" cy="739.3067" fill="#FFF6F7" rx="71.5894" ry="36.3673" style="stroke:#B5485A;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="42" x="293.5894" y="726.3063">UC-05</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="69" x="280.0894" y="742.0357">View order</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="85" x="272.0894" y="757.7652">(Meu pedido)</text></g><g id="elem_UCC"><ellipse cx="314.4288" cy="844.6252" fill="#FFF6F7" rx="73.9288" ry="17.1858" style="stroke:#B5485A;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="106" x="260.3855" y="847.6673">Copy order code</text></g><g id="elem_UC06"><ellipse cx="314.501" cy="933.3067" fill="#FFF6F7" rx="122.501" ry="36.3673" style="stroke:#B5485A;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="42" x="293.501" y="920.3063">UC-06</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="102" x="263.501" y="936.0357">Verify order and</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="157" x="236.001" y="951.7652">collect payment at pickup</text></g><g id="elem_UCX1"><ellipse cx="314.2817" cy="1235.3067" fill="#F2F2F2" rx="80.7817" ry="36.3673" style="stroke:#AAAAAA;stroke-width:0.5;"/><text fill="#888888" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="98" x="265.2817" y="1222.3063">Manage catalog</text><text fill="#888888" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="60" x="284.2817" y="1238.0357">and stock</text><text fill="#888888" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="54" x="287.2817" y="1253.7652">«future»</text></g><g id="elem_UCX2"><ellipse cx="314.4949" cy="1127.3067" fill="#F2F2F2" rx="101.9949" ry="36.3673" style="stroke:#AAAAAA;stroke-width:0.5;"/><text fill="#888888" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="128" x="250.4949" y="1114.3063">Record payment and</text><text fill="#888888" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="126" x="251.4949" y="1130.0357">pickup (PICKED_UP)</text><text fill="#888888" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="54" x="287.4949" y="1145.7652">«future»</text></g><!--MD5=[ae78ca0dd1f49bdd788e5556d70823ac]
+entity Customer--><g id="elem_Customer"><ellipse cx="36.5" cy="720.9395" fill="#FDE2E4" rx="8" ry="8" style="stroke:#8C5B67;stroke-width:0.5;"/><path d="M36.5,728.9395 L36.5,755.9395 M23.5,736.9395 L49.5,736.9395 M36.5,755.9395 L23.5,770.9395 M36.5,755.9395 L49.5,770.9395 " fill="none" style="stroke:#8C5B67;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="61" x="6" y="785.0332">Customer</text></g><!--MD5=[75bcab72e22e3bde62d8cef4f1a817de]
+entity Staff--><g id="elem_Staff"><ellipse cx="610.5" cy="1000.9395" fill="#FDE2E4" rx="8" ry="8" style="stroke:#8C5B67;stroke-width:0.5;"/><path d="M610.5,1008.9395 L610.5,1035.9395 M597.5,1016.9395 L623.5,1016.9395 M610.5,1035.9395 L597.5,1050.9395 M610.5,1035.9395 L623.5,1050.9395 " fill="none" style="stroke:#8C5B67;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="65" x="578" y="1065.0332">Store staff</text></g><!--MD5=[443a25782ed9d9100e54cbf2ea68ee04]
+entity Owner--><g id="elem_Owner"><ellipse cx="610.5" cy="1172.9395" fill="#EEEEEE" rx="8" ry="8" style="stroke:#999999;stroke-width:0.5;"/><path d="M610.5,1180.9395 L610.5,1207.9395 M597.5,1188.9395 L623.5,1188.9395 M610.5,1207.9395 L597.5,1222.9395 M610.5,1207.9395 L623.5,1222.9395 " fill="none" style="stroke:#999999;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="77" x="572" y="1237.0332">Store owner</text></g><g id="elem_GMN31"><path d="M500,1280.9395 L500,1275.9395 L386.67,1252.1395 L500,1283.9395 L500,1328.1279 A5,5 0 0 0 505,1333.1279 L716,1333.1279 A5,5 0 0 0 721,1328.1279 L721,1285.9395 L711,1275.9395 L505,1275.9395 A5,5 0 0 0 500,1280.9395 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><path d="M711,1275.9395 L711,1283.4395 A2.5,2.5 0 0 0 713.5,1285.9395 L721,1285.9395 L711,1275.9395 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="176" x="506" y="1293.5332">Out of MVP scope (PRD §4).</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="200" x="506" y="1309.2627">The catalog is maintained by the</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="124" x="506" y="1324.9922">seed script (US-21).</text></g><g id="elem_GMN34"><path d="M200.5,48.9395 L200.5,80.3984 A5,5 0 0 0 205.5,85.3984 L423.5,85.3984 A5,5 0 0 0 428.5,80.3984 L428.5,53.9395 L418.5,43.9395 L205.5,43.9395 A5,5 0 0 0 200.5,48.9395 " fill="#FFF1D6" style="stroke:#181818;stroke-width:0.5;"/><path d="M418.5,43.9395 L418.5,51.4395 A2.5,2.5 0 0 0 421,53.9395 L428.5,53.9395 L418.5,43.9395 " fill="#FFF1D6" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="207" x="206.5" y="61.5332">No online payment: the customer</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="177" x="206.5" y="77.2627">pays at the counter (BR-09).</text></g><!--MD5=[e28f90898ea0086e1054c0d5855f5907]
+link Customer to UC01--><g id="link_Customer_UC01"><path d="M42.36,712.0795 C56.86,603.1095 102.86,294.7295 168,219.4395 C186.89,197.6095 215.05,183.7395 241.58,174.9895 " fill="none" id="Customer-to-UC01" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#5B4A50" points="246.51,173.4095,236.7207,172.3278,241.7456,174.9261,239.1473,179.9509,246.51,173.4095" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[aa304d7a3f6f062464781e004d8ae498]
+link Customer to UC02--><g id="link_Customer_UC02"><path d="M47.57,788.7995 C63.65,842.1395 100.45,937.7695 168,987.4395 C191.07,1004.4095 220.8,1014.7195 247.36,1020.9695 " fill="none" id="Customer-to-UC02" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#5B4A50" points="252.28,1022.0895,244.3985,1016.1833,247.4059,1020.9746,242.6147,1023.9819,252.28,1022.0895" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[9ed3bc5efc1842da4750073f5763229c]
+link Customer to UC03--><g id="link_Customer_UC03"><path d="M55.62,712.2695 C77.24,670.2195 116.96,602.9595 168,560.4395 C188.03,543.7595 213.02,530.5495 236.62,520.5195 " fill="none" id="Customer-to-UC03" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#5B4A50" points="241.31,518.5495,231.4636,518.3295,236.6967,520.4776,234.5486,525.7107,241.31,518.5495" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[a8f9fb8fdb274a195926a1b1ff346f9c]
+link Customer to UC04--><g id="link_Customer_UC04"><path d="M67.01,735.6595 C93.44,722.4395 133.27,702.5595 168,685.4395 C194.58,672.3395 223.95,657.9795 249.3,645.6295 " fill="none" id="Customer-to-UC04" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#5B4A50" points="253.98,643.3495,244.1368,643.6836,249.4825,645.534,247.632,650.8796,253.98,643.3495" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[2cbaceaeaff4407ef719c338a75feb6e]
+link Customer to UC05--><g id="link_Customer_UC05"><path d="M67.18,778.0695 C76.11,784.7395 86.38,790.9395 97,794.4395 C152.44,812.7095 217.53,790.4795 261.75,769.0695 " fill="none" id="Customer-to-UC05" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#5B4A50" points="266.51,766.7295,256.6682,767.1012,262.0208,768.9311,260.1909,774.2838,266.51,766.7295" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[cd863300b8e0893154763126d3dfd954]
+link Customer to UC06--><g id="link_Customer_UC06"><path d="M67.1,779.9095 C76.63,789.3595 87.24,799.8595 97,809.4395 C128.4,840.2695 130.87,854.8295 168,878.4395 C184.81,889.1195 204.01,898.2195 222.82,905.7495 " fill="none" id="Customer-to-UC06" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#5B4A50" points="227.6,907.6295,220.6845,900.6169,222.9459,905.8021,217.7607,908.0635,227.6,907.6295" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[35ba965adc04e7aeefd08f6060e53073]
+link UCF to UC01--><g id="link_UCF_UC01"><path d="M314.5,236.6995 C314.5,222.7195 314.5,205.3495 314.5,190.7195 " fill="none" id="UCF-to-UC01" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="314.5,185.4695,310.5,194.4695,314.5,190.4695,318.5,194.4695,314.5,185.4695" style="stroke:#5B4A50;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="59" x="273.5" y="216.2832">«extend»</text></g><!--MD5=[55f31bedf3c96020ed4eeddc7cc5bc62]
+link UC03 to UC07--><g id="link_UC03_UC07"><path d="M314.5,447.8695 C314.5,432.7295 314.5,416.0895 314.5,401.3795 " fill="none" id="UC03-to-UC07" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="314.5,396.0495,310.5,405.0495,314.5,401.0495,318.5,405.0495,314.5,396.0495" style="stroke:#5B4A50;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="61" x="272.5" y="427.0332">«include»</text></g><!--MD5=[6312ae794859bd1070fd245ed050caf8]
+link UC04 to UC05--><g id="link_UC04_UC05"><path d="M314.5,650.9995 C314.5,665.5995 314.5,682.4895 314.5,697.5695 " fill="none" id="UC04-to-UC05" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="314.5,702.6095,318.5,693.6095,314.5,697.6095,310.5,693.6095,314.5,702.6095" style="stroke:#5B4A50;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="61" x="272.5" y="682.0332">«include»</text></g><!--MD5=[46d066764087a6fa1d3f4a81fa21bc1d]
+link UCC to UC05--><g id="link_UCC_UC05"><path d="M314.5,827.0995 C314.5,814.6495 314.5,797.2995 314.5,781.3295 " fill="none" id="UCC-to-UC05" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="314.5,775.9795,310.5,784.9795,314.5,780.9795,318.5,784.9795,314.5,775.9795" style="stroke:#5B4A50;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="59" x="273.5" y="806.7832">«extend»</text></g><!--MD5=[62fb3c97be59783b41c4bb92169a8a42]
+link UC06 to UC05--><g id="link_UC06_UC05"><path d="M219.65,910.0995 C200.98,902.2995 182.66,891.9995 168,878.4395 C132.09,845.2395 96.92,813.6895 128,775.9395 C154.19,744.1295 199.21,734.6695 238.46,733.3195 " fill="none" id="UC06-to-UC05" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#5B4A50" points="243.71,733.1895,234.6102,729.4221,238.7117,733.318,234.8158,737.4195,243.71,733.1895" style="stroke:#5B4A50;stroke-width:1.0;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="61" x="98" y="789.5332">«include»</text></g><!--MD5=[901d65028b16278b22f704a920cdcaee]
+reverse link UC06 to Staff--><g id="link_UC06_Staff"><path d="M402.34,962.0895 C461.43,981.5895 536.2,1006.2595 577.83,1019.9895 " fill="none" id="UC06-backto-Staff" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#5B4A50" points="397.4,960.4595,404.7091,967.0608,402.1519,962.0149,407.1978,959.4577,397.4,960.4595" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[ce50f1224f6a8cb8ff3629882e2d8c55]
+reverse link UCX2 to Staff--><g id="link_UCX2_Staff"><path d="M395.08,1101.1795 C455.11,1081.3795 534.28,1055.2595 577.67,1040.9395 " fill="none" id="UCX2-backto-Staff" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#5B4A50" points="390.07,1102.8395,399.8713,1103.8059,394.8163,1101.2669,397.3552,1096.2118,390.07,1102.8395" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[10f5e002a2ece03c6c5fc07f79a723da]
+reverse link UCX1 to Owner--><g id="link_UCX1_Owner"><path d="M398.63,1226.1095 C455.61,1219.7095 528.48,1211.5295 571.94,1206.6595 " fill="none" id="UCX1-backto-Owner" style="stroke:#5B4A50;stroke-width:1.0;"/><polygon fill="#5B4A50" points="393.51,1226.6795,402.9004,1229.6492,398.4787,1226.121,402.0069,1221.6993,393.51,1226.6795" style="stroke:#5B4A50;stroke-width:1.0;"/></g><!--MD5=[481bcba13c6df8f49298eef79ebe81fb]
+link UC03 to GMN34--><g id="link_UC03_GMN34"><path d="M237.03,477.6095 C193.8,463.2595 143.55,438.2795 117.5,395.9395 C57.18,297.8995 51.64,231.3495 117.5,136.9395 C136.94,109.0695 168.36,91.8795 200.45,81.2895 " fill="none" id="UC03-GMN34" style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/></g><!--MD5=[1c515e62a757c872b6d93bd7c93d2551]
+@startuml use-case-diagram
+!include ../_style.iuml
+title Cupcake App · General Use Case Diagram (UC-01…UC-07)
+left to right direction
+
+actor "Customer" as Customer
+actor "Store staff" as Staff
+actor "Store owner" as Owner #EEEEEE;line:999999
+
+rectangle "Cupcake App" {
+  usecase "UC-01\nBrowse catalog" as UC01
+  usecase "Filter by category\nor Bestsellers" as UCF
+  usecase "UC-02\nManage cart" as UC02
+  usecase "UC-03\nPlace order\n(name + phone,\npay at the store)" as UC03
+  usecase "UC-07\nValidate and reserve\nstock" as UC07
+  usecase "UC-04\nReopen latest order\n(home card)" as UC04
+  usecase "UC-05\nView order\n(Meu pedido)" as UC05
+  usecase "Copy order code" as UCC
+  usecase "UC-06\nVerify order and\ncollect payment at pickup" as UC06
+
+  usecase "Manage catalog\nand stock\n«future»" as UCX1 #F2F2F2;line:AAAAAA;text:888888
+  usecase "Record payment and\npickup (PICKED_UP)\n«future»" as UCX2 #F2F2F2;line:AAAAAA;text:888888
+}
+
+Customer - -> UC01
+Customer - -> UC02
+Customer - -> UC03
+Customer - -> UC04
+Customer - -> UC05
+Customer - -> UC06
+
+UCF .> UC01 : <<extend>>
+UC03 .> UC07 : <<include>>
+UC04 .> UC05 : <<include>>
+UCC .> UC05 : <<extend>>
+UC06 .> UC05 : <<include>>
+
+UC06 <- - Staff
+UCX2 <- - Staff
+UCX1 <- - Owner
+
+note right of UCX1
+  Out of MVP scope (PRD §4).
+  The catalog is maintained by the
+  seed script (US-21).
+end note
+note bottom of UC03
+  No online payment: the customer
+  pays at the counter (BR-09).
+end note
+@enduml
+
+@startuml use-case-diagram
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam roundCorner 10
+skinparam ArrowColor #5B4A50
+skinparam BorderColor #8C5B67
+skinparam BackgroundColor #FFFFFF
+skinparam ActorBorderColor #8C5B67
+skinparam ActorBackgroundColor #FDE2E4
+skinparam UsecaseBackgroundColor #FFF6F7
+skinparam UsecaseBorderColor #B5485A
+skinparam ClassBackgroundColor #FFF9FA
+skinparam ClassBorderColor #B5485A
+skinparam ClassHeaderBackgroundColor #FDE2E4
+skinparam PackageBackgroundColor #FFFCFD
+skinparam PackageBorderColor #8C5B67
+skinparam NoteBackgroundColor #FFF1D6
+skinparam NoteBorderColor #B07D1F
+skinparam ParticipantBackgroundColor #FFF6F7
+skinparam ParticipantBorderColor #B5485A
+skinparam DatabaseBackgroundColor #E8F0F7
+skinparam DatabaseBorderColor #3F6A8A
+skinparam SequenceLifeLineBorderColor #B9A5AA
+skinparam SequenceGroupBackgroundColor #FFF1F3
+skinparam ActivityBackgroundColor #FFF6F7
+skinparam ActivityBorderColor #B5485A
+skinparam ActivityDiamondBackgroundColor #FFF1D6
+skinparam ActivityDiamondBorderColor #B07D1F
+skinparam SwimlaneTitleFontStyle bold
+title Cupcake App · General Use Case Diagram (UC-01…UC-07)
+left to right direction
+
+actor "Customer" as Customer
+actor "Store staff" as Staff
+actor "Store owner" as Owner #EEEEEE;line:999999
+
+rectangle "Cupcake App" {
+  usecase "UC-01\nBrowse catalog" as UC01
+  usecase "Filter by category\nor Bestsellers" as UCF
+  usecase "UC-02\nManage cart" as UC02
+  usecase "UC-03\nPlace order\n(name + phone,\npay at the store)" as UC03
+  usecase "UC-07\nValidate and reserve\nstock" as UC07
+  usecase "UC-04\nReopen latest order\n(home card)" as UC04
+  usecase "UC-05\nView order\n(Meu pedido)" as UC05
+  usecase "Copy order code" as UCC
+  usecase "UC-06\nVerify order and\ncollect payment at pickup" as UC06
+
+  usecase "Manage catalog\nand stock\n«future»" as UCX1 #F2F2F2;line:AAAAAA;text:888888
+  usecase "Record payment and\npickup (PICKED_UP)\n«future»" as UCX2 #F2F2F2;line:AAAAAA;text:888888
+}
+
+Customer - -> UC01
+Customer - -> UC02
+Customer - -> UC03
+Customer - -> UC04
+Customer - -> UC05
+Customer - -> UC06
+
+UCF .> UC01 : <<extend>>
+UC03 .> UC07 : <<include>>
+UC04 .> UC05 : <<include>>
+UCC .> UC05 : <<extend>>
+UC06 .> UC05 : <<include>>
+
+UC06 <- - Staff
+UCX2 <- - Staff
+UCX1 <- - Owner
+
+note right of UCX1
+  Out of MVP scope (PRD §4).
+  The catalog is maintained by the
+  seed script (US-21).
+end note
+note bottom of UC03
+  No online payment: the customer
+  pays at the counter (BR-09).
+end note
+@enduml
+
+PlantUML version 1.2022.12(Sun Oct 23 15:12:26 BRT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

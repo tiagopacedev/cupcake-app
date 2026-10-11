@@ -1,0 +1,27 @@
+%% User flow: approved Phase 3 UI (docs/04-ui-design-system.md). Screens SCR-01…SCR-05.
+flowchart TD
+  START([Customer opens the store]) --> CAT
+  CAT["SCR-01 Catálogo<br/>header · latest-order card* · filter chips · product grid · footer"]
+  CAT -->|tap chip| CAT
+  CAT -->|"+ / stepper on a photo"| TOAST["Toast: Adicionado ao carrinho · Ver carrinho"]
+  TOAST --> CAT
+  CAT -->|Carrinho| CART
+  CAT -->|"card: Seu pedido"| ORDER
+  CART["SCR-02 Carrinho<br/>lines with photo and stepper · subtotal · total"]
+  CART -->|empty| EMPTY["Empty state: Carrinho vazio · Ver cupcakes"]
+  EMPTY --> CAT
+  CART -->|Continuar| CHK
+  CHK["SCR-03 Finalizar pedido<br/>Seus dados · Retirada · Resumo do pedido"]
+  CHK -->|invalid fields| CHKERR["Field errors"]
+  CHKERR --> CHK
+  CHK -->|"409 sem estoque"| STOCK["Notice: X só N disponível · Revisar"]
+  STOCK --> CART
+  CHK -->|"Fazer pedido · 201"| ORDER
+  ORDER["SCR-04 Meu pedido<br/>Pedido feito! · code · items · Total a pagar na loja · Onde retirar"]
+  ORDER -->|Voltar ao início| CAT
+  ORDER -.->|"offline: within ~15 min"| STORE(["Store counter: show code, pay, collect"])
+  NF["SCR-05 Pedido não encontrado / erro"] -->|Voltar ao início| CAT
+  classDef scr fill:#FFE8F1,stroke:#AD1457,color:#121117
+  classDef st fill:#F4F4F6,stroke:#8F8E9E,color:#121117
+  class CAT,CART,CHK,ORDER,NF scr
+  class TOAST,EMPTY,CHKERR,STOCK st

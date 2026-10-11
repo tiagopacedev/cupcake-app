@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meu pedido · Cupcake Store (UI reference)</title>
+<!-- APPROVED UI REFERENCE (Phase 3). Source: Claude Design canvas "Cupcake Store Screens".
+     Static mockup with sample data. Reproduce layout, spacing, colors, type and copy exactly;
+     data, counts and states come from the API at runtime. See docs/04-ui-design.md. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+a{color:#121117}a:hover{color:#ad1457}
+</style>
+</head>
+<body>
+<div style="width: 390px; height: 940px; overflow: hidden; background: #ffffff; color: #121117; font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 24px; display: flex; flex-direction: column;">
+
+  <header style="display: flex; align-items: center; gap: 4px; padding: 8px 16px 8px 8px; border-bottom: 1px solid #e4e4eb;">
+    <a href="01-catalog.html" aria-label="Voltar ao início" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg></a>
+    <h1 style="margin: 0; font-weight: 800; font-size: 20px; line-height: 26px; letter-spacing: -0.01em;">Meu pedido</h1>
+  </header>
+
+  <main style="flex: 1; display: flex; flex-direction: column; gap: 24px; padding: 20px 16px 24px;">
+    <div role="status" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 8px; background: #dff5e9; color: #121117; font-size: 15px; line-height: 22px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#17734b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none;"><path d="M20 6 9 17l-5-5"></path></svg><span><strong style="font-weight: 700;">Pedido feito!</strong> Pronto em ~15 min.</span></div>
+
+    <section aria-label="Código do pedido" style="display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; border-radius: 8px; border-style: solid; border-width: 1px; border-color: #8f8e9e; margin-right: 0px; margin-left: 0px; padding-top: 20px; padding-bottom: 20px">
+      <span style="font-size: 13px; line-height: 18px; color: #5c5b6b;">Mostre este código no balcão</span>
+      <span style="font-weight: 800; font-size: 32px; line-height: 40px; letter-spacing: 0.06em; font-variant-numeric: tabular-nums;">CUP-7K3Q9F</span>
+      <button type="button" style="display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 0; border-radius: 8px; background: transparent; color: #121117; font-family: inherit; font-weight: 600; font-size: 14px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>Copiar código</button>
+      <span style="font-size: 14px; line-height: 20px; color: #5c5b6b; font-variant-numeric: tabular-nums;">Ana · Hoje, 14:35 · pronto às 14:50</span>
+    </section>
+
+    <section aria-label="Itens" style="display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 8px; background: #f4f4f6;">
+      <div style="display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 12px; align-items: center;"><img src="../assets/photos/chocolate-crush.jpg" alt="" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; display: block;"><div><div style="font-weight: 600; font-size: 15px; line-height: 20px;">Chocolate Crush</div><div style="font-size: 14px; line-height: 20px; color: #5c5b6b; font-variant-numeric: tabular-nums;">2 × R$ 11,90</div></div><span style="font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums;">R$ 23,80</span></div>
+      <div style="display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 12px; align-items: center;"><img src="../assets/photos/strawberry-kiss.jpg" alt="" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; display: block;"><div><div style="font-weight: 600; font-size: 15px; line-height: 20px;">Strawberry Kiss</div><div style="font-size: 14px; line-height: 20px; color: #5c5b6b; font-variant-numeric: tabular-nums;">1 × R$ 11,90</div></div><span style="font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums;">R$ 11,90</span></div>
+      <div style="display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 12px; align-items: center;"><img src="../assets/photos/birthday-vanilla.jpg" alt="" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; display: block;"><div><div style="font-weight: 600; font-size: 15px; line-height: 20px;">Birthday Vanilla</div><div style="font-size: 14px; line-height: 20px; color: #5c5b6b; font-variant-numeric: tabular-nums;">1 × R$ 9,90</div></div><span style="font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums;">R$ 9,90</span></div>
+      <div style="display: flex; justify-content: space-between; font-size: 15px; border-top: 1px solid #e4e4eb; padding-top: 12px;"><span>Subtotal</span><span style="font-variant-numeric: tabular-nums;">R$ 45,60</span></div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font-weight: 700;">Total a pagar na loja</span><span style="font-weight: 800; font-size: 22px; line-height: 28px; font-variant-numeric: tabular-nums;">R$ 45,60</span></div>
+    </section>
+
+    <section aria-label="Onde retirar" style="display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 22px;">
+      <h2 style="margin: 0; font-weight: 700; font-size: 16px; line-height: 22px;">Onde retirar</h2>
+      <span style="display: flex; gap: 10px; align-items: flex-start;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 1px;"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>Rua das Flores, 123 · Centro · São Paulo, SP</span>
+      <span style="display: flex; gap: 10px; align-items: flex-start;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#121117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 1px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>Ter a dom, 10h às 19h</span>
+    </section>
+
+    <a href="01-catalog.html" style="margin-top: auto; display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 8px; border: 1px solid #8f8e9e; color: #121117; font-weight: 600; font-size: 16px; text-decoration: none;">Voltar ao início</a>
+  </main>
+</div>
+</body>
+</html>

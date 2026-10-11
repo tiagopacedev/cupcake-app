@@ -1,0 +1,35 @@
+@startuml request-lifecycle
+!include ../_style.iuml
+title Cupcake App · API request lifecycle (MVC in apps/api)
+autonumber
+participant "Next.js\n(View)" as V
+participant "Fastify hooks\nrequestId · helmet · cors ·\nrate-limit · logger (redacted)" as H
+participant "Route\n(ROUTER, zod schema)" as R
+participant "Controller" as C
+participant "Service\n(business rules)" as S
+participant "Repository\n(Prisma)" as P
+database "PostgreSQL" as DB
+participant "Global error\nhandler" as E
+
+V -> H : HTTP request
+H -> R : validated by route schema
+alt schema invalid
+  R -> E : ZodError
+  E --> V : 400 { error: { code: VALIDATION_ERROR, fields } }
+else valid
+  R -> C : typed request
+  C -> S : call one service method
+  S -> P : repository calls (optionally in a transaction)
+  P -> DB : SQL
+  DB --> P : rows
+  P --> S : domain data
+  alt domain rule violated
+    S -> E : throw AppError(code, status, details)
+    E --> V : 4xx { error: { code, message, details, requestId } }
+  else ok
+    S --> C : result
+    C --> V : 2xx JSON (shape from openapi.yaml)
+  end
+end
+note over E : Unknown errors → 500 INTERNAL_ERROR,\nlogged with requestId; no stack trace in the response.
+@enduml

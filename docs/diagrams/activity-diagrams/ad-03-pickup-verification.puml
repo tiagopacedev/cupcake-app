@@ -1,0 +1,44 @@
+@startuml ad-03-pickup-verification
+!include ../_style.iuml
+title AD-03 · Order verification and payment at store pickup (UC-06, BR-09, BR-18)
+
+|Customer|
+start
+:Arrive at the store counter;
+:Present order code\n(Meu pedido screen or written);
+repeat
+  |Store staff|
+  :Type the code and open order page /orders/{code};
+  |System|
+  :Find order by code;
+repeat while (Not found and code mistyped?) is (yes: re-type) not (no)
+if (Order found?) then (no)
+  |Store staff|
+  :Do not hand over;\noffer to take a new order at the counter;
+  stop
+else (yes)
+endif
+|System|
+:Show code, status, items, quantities,\n"Total a pagar na loja", first name only;
+|Store staff|
+if (Status = AWAITING_PICKUP?) then (yes)
+  :Gather the listed items;
+  :Charge the total at the counter\n(any method the store accepts);
+  |Customer|
+  :Pay;
+  |Store staff|
+  :Hand over the cupcakes;
+  |Customer|
+  :Receive the order;
+  note right
+    Recording payment and PICKED_UP
+    in the app is future work
+    (out of MVP scope).
+  end note
+  stop
+else (no: already picked up, future)
+  |Store staff|
+  :Explain that the order was already collected;
+  stop
+endif
+@enduml
