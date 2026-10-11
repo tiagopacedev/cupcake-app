@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.2 (Phase 3, 11 Oct 2026) |
+| **Version** | 1.3 (11 Oct 2026) |
 | **Status** | **Approved** by the product owner on 11 Oct 2026 |
 | **Design source** | Claude Design canvas "Cupcake Store Screens" and design system "Cupcake Store" (exported into [`design/`](design/)) |
 | **Related** | [01-prd.md](01-prd.md) (BR, US, SCR IDs) · [03-data-model.md](03-data-model.md) (seed) · [diagrams/user-flows/](diagrams/user-flows/) |
@@ -423,7 +423,9 @@ Every icon-only button has an `aria-label` (§9). Status changes (toast, notices
 | total | Total |
 | cta | Continuar |
 | empty | Carrinho vazio · Escolha seus cupcakes. · Ver cupcakes |
-| adjusted | {nome}: só {n} disponíveis. Quantidade ajustada. |
+| adjusted | {nome}: só {n} disponíveis. Quantidade ajustada. (singular: só 1 disponível) |
+| soldout.removed | {nome} esgotou e saiu do carrinho. |
+| gone.removed *(proposed, E5-11)* | Um item não está mais disponível e saiu do carrinho. · {n} itens não estão mais disponíveis e saíram do carrinho. |
 
 ### 9.3 Checkout
 
@@ -500,6 +502,9 @@ Icons (Lucide): `shopping-bag` (cart), `star` (bestseller, filled on the badge),
 | G-4 | Copy originally marked *(proposed)* in §9 (empty filter, product not found, rate limit, clipboard toast, unknown route) wasn't in the mockups. | **Approved (11 Oct)** — use it as final copy, no longer flagged. |
 | G-5 | Reference screens show fixed artboard heights and sample data. | Pages are fluid; data comes from the API (§1 rule 2). |
 | G-7 | Reference screens use pixel values; the implementation uses the nearest Tailwind step, the Tailwind palette for status tints, shadcn's standard focus ring and button weight (`font-medium`). | Accepted (§4 fidelity note). Structure, main colors, radius and copy must match. |
+| G-8 | Mockup 01 lists the cards with the bestsellers first; the API order (07 §3.3: category `sortOrder`, then seed order) is the specified one. | **API order wins**; the difference to the screenshot is intended. |
+| G-9 | A product deactivated while it sits in a cart is no longer returned, so its name is unknown (the cart stores only id and quantity, BR-17); `adjusted` and `soldout.removed` need the name. | Generic `gone.removed` copy *(proposed, owner to confirm)*. |
+| G-10 | Mockups show the cart only at 390 px; product photos have no per-product alt text in the API; singular "1 item" / "só 1 disponível" isn't in the copy deck. | Cart is centered with `max-w-2xl` on desktop; card photos use the product name as `alt`; singular forms added to the copy (§9.1/§9.2). |
 | G-6 | Store name, address and hours are placeholders ("Rua das Flores, 123 · Centro · São Paulo, SP", "Ter a dom, 10h às 19h"). | Single config module; replace when real data exists (A-03). |
 
 ## 12. Change log
@@ -509,3 +514,4 @@ Icons (Lucide): `shopping-bag` (cart), `star` (bestseller, filled on the badge),
 | 1.0 | 11 Oct 2026 | Approved Phase 3 UI exported from Claude Design: tokens, components, nine screen references with screenshots, routes, behavior rules, copy deck and error map |
 | 1.1 | 11 Oct 2026 | Theme moved to standard Tailwind CSS v4 + shadcn/ui: one `globals.css` with shadcn variables, flattened radius scale and no shadows; components mapped to shadcn primitives and standard variants; Tailwind scale and palette replace custom tokens |
 | 1.2 | 11 Oct 2026 | E0-02 open items closed by the owner: removed the desktop-only checkout subtitle (G-1) from everywhere; added the `privacy.notice` LGPD line under "Seus dados" at checkout (G-2, closes A-08); approved the five previously *(proposed)* copy strings as final (G-4) |
+| 1.3 | 11 Oct 2026 | E5: copy additions (§9.2 `soldout.removed`, *proposed* `gone.removed`, singular forms); gaps G-8…G-10 recorded |
