@@ -1,4 +1,5 @@
 import react from "@vitejs/plugin-react";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
 // 05-testing-strategy.md §4: `json-summary` feeds `scripts/check-
@@ -6,6 +7,8 @@ import { defineConfig } from "vitest/config";
 // for `apps/web` specifically.
 export default defineConfig({
   plugins: [react()],
+  // Same `@/*` alias as tsconfig.json `paths`.
+  resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
   test: {
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -16,7 +17,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={plusJakartaSans.variable}>
-      <body>{children}</body>
+      <body className="flex min-h-screen flex-col">
+        {children}
+        <Toaster
+          position="bottom-center"
+          duration={4000}
+          toastOptions={{ classNames: { toast: "bg-foreground text-background border-0" } }}
+        />
+      </body>
     </html>
   );
 }
