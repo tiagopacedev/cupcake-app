@@ -42,7 +42,16 @@ function SubmitButton({ submitting }: { submitting: boolean }) {
  * (US-11 AC4), validates on blur and on submit (US-12) and handles the API
  * errors of US-15 and US-19.
  */
+/** Main landmark around every state of the checkout (loading, error, form). */
 export function CheckoutView() {
+  return (
+    <main className="flex flex-1 flex-col">
+      <CheckoutBody />
+    </main>
+  );
+}
+
+function CheckoutBody() {
   const router = useRouter();
   const refresh = useCartRefresh();
   const hydrated = useCartStore((state) => state.hydrated);

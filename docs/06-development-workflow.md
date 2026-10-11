@@ -34,6 +34,20 @@ export DIRECT_URL=$DATABASE_URL
 pnpm db:deploy && pnpm test:int
 ```
 
+### End-to-end tests
+
+`pnpm test:e2e` builds and starts the API (port 4100) and the web app (port 3100) itself, in a production build, and resets and re-seeds the test database before every test (one worker, mobile and desktop projects). It needs the Docker database and, like the integration tests, refuses a database whose name lacks `test`:
+
+```bash
+export E2E_DATABASE_URL=postgresql://cupcake:cupcake@localhost:5432/cupcake_test?sslmode=disable
+export DATABASE_URL=$E2E_DATABASE_URL DIRECT_URL=$E2E_DATABASE_URL
+pnpm db:deploy
+pnpm --filter e2e exec playwright install chromium   # once
+pnpm test:e2e
+```
+
+Stop `pnpm dev` first: the E2E build writes the same `apps/web/.next` folder. Screenshots and axe results land in `e2e/artifacts/` (gitignored; CI uploads them as the `e2e-evidence` artifact), the HTML report in `e2e/playwright-report/`. In CI the `e2e` job runs on pushes to `main` and on PRs labeled `e2e`.
+
 ### Root scripts
 
 | Script | Does |
@@ -43,7 +57,7 @@ pnpm db:deploy && pnpm test:int
 | `pnpm lint` · `pnpm format` · `pnpm typecheck` | ESLint, Prettier (check), `tsc --noEmit` in every package |
 | `pnpm test` | Unit + component tests |
 | `pnpm test:int` | API integration, contract and database tests (needs the Docker DB, see below) |
-| `pnpm test:e2e` | Playwright journeys against a production build |
+| `pnpm test:e2e` | Playwright journeys, overflow, axe and screenshots against a production build (see below) |
 | `pnpm db:migrate` / `db:deploy` / `db:seed` / `db:reset` | Prisma migrate dev / migrate deploy / seed / reset (local only) |
 | `pnpm --filter web gen:api` | Regenerate `src/lib/api/schema.d.ts` from `docs/openapi.yaml` |
 
@@ -157,3 +171,4 @@ Neon `main`'s migration history was baselined on 11 Oct 2026 (`prisma migrate re
 | 1.1 | 11 Oct 2026 | D-23: one Vercel project (`cupcake-app`) with `web`/`api` Services instead of two projects |
 | 1.2 | 11 Oct 2026 | E3-03: release workflow is `workflow_dispatch` only (migrate → seed → smoke → tag); runtime packages ship `dist/`; Neon migration history baselined |
 | 1.3 | 11 Oct 2026 | E4: how to run `test:int` against `cupcake_test` |
+| 1.4 | 11 Oct 2026 | E8: how to run `test:e2e` locally and what the CI `e2e` job does |
