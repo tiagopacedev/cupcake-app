@@ -91,9 +91,14 @@ describe("E2-02 schema-diff: migrated DB vs physical-model.sql", () => {
   });
 
   it("has exactly the 7 documented tables", async () => {
+    // `_prisma_migrations` is Prisma's own migration-history bookkeeping
+    // table, created by `prisma migrate deploy` alongside the real schema —
+    // not part of physical-model.sql, so it's excluded here rather than
+    // added to EXPECTED_TABLES.
     const { rows } = await pool.query<{ table_name: string }>(
       `SELECT table_name FROM information_schema.tables
        WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
+         AND table_name <> '_prisma_migrations'
        ORDER BY table_name`,
     );
     expect(rows.map((r) => r.table_name).sort()).toEqual(EXPECTED_TABLES);
@@ -136,9 +141,13 @@ describe("E2-02 schema-diff: migrated DB vs physical-model.sql", () => {
 });
 
 async function constraintNames(pool: Pool, contype: "p" | "f" | "c"): Promise<string[]> {
+  // Excludes `_prisma_migrations` (Prisma's own migration-history
+  // bookkeeping table, not part of physical-model.sql) — see the comment on
+  // the table-listing test above.
   const { rows } = await pool.query<{ conname: string }>(
     `SELECT conname FROM pg_constraint
      WHERE connamespace = 'public'::regnamespace AND contype = $1
+       AND conrelid::regclass::text <> '_prisma_migrations'
      ORDER BY conname`,
     [contype],
   );
