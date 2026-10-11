@@ -1,0 +1,64 @@
+name: Release
+
+# 06-development-workflow.md §6. Run by hand after a merge to `main` has
+# been deployed by Vercel: migrate production (Neon `main`, DIRECT_URL),
+# seed (idempotent, never resets stock), smoke-check the live API through
+# the web origin, and only then tag the release.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag, e.g. v0.1.0"
+        required: true
+
+env:
+  NODE_VERSION: "24"
+  PNPM_VERSION: "10.28.0"
+  PRODUCTION_URL: "https://cupcake-app-iota.vercel.app"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    env:
+      DIRECT_URL: ${{ secrets.DIRECT_URL }}
+      DATABASE_URL: ${{ secrets.DIRECT_URL }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Apply migrations to production
+        run: pnpm db:deploy
+
+      - name: Seed production (idempotent)
+        run: pnpm db:seed
+
+      - name: Smoke check GET /api/health
+        run: |
+          for attempt in 1 2 3 4 5; do
+            body=$(curl -s -m 20 "$PRODUCTION_URL/api/health" || true)
+            echo "attempt $attempt: $body"
+            if echo "$body" | grep -q '"database":"ok"'; then exit 0; fi
+            sleep 10
+          done
+          echo "Health check failed" >&2
+          exit 1
+
+      - name: Tag release
+        run: |
+          git tag "${{ inputs.version }}"
+          git push origin "${{ inputs.version }}"
