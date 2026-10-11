@@ -61,7 +61,7 @@ Versions are the current stable lines on 11 Oct 2026. Pin exact versions in `pac
 | Web framework | Next.js (App Router) | 16.x | Server Components for data pages, Client Components for interactive parts |
 | UI | Tailwind CSS v4 + shadcn/ui (Base UI primitives) + lucide-react + Sonner | latest stable | Theme only in `globals.css` (UI doc §4) |
 | Client state | Zustand with `persist` | 5.x | Cart store; `lastOrderStore` is a tiny typed wrapper over `localStorage` |
-| API framework | Fastify | 5.x | With `@fastify/helmet`, `@fastify/cors`, `@fastify/rate-limit`, `fastify-type-provider-zod` |
+| API framework | Fastify | 5.x | With `@fastify/helmet`, `@fastify/cors`, `@fastify/rate-limit`. Input is validated with Zod in the controllers (a `ZodError` becomes `400 VALIDATION_ERROR` in the global handler); no type provider |
 | Validation | Zod | 4.x | Shared schemas in `packages/shared` |
 | ORM | Prisma ORM | 7.x (`@prisma/client` 7) | `prisma-client` generator, `@prisma/adapter-pg`, `prisma.config.ts`. **Not Prisma 8**: still a release candidate and lacks atomic `increment`/`decrement` and nested writes, which order creation uses. |
 | Database | PostgreSQL | 16 | Neon in the cloud; Docker `postgres:16` locally and in CI |
@@ -93,10 +93,10 @@ cupcake-app/
 │  └─ api/                          # Fastify · ROUTER + CONTROLLER + MODEL
 │     └─ src/
 │        ├─ index.ts                # Vercel entry: buildApp() + listen
-│        ├─ app.ts                  # buildApp(): plugins, routes, error handler (used by tests)
+│        ├─ build-app.ts            # buildApp(): plugins, routes, error handler (used by tests)
 │        ├─ config.ts               # env parsing with Zod (fails fast)
 │        ├─ plugins/                # prisma, security (helmet, cors, rate-limit), request-id
-│        ├─ routes/                 # health, catalog, products, orders
+│        ├─ routes/                 # health, catalog (filters + products), orders
 │        ├─ controllers/            # catalog, orders
 │        ├─ services/               # catalog, order, stock, order-code
 │        ├─ repositories/           # category, tag, product, customer, order
@@ -262,3 +262,4 @@ Business constants (ready minutes, store info, low-stock threshold, line cap 20)
 |---|---|---|
 | 1.0 | 11 Oct 2026 | Initial architecture: MVC mapping, monorepo, stack versions, order transaction, error model, security, configuration, environments, Vercel + Neon hosting |
 | 1.1 | 11 Oct 2026 | D-23: one Vercel project (`cupcake-app`) with `web`/`api` Services instead of two projects; `API_URL` via Services binding |
+| 1.2 | 11 Oct 2026 | E4: controllers validate with Zod (no `fastify-type-provider-zod`); layout matches the code (`build-app.ts`, one catalog routes file) |

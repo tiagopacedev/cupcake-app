@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.0 (Phase 4, 11 Oct 2026) |
+| **Version** | 1.1 (11 Oct 2026) |
 | **Status** | Draft for approval |
 | **Contract** | [`openapi.yaml`](openapi.yaml) (OpenAPI 3.1, validated with Redocly CLI) |
 | **Related** | [02-architecture.md](02-architecture.md) (error model, security) · [01-prd.md](01-prd.md) (BR, US) · [04-ui-design-system.md](04-ui-design-system.md) §9.5 (error → pt-BR) |
@@ -73,7 +73,7 @@ UI chip mapping (`?filter=` on the web): `bestsellers` → `tag=bestseller`; `cl
 | both | `400 VALIDATION_ERROR` (mutually exclusive) |
 | unknown slug | `200` with an empty list (the UI shows the empty state) |
 
-Each product:
+Response `200` is `{ "products": [ … ] }` (`ProductList` in `openapi.yaml`, never a bare array; `{ "products": [] }` for an empty result). Each product:
 
 ```json
 {
@@ -199,3 +199,4 @@ Regenerate whenever `openapi.yaml` changes (CI fails if the committed file is st
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 11 Oct 2026 | Initial contract: health, filters, products, create order, get order; error codes; rate limits |
+| 1.1 | 11 Oct 2026 | E4: §3.3 states the `{ "products": [...] }` envelope that `openapi.yaml` already defined |

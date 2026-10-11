@@ -24,6 +24,16 @@ pnpm db:seed                      # six products, categories, tag
 pnpm dev                          # web :3000 and api :4000 in parallel
 ```
 
+### Integration tests
+
+`pnpm test:int` truncates every table, so it **refuses any database whose name does not contain `test`**. Your `.env` points at `cupcake_dev` (or, if you copied production values, at Neon), so give the run the test database explicitly:
+
+```bash
+export DATABASE_URL=postgresql://cupcake:cupcake@localhost:5432/cupcake_test?sslmode=disable
+export DIRECT_URL=$DATABASE_URL
+pnpm db:deploy && pnpm test:int
+```
+
 ### Root scripts
 
 | Script | Does |
@@ -32,7 +42,7 @@ pnpm dev                          # web :3000 and api :4000 in parallel
 | `pnpm build` | Builds all packages (shared → database → api, web) |
 | `pnpm lint` · `pnpm format` · `pnpm typecheck` | ESLint, Prettier (check), `tsc --noEmit` in every package |
 | `pnpm test` | Unit + component tests |
-| `pnpm test:int` | API integration, contract and database tests (needs Docker DB) |
+| `pnpm test:int` | API integration, contract and database tests (needs the Docker DB, see below) |
 | `pnpm test:e2e` | Playwright journeys against a production build |
 | `pnpm db:migrate` / `db:deploy` / `db:seed` / `db:reset` | Prisma migrate dev / migrate deploy / seed / reset (local only) |
 | `pnpm --filter web gen:api` | Regenerate `src/lib/api/schema.d.ts` from `docs/openapi.yaml` |
@@ -146,3 +156,4 @@ Neon `main`'s migration history was baselined on 11 Oct 2026 (`prisma migrate re
 | 1.0 | 11 Oct 2026 | Initial workflow: setup, scripts, GitHub Flow, Conventional Commits, CI jobs, migrations and seed policy, Vercel/Neon deployment, Claude Code loop, release checklist |
 | 1.1 | 11 Oct 2026 | D-23: one Vercel project (`cupcake-app`) with `web`/`api` Services instead of two projects |
 | 1.2 | 11 Oct 2026 | E3-03: release workflow is `workflow_dispatch` only (migrate → seed → smoke → tag); runtime packages ship `dist/`; Neon migration history baselined |
+| 1.3 | 11 Oct 2026 | E4: how to run `test:int` against `cupcake_test` |
