@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { FastifyInstance } from "fastify";
-import { buildApp } from "../src/app.js";
+import { buildApp } from "../src/build-app.js";
 import { testConfig } from "./helpers/test-config.js";
 import { fakePrismaOk } from "./helpers/fake-prisma.js";
 

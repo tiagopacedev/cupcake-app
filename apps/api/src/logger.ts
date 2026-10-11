@@ -3,7 +3,7 @@ import type { Config } from "./config.js";
 
 /**
  * Logger options shared by the real app and tests (02-architecture.md §8
- * "Logging"). Kept separate from `app.ts` so a unit test can build a pino
+ * "Logging"). Kept separate from `build-app.ts` so a unit test can build a pino
  * instance directly and assert on redaction without going through Fastify.
  */
 export function createLoggerOptions(config: Pick<Config, "LOG_LEVEL" | "NODE_ENV">): LoggerOptions {
