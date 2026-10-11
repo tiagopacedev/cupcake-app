@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.6 (11 Oct 2026) |
+| **Version** | 1.7 (11 Oct 2026) |
 | **Status** | **Approved by the owner on 11 Oct 2026.** E0-01/E0-02 done; **E1 (Foundation) done**, all 7 tasks, lint/typecheck/tests green. E0-03–E0-06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) remain owner-side tasks tracked below — still needed before E3 (CI, cloud deploy). |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
 | **Executor** | Claude Code, one task at a time, reviewed by the owner |
@@ -347,19 +347,19 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E6-04 | ✅ | | [#5](https://github.com/tiagopacedev/cupcake-app/pull/5) | `POST /api/orders`: route (own 10/min rate limit) → controller (shared schema) → `OrderService.create`; `Location` header; malformed JSON now `400` instead of 500 |
 | E6-05 | ✅ | | [#5](https://github.com/tiagopacedev/cupcake-app/pull/5) | One interactive transaction, decrement in product-id order, every short line listed (request order), rollback on shortage, whole-transaction retry on unique violation (max 5). Proven: 2 parallel orders for the last unit → one 201 + one 409; 12 parallel for 5 units → exactly 5 orders; a collision retry decrements stock once. Concurrency tests run 5× without flakes |
 | E6-06 | ✅ | | [#5](https://github.com/tiagopacedev/cupcake-app/pull/5) | `GET /api/orders/{code}`: first name only, `readyAt` = +15 min, price paid kept after catalog price changes, lowercase works, unknown/malformed → 404 |
-| E7-01 | ☐ | | | |
-| E7-02 | ☐ | | | |
-| E7-03 | ☐ | | | |
-| E7-04 | ☐ | | | |
-| E7-05 | ☐ | | | |
-| E7-06 | ☐ | | | |
-| E7-07 | ☐ | | | |
-| E7-08 | ☐ | | | |
-| E7-09 | ☐ | | | |
-| E7-10 | ☐ | | | |
-| E7-11 | ☐ | | | |
-| E7-12 | ☐ | | | |
-| E7-13 | ☐ | | | |
+| E7-01 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | `PickupInfo`: "Retirada" (address + "Pronto em ~15 min · Pagamento na loja"; boxed with name and hours on desktop) and "Onde retirar" (address + hours), all from `STORE`. Footer already covers US-17 AC2 |
+| E7-02 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | `CheckoutView`: Nome + Celular only, phone mask `(DD) 9XXXX-XXXX` (pasted +55 dropped), empty-cart redirect to /cart, "Enviando…" with the button disabled and a ref guard against double submit. Compared with screenshots 04 (390 px) and the 09 structure at 1280 px |
+| E7-03 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | Errors on blur and submit, first invalid field focused, server `fields[]` mapped by path; copy "Informe seu nome." / "Celular inválido. Ex.: (11) 91234-5678" |
+| E7-04 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | `OrderSummary` (checkout variant with "Editar"; `order` variant for Meu pedido), stacked on mobile and as an aside on desktop with the button inside it. Real bug found and fixed: the theme's `overflow-x: hidden` broke `sticky` bars (UI doc G-11) |
+| E7-05 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | "Pagamento na loja" / "Total a pagar na loja"; `no-payment-ui.test.ts` scans every non-test source file for payment wording and fields (one test per file) |
+| E7-06 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | `last-order-store.ts` (`cupcake.lastOrder`: code + createdAt only, zod-validated, try/catch everywhere) and `isToday` in America/Sao_Paulo; tests at 23:59 / 00:01 around the UTC and Sao Paulo midnights |
+| E7-07 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | POST via the typed client; on 201 clear cart, save latest order, `router.replace('/orders/{code}?new=1')`; network error → notice with "Tentar de novo", cart intact. **Journey verified live** (local API + dev database): order placed, cart emptied, latest order saved, retry after a deliberate failure worked |
+| E7-08 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | `interpretFailure`: INSUFFICIENT_STOCK → "{nome}: só N disponível." + "Revisar" + red summary lines (every short line); PRODUCT_NOT_FOUND → "{nome} não está mais disponível."; RATE_LIMITED; cart adjusts on return through the existing refresh |
+| E7-09 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | `/orders/[code]` server-rendered: success notice only for `?new=1` (flag removed from the URL with `history.replaceState`, verified live), code card, summary with "Total a pagar na loja", "Onde retirar", "Voltar ao início". Compared with screenshot 05 |
+| E7-10 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | Clipboard API + toast "Código copiado"; selects the code text when the clipboard refuses or doesn't exist (both tested) |
+| E7-11 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | "Pedido não encontrado" (also the global not-found page, "Página não encontrada"), reopened without notice, error + retry |
+| E7-12 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | `LatestOrderCard` per AD-02: stored + created today + AWAITING_PICKUP; 404 clears the key; network/5xx hides silently and keeps it. Verified live: 358×64 px above the chips |
+| E7-13 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | Manual check at 360 px on a real order: no horizontal overflow, items and quantities at 14 px, code 30 px, total 24 px, no phone; unit tests cover US-20 AC1–AC2 (items/quantities/"Total a pagar na loja"; "Pedido não encontrado") on top of the E6-06 integration tests |
 | E8-01 | ☐ | | | |
 | E8-02 | ☐ | | | |
 | E8-03 | ☐ | | | |
@@ -401,3 +401,4 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | 1.4 | 11 Oct 2026 | E3-03 done, gate G1 approved, tag `v0.1.0`. E4 (Catalog API) complete: contract helper + typed client, `GET /api/products`, stock rules, `GET /api/catalog/filters` |
 | 1.5 | 11 Oct 2026 | E5 (Catalog and cart UI) implemented: SCR-01 and SCR-02, cart store, filters, reconcile; awaiting gate G2 |
 | 1.6 | 11 Oct 2026 | E6 (Orders API) implemented: shared order schema, code generator, atomic order transaction with concurrency tests, public order view |
+| 1.7 | 11 Oct 2026 | E7 (Checkout and Meu pedido UI) implemented: SCR-03, SCR-04, home card, latest-order store; awaiting gate G3 |

@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.3 (11 Oct 2026) |
+| **Version** | 1.4 (11 Oct 2026) |
 | **Status** | **Approved** by the product owner on 11 Oct 2026 |
 | **Design source** | Claude Design canvas "Cupcake Store Screens" and design system "Cupcake Store" (exported into [`design/`](design/)) |
 | **Related** | [01-prd.md](01-prd.md) (BR, US, SCR IDs) · [03-data-model.md](03-data-model.md) (seed) · [diagrams/user-flows/](diagrams/user-flows/) |
@@ -168,7 +168,7 @@ Borders are always 1px (`border`, `border-b`, `border-t`).
 | Desktop (`lg:` ≥ 1024 px) | Container `mx-auto w-full max-w-6xl px-6` (1152 px, the closest standard step to the reference 1120). Header inner row uses the same container. |
 | Catalog grid (desktop) | `sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10` (the reference's auto-fill 280 px gives 3 columns at desktop width). |
 | Checkout (desktop) | `lg:grid lg:grid-cols-5 lg:items-start lg:gap-12`: form column `lg:col-span-3`, summary aside `lg:col-span-2` (`rounded-lg bg-secondary p-6`, contains the CTA). |
-| Overflow | `overflow-x-hidden` on `html, body` (in `globals.css`) and `min-w-0` on flex/grid children. No element may exceed the viewport (NFR-01). |
+| Overflow | `overflow-x-clip` on `html, body` (in `globals.css`; not `hidden`, which would turn `body` into a scroll container and break `sticky` bars) and `min-w-0` on flex/grid children. No element may exceed the viewport (NFR-01). |
 | Touch targets | ≥ 44 × 44 px (`size-11` icon buttons; 40 px chips and steppers keep at least 44 px of hit area including gaps; NFR-03). |
 | Sticky action bar | `sticky bottom-0 bg-background px-4 pt-3 pb-5`, no border, no shadow; holds one `Button size="lg" className="h-12 w-full"`. |
 
@@ -505,6 +505,8 @@ Icons (Lucide): `shopping-bag` (cart), `star` (bestseller, filled on the badge),
 | G-8 | Mockup 01 lists the cards with the bestsellers first; the API order (07 §3.3: category `sortOrder`, then seed order) is the specified one. | **API order wins**; the difference to the screenshot is intended. |
 | G-9 | A product deactivated while it sits in a cart is no longer returned, so its name is unknown (the cart stores only id and quantity, BR-17); `adjusted` and `soldout.removed` need the name. | Generic `gone.removed` copy *(proposed, owner to confirm)*. |
 | G-10 | Mockups show the cart only at 390 px; product photos have no per-product alt text in the API; singular "1 item" / "só 1 disponível" isn't in the copy deck. | Cart is centered with `max-w-2xl` on desktop; card photos use the product name as `alt`; singular forms added to the copy (§9.1/§9.2). |
+| G-11 | The approved `globals.css` used `overflow-x: hidden` on `html, body`, which makes `body` a scroll container and silently breaks every `sticky bottom-0` action bar on pages taller than the screen (found on the checkout). | Changed to `overflow-x: clip` in `globals.css` (and its copy in `design/theme/`): same "never scroll sideways", sticky works. §5 updated. |
+| G-12 | Submit failures (network, 5xx) have no dedicated copy; Meu pedido lists items in cart order in the mockup, but the cart order isn't stored. | The error map's "Não foi possível carregar · Verifique sua conexão." is reused with "Tentar de novo"; items are sorted by name (07 §3.4). |
 | G-6 | Store name, address and hours are placeholders ("Rua das Flores, 123 · Centro · São Paulo, SP", "Ter a dom, 10h às 19h"). | Single config module; replace when real data exists (A-03). |
 
 ## 12. Change log
@@ -515,3 +517,4 @@ Icons (Lucide): `shopping-bag` (cart), `star` (bestseller, filled on the badge),
 | 1.1 | 11 Oct 2026 | Theme moved to standard Tailwind CSS v4 + shadcn/ui: one `globals.css` with shadcn variables, flattened radius scale and no shadows; components mapped to shadcn primitives and standard variants; Tailwind scale and palette replace custom tokens |
 | 1.2 | 11 Oct 2026 | E0-02 open items closed by the owner: removed the desktop-only checkout subtitle (G-1) from everywhere; added the `privacy.notice` LGPD line under "Seus dados" at checkout (G-2, closes A-08); approved the five previously *(proposed)* copy strings as final (G-4) |
 | 1.3 | 11 Oct 2026 | E5: copy additions (§9.2 `soldout.removed`, *proposed* `gone.removed`, singular forms); gaps G-8…G-10 recorded |
+| 1.4 | 11 Oct 2026 | E7: gaps G-11 (`overflow-x: clip`) and G-12; `Notice` has success/warning/error tones with an optional action |
