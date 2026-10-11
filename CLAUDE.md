@@ -111,5 +111,5 @@ The UI was approved in Phase 3. Build it to match, not to reinterpret.
 
 ## 10. Current phase
 
-**Phase 5: Implementation, Phase E1 (Foundation) in progress** (execution plan gate G0 approved 11 Oct 2026, see `docs/08-execution-plan.md` §16 gate log). E0-03/04/05/06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) are still open owner-side tasks, tracked but not blocking E1.
-Available: `00` (v1.4), `01` (v1.2), `02`, `03` (v1.1), `04` (v1.2, approved UI) with `docs/design/`, `05`, `06`, `07` + `openapi.yaml`, `08` (v1.1, execution plan), `docs/diagrams/` (see its README).
+**Phase 5: Implementation. E1 (Foundation) done; next is E2 (Database)** (execution plan gate G0 approved 11 Oct 2026, see `docs/08-execution-plan.md` §16 gate log). E0-03/04/05/06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) are still open owner-side tasks, tracked but not blocking E1/E2.
+Available: `00` (v1.4), `01` (v1.2), `02`, `03` (v1.1), `04` (v1.2, approved UI) with `docs/design/`, `05`, `06`, `07` + `openapi.yaml`, `08` (v1.2, execution plan), `docs/diagrams/` (see its README). Code: `apps/web`, `apps/api`, `packages/shared` scaffolded and tested; `packages/database` is still an empty placeholder (E2).

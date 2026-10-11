@@ -1,0 +1,15 @@
+pnpm-lock.yaml
+**/dist/**
+**/build/**
+**/.next/**
+**/coverage/**
+**/generated/**
+
+# Hand-authored specification and planning documents (not reformatted by
+# Prettier): tables, diagram sources and the approved static design mockups.
+docs/**
+CLAUDE.md
+README.md
+
+# Verbatim copy of the approved docs/design/theme/globals.css (04-ui-design-system.md §1).
+apps/web/src/app/globals.css
