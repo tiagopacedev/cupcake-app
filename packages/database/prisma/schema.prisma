@@ -1,0 +1,136 @@
+// Prisma schema (02-architecture.md §4, docs/03-data-model.md §10 "Notes for
+// Phase 4"). This is the source of truth for the TypeScript model; the
+// physical DDL — including the CHECK constraints Prisma can't express — is
+// docs/diagrams/database/physical-model.sql. Every constraint/index name
+// here is pinned with `map` to match that file exactly, so the two stay
+// equivalent (verified by a schema-diff test, 05-testing-strategy.md §3.3)
+// and so `prisma migrate dev` never tries to rename anything later.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/client"
+
+  runtime                = "nodejs"
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+  // "js", not "ts": the repo's tsconfig.base.json uses module/moduleResolution
+  // "NodeNext" (tsc build, no `allowImportingTsExtensions`), so every relative
+  // import in this monorepo — hand-written or generated — must reference the
+  // emitted ".js" name even though the source file on disk is ".ts" (see any
+  // hand-written file, e.g. apps/api/src/app.ts importing "./config.js").
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PickupStatus {
+  AWAITING_PICKUP
+  PICKED_UP
+
+  @@map("pickup_status")
+}
+
+model Category {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String    @db.VarChar(50)
+  slug      String    @db.VarChar(50)
+  sortOrder Int       @default(0) @map("sort_order") @db.SmallInt
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  products  Product[]
+
+  @@unique([name], map: "categories_name_key")
+  @@unique([slug], map: "categories_slug_key")
+  @@map("categories")
+}
+
+model Tag {
+  id        String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String       @db.VarChar(50)
+  slug      String       @db.VarChar(50)
+  createdAt DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime     @updatedAt @map("updated_at") @db.Timestamptz
+  products  ProductTag[]
+
+  @@unique([name], map: "tags_name_key")
+  @@unique([slug], map: "tags_slug_key")
+  @@map("tags")
+}
+
+model Product {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  categoryId    String       @map("category_id") @db.Uuid
+  name          String       @db.VarChar(80)
+  slug          String       @db.VarChar(80)
+  description   String       @db.VarChar(300)
+  priceCents    Int          @map("price_cents")
+  stockQuantity Int          @default(0) @map("stock_quantity")
+  imageUrl      String       @map("image_url") @db.VarChar(500)
+  isActive      Boolean      @default(true) @map("is_active")
+  createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime     @updatedAt @map("updated_at") @db.Timestamptz
+  category      Category     @relation(fields: [categoryId], references: [id], map: "products_category_fk")
+  tags          ProductTag[]
+  orderItems    OrderItem[]
+
+  @@unique([name], map: "products_name_key")
+  @@unique([slug], map: "products_slug_key")
+  @@index([categoryId], map: "products_category_id_idx")
+  @@map("products")
+}
+
+model ProductTag {
+  productId String  @map("product_id") @db.Uuid
+  tagId     String  @map("tag_id") @db.Uuid
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, map: "product_tags_product_fk")
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade, map: "product_tags_tag_fk")
+
+  @@id([productId, tagId], map: "product_tags_pkey")
+  @@index([tagId], map: "product_tags_tag_id_idx")
+  @@map("product_tags")
+}
+
+model Customer {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String   @db.VarChar(80)
+  phone     String   @db.VarChar(14)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+  orders    Order[]
+
+  @@unique([phone], map: "customers_phone_key")
+  @@map("customers")
+}
+
+model Order {
+  id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code         String       @db.VarChar(10)
+  customerId   String       @map("customer_id") @db.Uuid
+  totalCents   Int          @map("total_cents")
+  pickupStatus PickupStatus @default(AWAITING_PICKUP) @map("pickup_status")
+  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime     @updatedAt @map("updated_at") @db.Timestamptz
+  customer     Customer     @relation(fields: [customerId], references: [id], map: "orders_customer_fk")
+  items        OrderItem[]
+
+  @@unique([code], map: "orders_code_key")
+  @@index([customerId], map: "orders_customer_id_idx")
+  @@map("orders")
+}
+
+model OrderItem {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId        String   @map("order_id") @db.Uuid
+  productId      String   @map("product_id") @db.Uuid
+  quantity       Int
+  unitPriceCents Int      @map("unit_price_cents")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  order          Order    @relation(fields: [orderId], references: [id], onDelete: Cascade, map: "order_items_order_fk")
+  product        Product  @relation(fields: [productId], references: [id], map: "order_items_product_fk")
+
+  @@unique([orderId, productId], map: "order_items_order_product_key")
+  @@index([productId], map: "order_items_product_id_idx")
+  @@map("order_items")
+}

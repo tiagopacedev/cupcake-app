@@ -10,5 +10,5 @@ coverage/
 !.env.example
 .turbo/
 .DS_Store
-packages/database/generated/
+packages/database/src/generated/
 *.tsbuildinfo
