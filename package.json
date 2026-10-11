@@ -10,7 +10,7 @@
   "packageManager": "pnpm@10.28.0",
   "scripts": {
     "dev": "pnpm --filter shared run build && pnpm --parallel --filter shared --filter web --filter api dev",
-    "build": "pnpm --filter shared build && pnpm --filter database build && pnpm --filter api build && pnpm --filter web build",
+    "build": "pnpm --filter shared build && pnpm --filter database build && pnpm --filter api build:dist && pnpm --filter web build",
     "lint": "pnpm -r run lint",
     "lint:openapi": "redocly lint docs/openapi.yaml",
     "format": "prettier --check .",

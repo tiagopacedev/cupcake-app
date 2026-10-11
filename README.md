@@ -2,7 +2,7 @@
 
 Mobile-first web store for a cupcake shop: browse, add to cart, check out with just a name and phone, and pick up (and pay) at the counter. Built for the PIT II (Software Engineering) course as a spec-driven, AI-assisted project — see [`docs/00-project-overview.md`](docs/00-project-overview.md).
 
-**Status:** Phase E1 (foundation) in progress. No public URL yet — walking skeleton deploy is **E3** (`docs/08-execution-plan.md`).
+**Status:** walking skeleton (E3) deployed; catalog work (E4) next — see `docs/08-execution-plan.md` §16.
 
 ## Documentation
 
@@ -38,7 +38,9 @@ Full workflow (branching, commits, CI, releases): [`docs/06-development-workflow
 
 ## Live links
 
-_Added at gate G1 (walking skeleton, `docs/08-execution-plan.md`)._
+- Web: https://cupcake-app-iota.vercel.app
+- API health: https://cupcake-app-iota.vercel.app/api/health
+- Repository: https://github.com/tiagopacedev/cupcake-app
 
 ## AI assistance disclosure
 

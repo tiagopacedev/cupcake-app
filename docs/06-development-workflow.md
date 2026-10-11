@@ -92,7 +92,7 @@ A PR can merge only when `quality` and `test` are green.
 
 | Environment | How it's deployed | Database |
 |---|---|---|
-| Preview | Vercel Git integration: every PR builds one `cupcake-app` preview (both Services, one domain) — `web`'s `API_URL` comes from the Services binding, not a per-PR value | Neon branch `preview` (migrated by the release workflow on demand) |
+| Preview | Vercel Git integration: every PR builds one `cupcake-app` preview (both Services, one domain) — `web`'s `API_URL` comes from the Services binding, not a per-PR value | Neon branch `preview` (migrated and seeded by hand when a migration lands; the release workflow targets production only) |
 | Production | Merge to `main` → Vercel production deployment of `cupcake-app` (both Services) | Neon `main` |
 
 Vercel project (D-23, `vercel.json` at repo root — one project, two Services):
@@ -100,11 +100,15 @@ Vercel project (D-23, `vercel.json` at repo root — one project, two Services):
 | Service | Root directory | Build | Env vars |
 |---|---|---|---|
 | `web` | `apps/web` | Next.js (zero-config) | `NEXT_PUBLIC_SITE_URL`; `API_URL` via Services binding to `api` |
-| `api` | `apps/api` | Fastify zero-config (entry `src/index.ts`) | `DATABASE_URL`, `WEB_ORIGIN`, `LOG_LEVEL` |
+| `api` | `apps/api` | Fastify zero-config (entry `src/index.ts`, compiled by Vercel itself). `apps/api` deliberately has no `build` script (it's `build:dist`): with one, Vercel deploys our `tsc` output flattened to the function root, away from `node_modules`, and the function can't load | `DATABASE_URL`, `WEB_ORIGIN`, `LOG_LEVEL` |
 
-Release workflow (manual `workflow_dispatch` or tag `v*`): `prisma migrate deploy` (production `DIRECT_URL` from GitHub secrets) → smoke check `GET /api/health` on the production API → tag `vX.Y.Z`. Rollback: Vercel Instant Rollback for code; migrations are additive (fix forward).
+Release workflow (`.github/workflows/release.yml`, manual `workflow_dispatch` with a `version` input, run after Vercel has deployed `main`): `prisma migrate deploy` (production `DIRECT_URL` from the GitHub secret of the same name) → `pnpm db:seed` (idempotent) → smoke check `GET /api/health` through the web origin until `database` is `ok` → create and push tag `vX.Y.Z`. The tag is an output of the workflow, never its trigger. Rollback: Vercel Instant Rollback for code; migrations are additive (fix forward).
 
 Secrets live in Vercel and GitHub only; `.env.example` lists every variable without values.
+
+Workspace packages consumed at runtime by `api` (`shared`, `database`) export compiled `dist/` output, built on `pnpm install` (`postinstall`): Node on Vercel can't run their TypeScript sources. After changing either package locally, rebuild it (`pnpm --filter <pkg> build`) or re-run `pnpm install`.
+
+Neon `main`'s migration history was baselined on 11 Oct 2026 (`prisma migrate resolve --applied` for the two E2 migrations, which had been applied by hand), so `migrate deploy` only applies new migrations from here on. Neon `preview` was empty and got `migrate deploy` + seed the same day.
 
 ## 7. Working with Claude Code
 
@@ -141,3 +145,4 @@ Secrets live in Vercel and GitHub only; `.env.example` lists every variable with
 |---|---|---|
 | 1.0 | 11 Oct 2026 | Initial workflow: setup, scripts, GitHub Flow, Conventional Commits, CI jobs, migrations and seed policy, Vercel/Neon deployment, Claude Code loop, release checklist |
 | 1.1 | 11 Oct 2026 | D-23: one Vercel project (`cupcake-app`) with `web`/`api` Services instead of two projects |
+| 1.2 | 11 Oct 2026 | E3-03: release workflow is `workflow_dispatch` only (migrate → seed → smoke → tag); runtime packages ship `dist/`; Neon migration history baselined |
