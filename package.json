@@ -1,0 +1,38 @@
+{
+  "name": "cupcake-app",
+  "private": true,
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=22.11.0",
+    "pnpm": ">=10.0.0"
+  },
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "dev": "pnpm --filter shared run build && pnpm --parallel --filter shared --filter web --filter api dev",
+    "build": "pnpm --filter shared build && pnpm --filter database build && pnpm --filter api build && pnpm --filter web build",
+    "lint": "pnpm -r run lint",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r run test",
+    "test:int": "pnpm --filter api run test:int",
+    "test:e2e": "pnpm --filter e2e run test:e2e",
+    "db:migrate": "pnpm --filter database run db:migrate",
+    "db:deploy": "pnpm --filter database run db:deploy",
+    "db:seed": "pnpm --filter database run db:seed",
+    "db:reset": "pnpm --filter database run db:reset"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.0",
+    "eslint": "9.39.0",
+    "eslint-config-prettier": "10.1.8",
+    "prettier": "3.6.2",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.46.3"
+  }
+}

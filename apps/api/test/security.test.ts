@@ -1,0 +1,48 @@
+import { afterEach, describe, expect, it } from "vitest";
+import type { FastifyInstance } from "fastify";
+import { buildApp } from "../src/app.js";
+import { testConfig } from "./helpers/test-config.js";
+
+describe("E1-06 security plugins", () => {
+  let app: FastifyInstance | undefined;
+
+  afterEach(async () => {
+    await app?.close();
+    app = undefined;
+  });
+
+  it("sets Access-Control-Allow-Origin for the configured WEB_ORIGIN", async () => {
+    app = await buildApp(testConfig({ WEB_ORIGIN: "https://cupcake-web.example" }));
+    const res = await app.inject({
+      method: "GET",
+      url: "/api/health",
+      headers: { origin: "https://cupcake-web.example" },
+    });
+    expect(res.headers["access-control-allow-origin"]).toBe("https://cupcake-web.example");
+  });
+
+  it("does not grant CORS to a different origin", async () => {
+    app = await buildApp(testConfig({ WEB_ORIGIN: "https://cupcake-web.example" }));
+    const res = await app.inject({
+      method: "GET",
+      url: "/api/health",
+      headers: { origin: "https://evil.example" },
+    });
+    expect(res.headers["access-control-allow-origin"]).toBeUndefined();
+  });
+
+  it("sets helmet security headers", async () => {
+    app = await buildApp(testConfig());
+    const res = await app.inject({ method: "GET", url: "/api/health" });
+    expect(res.headers["x-content-type-options"]).toBe("nosniff");
+  });
+
+  it("returns 429 RATE_LIMITED once a low limit is exceeded", async () => {
+    app = await buildApp(testConfig({ RATE_LIMIT_MAX: 2, RATE_LIMIT_WINDOW_MS: 60_000 }));
+    await app.inject({ method: "GET", url: "/api/health" });
+    await app.inject({ method: "GET", url: "/api/health" });
+    const res = await app.inject({ method: "GET", url: "/api/health" });
+    expect(res.statusCode).toBe(429);
+    expect(res.json().error.code).toBe("RATE_LIMITED");
+  });
+});

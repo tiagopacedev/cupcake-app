@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| **Version** | 1.1 (11 Oct 2026) |
-| **Status** | **Approved by the owner on 11 Oct 2026.** E0-01/E0-02 done; E0-03–E0-06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) remain owner-side tasks tracked below. The owner explicitly authorized starting **E1** in parallel with those, since E1 is local scaffolding and touches no external account. |
+| **Version** | 1.2 (11 Oct 2026) |
+| **Status** | **Approved by the owner on 11 Oct 2026.** E0-01/E0-02 done; **E1 (Foundation) done**, all 7 tasks, lint/typecheck/tests green. E0-03–E0-06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) remain owner-side tasks tracked below — still needed before E3 (CI, cloud deploy). |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
 | **Executor** | Claude Code, one task at a time, reviewed by the owner |
 | **Related** | [CLAUDE.md](../CLAUDE.md) · [01-prd.md](01-prd.md) §9–§10 (backlog, T-ids) · [02-architecture.md](02-architecture.md) · [04-ui-design-system.md](04-ui-design-system.md) · [05-testing-strategy.md](05-testing-strategy.md) · [06-development-workflow.md](06-development-workflow.md) · [07-api-spec.md](07-api-spec.md) |
@@ -311,13 +311,13 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E0-04 | ☐ | | | |
 | E0-05 | ☐ | | | |
 | E0-06 | ☐ | | | |
-| E1-01 | ☐ | | | |
-| E1-02 | ☐ | | | |
-| E1-03 | ☐ | | | |
-| E1-04 | ☐ | | | |
-| E1-05 | ☐ | | | |
-| E1-06 | ☐ | | | |
-| E1-07 | ☐ | | | |
+| E1-01 | ✅ | 2 | n/a (repo not on GitHub yet, E0-04) | pnpm workspace, tsconfig.base.json, ESLint 9 flat + Prettier, .nvmrc (24), .editorconfig; `pnpm install/lint/typecheck` pass. Sandbox runs Node 22.22, not 24 LTS (E0-05/CI/Vercel will use 24) |
+| E1-02 | ✅ | 1 | n/a | `store.ts`, `error-codes.ts`, `index.ts`; contract test parses `openapi.yaml`'s `ErrorCode` enum and asserts equality — 8/8 tests pass |
+| E1-03 | ✅ | 1 | n/a | Next.js 16 App Router, Tailwind v4 + `@tailwindcss/postcss`, `globals.css` copied verbatim from `docs/design/theme/`, Plus Jakarta Sans via `next/font/google`, `/api` rewrite, security headers, placeholder home, `components.json` + `lib/utils.ts` (shadcn init, `components/ui` left empty for E5). `next dev` serves 200; **`next build` could not be verified in this sandbox** — its network allowlist blocks `fonts.googleapis.com` (403), which Turbopack's production build treats as fatal (dev mode only warns and falls back). Will be confirmed at E3 in CI/Vercel, which have normal internet access |
+| E1-04 | ✅ | 3 | n/a | `buildApp()`/`index.ts`, Zod `config.ts` (fails fast, `DATABASE_URL`/`DIRECT_URL` optional until E2), `GET /api/health`, pino logger, `x-request-id` echoed/generated. Verified both via `vitest`/`inject` and by running the real built `dist/index.js` and curling `/api/health` and an unknown route |
+| E1-05 | ✅ | 1 | n/a | `AppError`, global handler mapping `AppError` → its code, Zod/Fastify-schema errors → `VALIDATION_ERROR`, 404 → `NOT_FOUND`, 429 → `RATE_LIMITED`, anything else → `INTERNAL_ERROR` with no stack in the body (stack only logged). 5/5 tests pass |
+| E1-06 | ✅ | 3 | n/a | `@fastify/helmet`, `@fastify/cors` (origin allow-list = `WEB_ORIGIN`), `@fastify/rate-limit` (default 120/min, test-overridable), pino `redact` for `*.phone`/customer name. Tests: CORS header present/absent by origin, helmet header set, 429 after a low test limit, two redaction tests confirming no raw phone reaches the log stream |
+| E1-07 | ✅ | 1 | n/a | `docker-compose.yml` (postgres:16, `cupcake_dev` + an init script creating `cupcake_test`), `.env.example`, root `README.md` "Local setup". **Not run in this sandbox** — no Docker daemon available here; local PostgreSQL 16 (installed from Phase 2) was used directly instead to smoke-test the API. `docker compose up -d db` itself is unverified and should be checked on the owner's machine or in CI |
 | E2-01 | ☐ | | | |
 | E2-02 | ☐ | | | |
 | E2-03 | ☐ | | | |
@@ -396,3 +396,4 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 |---|---|---|
 | 1.0 | 11 Oct 2026 | Initial plan: 11 phases, 72 tasks, dependencies, acceptance criteria, gates G0–G6, tracker |
 | 1.1 | 11 Oct 2026 | Gate G0 partially closed: plan approved, E0-02 design decisions applied; E1 authorized to start |
+| 1.2 | 11 Oct 2026 | E1 (Foundation) complete: monorepo, `packages/shared`, `apps/web` and `apps/api` scaffolds, error model, security plugins, local DB/env files. 27 tests passing; two items (`next build` production font fetch, `docker compose up`) could not be verified in this sandbox and need a check in CI/on the owner's machine (see §16 notes) |
