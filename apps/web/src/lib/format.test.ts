@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatDayMonth, formatPrice, formatTime } from "./format";
+import { formatDayMonth, formatPrice, formatTime, isToday } from "./format";
 
 describe("NFR-04 money format", () => {
   it.each([
@@ -23,5 +23,27 @@ describe("NFR-04 times in America/Sao_Paulo (UTC-3, no DST)", () => {
     // 01:30 UTC on the 12th is still 22:30 on the 11th in Sao Paulo.
     expect(formatDayMonth("2026-10-12T01:30:00.000Z")).toBe("11/10");
     expect(formatDayMonth("2026-10-12T03:00:00.000Z")).toBe("12/10");
+  });
+});
+
+describe("BR-19 'today' in America/Sao_Paulo", () => {
+  const at = (iso: string) => new Date(iso);
+
+  it("is true for the same Sao Paulo calendar day", () => {
+    expect(isToday("2026-10-11T12:00:00.000Z", at("2026-10-11T20:00:00.000Z"))).toBe(true);
+  });
+
+  it("23:59 in Sao Paulo (02:59 UTC next day) is still the same day as 00:01 earlier", () => {
+    // 2026-10-12T02:59Z = 23:59 on the 11th; 2026-10-11T03:01Z = 00:01 on the 11th.
+    expect(isToday("2026-10-11T03:01:00.000Z", at("2026-10-12T02:59:00.000Z"))).toBe(true);
+  });
+
+  it("00:01 on the 12th in Sao Paulo (03:01 UTC) is a different day from 23:59 on the 11th", () => {
+    expect(isToday("2026-10-12T02:59:00.000Z", at("2026-10-12T03:01:00.000Z"))).toBe(false);
+  });
+
+  it("is false for yesterday and tomorrow", () => {
+    expect(isToday("2026-10-10T15:00:00.000Z", at("2026-10-11T15:00:00.000Z"))).toBe(false);
+    expect(isToday("2026-10-12T15:00:00.000Z", at("2026-10-11T15:00:00.000Z"))).toBe(false);
   });
 });
