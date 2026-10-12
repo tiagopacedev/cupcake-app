@@ -19,7 +19,7 @@ describe("US-07 cart badge in the catalog header", () => {
     render(<AppHeader variant="catalog" />);
     const cart = screen.getByRole("link", { name: "Carrinho, 5 itens" });
     expect(cart).toHaveAttribute("href", "/cart");
-    expect(cart).toHaveTextContent("Carrinho5");
+    expect(cart).toHaveTextContent("Carrinho5"); // the word is hidden below `lg`
   });
 
   it("shows no number when the cart is empty (AC2)", () => {

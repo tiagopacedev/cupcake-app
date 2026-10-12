@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
  * filter lives in the URL (`?filter=`), so reload and share keep it. The row
  * sticks just below the sticky header while the catalog scrolls (US-02 AC5;
  * `top-18`/`lg:top-20` = the header height); the
- * `-my-2 py-2` pair keeps the spacing of the approved layout while giving the
+ * `-mt-1 pt-1` / `-mb-4 pb-4` pairs keeps the spacing of the approved layout while giving the
  * opaque background some margin over the cards scrolling beneath it.
  */
 export function FilterChips({ selected }: { selected: FilterKey | null }) {
@@ -23,7 +23,7 @@ export function FilterChips({ selected }: { selected: FilterKey | null }) {
     <div
       role="group"
       aria-label="Filtrar cupcakes"
-      className="sticky top-18 z-10 -mx-4 -my-2 flex gap-2 overflow-x-auto bg-background px-4 py-2 [scrollbar-width:none] lg:top-20 lg:mx-0 lg:flex-wrap lg:px-0"
+      className="sticky top-18 z-10 -mx-4 -mt-1 -mb-4 flex gap-2 overflow-x-auto bg-background px-4 pt-1 pb-4 [scrollbar-width:none] lg:top-20 lg:mx-0 lg:flex-wrap lg:px-0"
     >
       {FILTER_CHIPS.map(({ key, label }) => {
         const isSelected = key === selected;

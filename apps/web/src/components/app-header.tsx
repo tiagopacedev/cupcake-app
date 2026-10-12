@@ -20,7 +20,7 @@ type AppHeaderProps =
 export function AppHeader(props: AppHeaderProps) {
   if (props.variant === "checkout") {
     return (
-      <header className="sticky top-0 z-20 border-b bg-background">
+      <header className="sticky top-0 z-20 bg-background">
         <div className="mx-auto flex w-full max-w-6xl items-center gap-1 py-2 pr-4 pl-2 lg:hidden">
           <Button asChild variant="ghost" size="icon" className="size-11">
             <Link href="/cart" aria-label="Voltar">
@@ -46,7 +46,7 @@ export function AppHeader(props: AppHeaderProps) {
 
   if (props.variant === "inner") {
     return (
-      <header className="sticky top-0 z-20 border-b bg-background">
+      <header className="sticky top-0 z-20 bg-background">
         <div className="mx-auto flex w-full max-w-6xl items-center gap-1 py-2 pr-4 pl-2 lg:px-6">
           <Button asChild variant="ghost" size="icon" className="size-11">
             <Link href={props.backHref} aria-label={props.backLabel ?? "Voltar"}>
@@ -60,7 +60,7 @@ export function AppHeader(props: AppHeaderProps) {
   }
 
   return (
-    <header className="sticky top-0 z-20 h-18 border-b bg-background lg:h-20">
+    <header className="sticky top-0 z-20 h-18 bg-background lg:h-20">
       <div className="mx-auto flex h-full w-full max-w-6xl items-center justify-between gap-3 px-4 lg:px-6">
         <Link href="/" className="text-xl font-extrabold tracking-tight lg:text-2xl">
           {STORE.name}
