@@ -48,7 +48,7 @@ export function LatestOrderCard() {
     <Link
       href={`/orders/${code}`}
       aria-label={`Seu pedido ${code}, aguardando retirada`}
-      className="flex items-center gap-3 rounded-lg bg-secondary py-3 pr-3 pl-4 lg:max-w-md"
+      className="flex items-center gap-3 rounded-lg bg-secondary py-3 pr-3 pl-4"
     >
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="text-xs text-muted-foreground">Seu pedido</span>
