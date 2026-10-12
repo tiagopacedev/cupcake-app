@@ -126,7 +126,7 @@ Vercel project (D-23, `vercel.json` at repo root — one project, two Services):
 | `web` | `apps/web` | Next.js (zero-config) | `NEXT_PUBLIC_SITE_URL`; `API_URL` via Services binding to `api` |
 | `api` | `apps/api` | Fastify zero-config (entry `src/index.ts`, compiled by Vercel itself). `apps/api` deliberately has no `build` script (it's `build:dist`): with one, Vercel deploys our `tsc` output flattened to the function root, away from `node_modules`, and the function can't load | `DATABASE_URL`, `WEB_ORIGIN`, `LOG_LEVEL` |
 
-Release workflow (`.github/workflows/release.yml`, manual `workflow_dispatch` with a `version` input, run after Vercel has deployed `main`): `prisma migrate deploy` (production `DIRECT_URL` from the GitHub secret of the same name) → `pnpm db:seed` (idempotent) → smoke check `GET /api/health` through the web origin until `database` is `ok` → create and push tag `vX.Y.Z`. The tag is an output of the workflow, never its trigger. Rollback: Vercel Instant Rollback for code; migrations are additive (fix forward).
+Release workflow (`.github/workflows/release.yml`, manual `workflow_dispatch` with a `version` input, run after Vercel has deployed `main`): `prisma migrate deploy` (production `DIRECT_URL` from the GitHub secret of the same name) → `pnpm db:seed` (idempotent) → smoke check `GET /api/health` through the web origin until `database` is `ok`, then that the first product photo of the catalog page loads (`200 image/*`) → create and push tag `vX.Y.Z`. The tag is an output of the workflow, never its trigger. Rollback: Vercel Instant Rollback for code; migrations are additive (fix forward).
 
 Secrets live in Vercel and GitHub only; `.env.example` lists every variable without values.
 
@@ -172,3 +172,4 @@ Neon `main`'s migration history was baselined on 11 Oct 2026 (`prisma migrate re
 | 1.2 | 11 Oct 2026 | E3-03: release workflow is `workflow_dispatch` only (migrate → seed → smoke → tag); runtime packages ship `dist/`; Neon migration history baselined |
 | 1.3 | 11 Oct 2026 | E4: how to run `test:int` against `cupcake_test` |
 | 1.4 | 11 Oct 2026 | E8: how to run `test:e2e` locally and what the CI `e2e` job does |
+| 1.5 | 11 Oct 2026 | Release workflow also smoke-tests a product photo |
