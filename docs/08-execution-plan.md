@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.8 (11 Oct 2026) |
+| **Version** | 1.9 (11 Oct 2026) |
 | **Status** | **Approved by the owner on 11 Oct 2026.** E0-01/E0-02 done; **E1 (Foundation) done**, all 7 tasks, lint/typecheck/tests green. E0-03–E0-06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) remain owner-side tasks tracked below — still needed before E3 (CI, cloud deploy). |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
 | **Executor** | Claude Code, one task at a time, reviewed by the owner |
@@ -403,3 +403,4 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | 1.6 | 11 Oct 2026 | E6 (Orders API) implemented: shared order schema, code generator, atomic order transaction with concurrency tests, public order view |
 | 1.7 | 11 Oct 2026 | E7 (Checkout and Meu pedido UI) implemented: SCR-03, SCR-04, home card, latest-order store; awaiting gate G3 |
 | 1.8 | 11 Oct 2026 | E8-01 (Playwright journeys, CI job) and E8-02 (overflow, axe, Lighthouse) done; E8-03…E8-08 pending |
+| 1.9 | 11 Oct 2026 | Owner feedback on the live app: product photos were broken in production (`/_next/image` 404 behind Vercel Services; photos now unoptimized, E2E + release smoke test added) and the filter chips are now sticky (US-02 AC5) |

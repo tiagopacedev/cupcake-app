@@ -58,6 +58,17 @@ jobs:
           echo "Health check failed" >&2
           exit 1
 
+      # A page can be healthy while its photos are broken (the /_next/image 404 in
+      # production): fetch the first product photo the catalog page points at.
+      - name: Smoke check the first product photo
+        run: |
+          src=$(curl -s -m 20 "$PRODUCTION_URL/" | grep -o '<img[^>]*src="[^"]*"' | head -1 | sed 's/.*src="//; s/"$//; s/&amp;/&/g')
+          echo "first image: $src"
+          test -n "$src"
+          status=$(curl -s -o /dev/null -m 20 -w "%{http_code} %{content_type}" "$PRODUCTION_URL$src")
+          echo "$status"
+          echo "$status" | grep -q "^200 image/"
+
       - name: Tag release
         run: |
           git tag "${{ inputs.version }}"

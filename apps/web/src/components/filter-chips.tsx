@@ -10,7 +10,10 @@ import { cn } from "@/lib/utils";
  * Filter chips (04-ui-design-system.md §6.3, US-02): one row, scrolls
  * horizontally on mobile with the scrollbar hidden, wraps on desktop. The
  * selected chip is the only indicator of the active filter (no heading). The
- * filter lives in the URL (`?filter=`), so reload and share keep it.
+ * filter lives in the URL (`?filter=`), so reload and share keep it. The row
+ * sticks to the top of the screen while the catalog scrolls (US-02 AC5); the
+ * `-my-2 py-2` pair keeps the spacing of the approved layout while giving the
+ * opaque background some margin over the cards scrolling beneath it.
  */
 export function FilterChips({ selected }: { selected: FilterKey | null }) {
   const router = useRouter();
@@ -19,7 +22,7 @@ export function FilterChips({ selected }: { selected: FilterKey | null }) {
     <div
       role="group"
       aria-label="Filtrar cupcakes"
-      className="-mx-4 flex gap-2 overflow-x-auto px-4 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:px-0"
+      className="sticky top-0 z-10 -mx-4 -my-2 flex gap-2 overflow-x-auto bg-background px-4 py-2 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:px-0"
     >
       {FILTER_CHIPS.map(({ key, label }) => {
         const isSelected = key === selected;

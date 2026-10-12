@@ -120,3 +120,33 @@ test("US-14 AC3 / NFR-12: no payment field or status anywhere in the journey", a
     await expect(page.locator('input[autocomplete^="cc-"]')).toHaveCount(0);
   }
 });
+
+test("US-02 AC5: the filter chips stay at the top of the screen while the catalog scrolls", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const chips = page.getByRole("group", { name: "Filtrar cupcakes" });
+  await expect(chips).toBeVisible();
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect.poll(async () => (await chips.boundingBox())?.y ?? 9999).toBeLessThanOrEqual(1);
+  await expect(chips).toBeInViewport();
+
+  // Still usable from down the page.
+  await chips.getByRole("button", { name: "Chocolate", exact: true }).click();
+  await expect(page).toHaveURL(/\?filter=chocolate$/);
+});
+
+test("US-01: every product photo loads (a broken image shows only its alt text)", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const photos = page.locator("article img");
+  await expect(photos).toHaveCount(6);
+  for (let index = 0; index < 6; index += 1) {
+    const photo = photos.nth(index);
+    await photo.scrollIntoViewIfNeeded();
+    await expect
+      .poll(() => photo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0))
+      .toBe(true);
+  }
+});
