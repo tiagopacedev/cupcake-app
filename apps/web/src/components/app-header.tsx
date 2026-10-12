@@ -12,14 +12,16 @@ type AppHeaderProps =
 /**
  * App header (04-ui-design-system.md §6.1). `catalog`: wordmark and cart
  * button, centered in the desktop container. `inner`: back arrow and page
- * title. `checkout`: the inner header on mobile; on desktop the wordmark and
- * "Continuar comprando" instead of the cart. No history or account icon, by design.
+ * title, in the same `max-w-6xl` container as the catalog header. `checkout`: the inner header on mobile; on desktop the wordmark and
+ * "Continuar comprando" instead of the cart. No history or account icon, by design. Every variant is sticky; the
+ * catalog header has a fixed height (`h-18`, `lg:h-20`) so the filter chips can
+ * stick exactly below it (`top-18`, `lg:top-20`).
  */
 export function AppHeader(props: AppHeaderProps) {
   if (props.variant === "checkout") {
     return (
-      <header className="border-b">
-        <div className="flex items-center gap-1 py-2 pr-4 pl-2 lg:hidden">
+      <header className="sticky top-0 z-20 border-b bg-background">
+        <div className="mx-auto flex w-full max-w-6xl items-center gap-1 py-2 pr-4 pl-2 lg:hidden">
           <Button asChild variant="ghost" size="icon" className="size-11">
             <Link href="/cart" aria-label="Voltar">
               <ArrowLeft className="size-5" aria-hidden="true" />
@@ -44,20 +46,22 @@ export function AppHeader(props: AppHeaderProps) {
 
   if (props.variant === "inner") {
     return (
-      <header className="flex items-center gap-1 border-b py-2 pr-4 pl-2">
-        <Button asChild variant="ghost" size="icon" className="size-11">
-          <Link href={props.backHref} aria-label={props.backLabel ?? "Voltar"}>
-            <ArrowLeft className="size-5" aria-hidden="true" />
-          </Link>
-        </Button>
-        <h1 className="text-xl font-extrabold tracking-tight">{props.title}</h1>
+      <header className="sticky top-0 z-20 border-b bg-background">
+        <div className="mx-auto flex w-full max-w-6xl items-center gap-1 py-2 pr-4 pl-2 lg:px-6">
+          <Button asChild variant="ghost" size="icon" className="size-11">
+            <Link href={props.backHref} aria-label={props.backLabel ?? "Voltar"}>
+              <ArrowLeft className="size-5" aria-hidden="true" />
+            </Link>
+          </Button>
+          <h1 className="text-xl font-extrabold tracking-tight">{props.title}</h1>
+        </div>
       </header>
     );
   }
 
   return (
-    <header className="border-b">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-3 lg:px-6 lg:py-4">
+    <header className="sticky top-0 z-20 h-18 border-b bg-background lg:h-20">
+      <div className="mx-auto flex h-full w-full max-w-6xl items-center justify-between gap-3 px-4 lg:px-6">
         <Link href="/" className="text-xl font-extrabold tracking-tight lg:text-2xl">
           {STORE.name}
         </Link>

@@ -128,7 +128,15 @@ test("US-02 AC5: the filter chips stay at the top of the screen while the catalo
   const chips = page.getByRole("group", { name: "Filtrar cupcakes" });
   await expect(chips).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-  await expect.poll(async () => (await chips.boundingBox())?.y ?? 9999).toBeLessThanOrEqual(1);
+  // The sticky header sits at the top; the chips pin directly below it.
+  const header = page.locator("header").first();
+  await expect.poll(async () => (await header.boundingBox())?.y ?? 9999).toBeLessThanOrEqual(1);
+  await expect
+    .poll(async () => {
+      const [bar, row] = await Promise.all([header.boundingBox(), chips.boundingBox()]);
+      return Math.abs((row?.y ?? 9999) - ((bar?.y ?? 0) + (bar?.height ?? 0)));
+    })
+    .toBeLessThanOrEqual(2);
   await expect(chips).toBeInViewport();
 
   // Still usable from down the page.

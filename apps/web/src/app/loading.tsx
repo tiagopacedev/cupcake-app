@@ -7,7 +7,7 @@ export default function Loading() {
   return (
     <>
       <AppHeader variant="catalog" />
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 pt-6 pb-8 lg:px-6 lg:py-12">
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 pt-6 pb-8 lg:px-6 lg:pb-12">
         <CatalogSkeleton />
       </main>
       <StoreFooter />

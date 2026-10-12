@@ -20,7 +20,7 @@ export function CartLink({ count = 0 }: { count?: number }) {
         <ShoppingBag className="size-5" aria-hidden="true" />
         Carrinho
         {count > 0 && (
-          <span className="rounded-full bg-primary px-1.5 text-xs font-bold tabular-nums">
+          <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs leading-none font-bold tabular-nums">
             {count}
           </span>
         )}

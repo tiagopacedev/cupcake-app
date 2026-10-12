@@ -27,7 +27,7 @@ export default async function HomePage({
   return (
     <>
       <AppHeader variant="catalog" />
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-5 px-4 pt-6 pb-8 lg:px-6 lg:py-12">
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-4 pt-6 pb-8 lg:px-6 lg:pb-12">
         <LatestOrderCard />
         <FilterChips selected={filter} />
         {products === null ? (
