@@ -35,6 +35,37 @@ describe("US-07 cart badge in the catalog header", () => {
   });
 });
 
+describe("sticky headers", () => {
+  it("every header variant sticks to the top of the screen", () => {
+    const { container, rerender } = render(<AppHeader variant="catalog" />);
+    expect(container.querySelector("header")).toHaveClass("sticky", "top-0", "bg-background");
+    rerender(<AppHeader variant="inner" title="Carrinho" backHref="/" />);
+    expect(container.querySelector("header")).toHaveClass("sticky", "top-0", "bg-background");
+    rerender(<AppHeader variant="checkout" />);
+    expect(container.querySelector("header")).toHaveClass("sticky", "top-0", "bg-background");
+  });
+
+  it("the catalog header has the fixed height the filter chips stick below", () => {
+    const { container } = render(<AppHeader variant="catalog" />);
+    expect(container.querySelector("header")).toHaveClass("h-18", "lg:h-20");
+  });
+
+  it("the inner header uses the same max-w-6xl container as the catalog header", () => {
+    const { container } = render(<AppHeader variant="inner" title="Carrinho" backHref="/" />);
+    expect(container.querySelector("header > div")).toHaveClass("mx-auto", "max-w-6xl");
+  });
+});
+
+describe("CartLink count badge", () => {
+  it("is a circle for one digit and keeps the full radius for more", () => {
+    const { rerender } = render(<CartLink count={2} />);
+    const badge = () => screen.getByText(/^\d+$/);
+    expect(badge()).toHaveClass("h-5", "min-w-5", "rounded-full", "justify-center");
+    rerender(<CartLink count={12} />);
+    expect(badge()).toHaveClass("h-5", "min-w-5", "rounded-full");
+  });
+});
+
 describe("CartLink labels", () => {
   it("uses the plain label at 0 and the plural from 2 units", () => {
     const { rerender } = render(<CartLink count={0} />);

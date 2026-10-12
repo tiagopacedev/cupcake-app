@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.5 (11 Oct 2026) |
+| **Version** | 1.6 (11 Oct 2026) |
 | **Status** | **Approved** by the product owner on 11 Oct 2026 |
 | **Design source** | Claude Design canvas "Cupcake Store Screens" and design system "Cupcake Store" (exported into [`design/`](design/)) |
 | **Related** | [01-prd.md](01-prd.md) (BR, US, SCR IDs) · [03-data-model.md](03-data-model.md) (seed) · [diagrams/user-flows/](diagrams/user-flows/) |
@@ -186,6 +186,8 @@ Each component names the shadcn primitive, the variant and the utility classes t
 | Inner page (mobile) | `border-b py-2 pl-2 pr-4 flex items-center gap-1`: `Button variant="ghost" size="icon" className="size-11"` with `ArrowLeft` · `<h1>` page title (§4.4). |
 | Desktop | Same as catalog, inside the desktop container, `py-4`. Desktop checkout shows `Button variant="ghost"` "Continuar comprando" with `ArrowLeft` instead of the cart. |
 
+**All headers are sticky** (`sticky top-0 z-20 bg-background`, owner request): they stay visible while the page scrolls. The catalog header has a fixed height from the standard scale, `h-18` (mobile, 72 px) and `lg:h-20` (80 px), so the filter chips can stick exactly below it. The inner header (cart, Meu pedido) and the mobile checkout header sit in the same `mx-auto max-w-6xl` container as the catalog header (`lg:px-6`). The cart count badge is `inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1`: a circle for one digit, a pill for two or more.
+
 No history or account icon in the header.
 
 ### 6.2 LatestOrderCard (home)
@@ -199,7 +201,7 @@ Left: `text-xs text-muted-foreground` "Seu pedido" over the code (§4.4). Right:
 - Each chip: `Button variant="outline" className="h-10 shrink-0 border-input px-4 font-semibold"`; "Mais vendidos" has a `Star` icon (`size-4`).
 - Selected chip: same button plus `bg-foreground text-background hover:bg-foreground/90`, `aria-pressed="true"`.
 - Updates `?filter=`; **no heading** repeats the selected filter.
-- **Sticky** (owner request, PRD US-02 AC5): the row is `sticky top-0 z-10 bg-background` and pins to the top of the screen while the catalog scrolls; `-my-2 py-2` keeps the spacing of the reference layout. Flat as ever: no shadow or border when stuck.
+- **Sticky** (owner request, PRD US-02 AC5): the row is `sticky top-18 z-10 bg-background` (`lg:top-20`, the header height, §6.1) and pins directly below the sticky header while the catalog scrolls; `-my-2 py-2` keeps the spacing of the reference layout. Flat as ever: no shadow or border when stuck.
 
 ### 6.4 ProductCard
 
@@ -520,3 +522,4 @@ Icons (Lucide): `shopping-bag` (cart), `star` (bestseller, filled on the badge),
 | 1.3 | 11 Oct 2026 | E5: copy additions (§9.2 `soldout.removed`, *proposed* `gone.removed`, singular forms); gaps G-8…G-10 recorded |
 | 1.4 | 11 Oct 2026 | E7: gaps G-11 (`overflow-x: clip`) and G-12; `Notice` has success/warning/error tones with an optional action |
 | 1.5 | 11 Oct 2026 | §6.3: the filter chips are sticky (owner request) |
+| 1.6 | 11 Oct 2026 | §6.1: sticky headers with fixed catalog height, inner header in the `max-w-6xl` container, circular count badge; §6.3 chips stick below the header; catalog `main` uses one 24 px rhythm (`gap-6`, no extra desktop top padding) |
