@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 2.0 (11 Oct 2026) |
+| **Version** | 2.1 (17 Oct 2026) |
 | **Status** | **Approved by the owner on 11 Oct 2026.** E0-01/E0-02 done; **E1 (Foundation) done**, all 7 tasks, lint/typecheck/tests green. E0-03–E0-06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) remain owner-side tasks tracked below — still needed before E3 (CI, cloud deploy). |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
 | **Executor** | Claude Code, one task at a time, reviewed by the owner |
@@ -362,8 +362,8 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E7-13 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | Manual check at 360 px on a real order: no horizontal overflow, items and quantities at 14 px, code 30 px, total 24 px, no phone; unit tests cover US-20 AC1–AC2 (items/quantities/"Total a pagar na loja"; "Pedido não encontrado") on top of the E6-06 integration tests |
 | E8-01 | ✅ | | [#7](https://github.com/tiagopacedev/cupcake-app/pull/7) | `e2e/` workspace: Playwright 1.64, mobile (390×844) and desktop (1280×800) projects, production build of web + API on ports 3100/4100, database reset per test. E2E-1…E2E-5 plus 9 extra tests for the E-level criteria of 05 §5: **75 passed, 1 skipped** (E2E-4 is desktop-only) in 3.4 min, run twice. CI job `e2e` (pushes to main, PRs labeled `e2e`; not a required check). The first runs caught a real gap: the checkout had no `<main>` landmark (fixed) |
 | E8-02 | ✅ | | [#7](https://github.com/tiagopacedev/cupcake-app/pull/7) | `quality.spec.ts`, 8 screens × 2 projects: no horizontal overflow at 360/390/768/1280/1440 px; axe WCAG 2.1 A/AA **0 violations of any severity** on all 16 combinations; screenshots saved for the visual comparison (CI artifact `e2e-evidence`). **Lighthouse mobile on production** (11 Oct, Lighthouse 12.8.2): catalog Performance **89** / Accessibility **100** / Best practices 96 / SEO 100 (FCP 1.2 s, LCP 1.5 s, TBT 290 ms, CLS 0, Speed Index 5.6 s); cart 86 / 100 / 96 / 100. Targets (Perf ≥ 85, A11y ≥ 95) met; reports in `docs/situacao-2/lighthouse/`. Photos of the first catalog row are now preloaded (`priority`) to improve Speed Index; to be re-measured after this deploys. Pixel-diff snapshots intentionally not used (05 §3.6) |
-| E8-03 | ☐ | | | |
-| E8-04 | ☐ | | | |
+| E8-03 | ◐ | | n/a | Owner tested the journey on a real phone with their own number (12 Oct) before approving G3. The full 05 §6 matrix (Android + iPhone + Chrome, Firefox, Safari, Edge) was **not** recorded; the owner chose to release v1.0.0 without it. Still open: fill 05 §6 and add the results to the test report (E8-05) |
+| E8-04 | ✅ | 1 | n/a | **v1.0.0 released 17 Oct 2026** (Release workflow run 39047678549, owner approved): migrations `No pending migrations`, seed ok (stock untouched), `/api/health` ok on attempt 1, first product photo `200 image/jpeg`, tag `v1.0.0` on `3d464c4`. Release checklist (06 §9): CI green on `main` incl. `e2e` ✅ · health + migrations ✅ · seed present ✅ (production stock reflects the owner's test orders, e.g. Birthday Vanilla 38/40: not reset) · E2E journeys: run in CI on the test database, **not** against production (the suite truncates tables) ✅ · visual comparison: screenshots from the E2E run (CI artifact `e2e-evidence`) ✅ · axe 0 violations ✅ · Lighthouse mobile **on production, 17 Oct**: catalog **92** / 100 / 96 / 100 (Speed Index 1.9 s), cart **93** / 100 / 96 / 100, reports in `docs/situacao-2/lighthouse/` ✅ · copy and no payment UI (test + E2E) ✅ · no secrets in the repo ✅ · README live links ✅ · coverage 82.4 % ≥ 75 %: gate now enforced in CI (was soft) ✅ · tag created ✅. Known, accepted: `/orders/<unknown>` renders the not-found UI with HTTP 200 |
 | E8-05 | ☐ | | | |
 | E8-06 | ☐ | | | |
 | E8-07 | ☐ | | | |
@@ -384,8 +384,8 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 |---|---|---|---|
 | G0 · Ready to build | 11 Oct 2026 | Partial | Plan + design open items approved; repo/accounts (E0-03…06) still pending with the owner; E1 authorized to start in parallel |
 | G1 · Skeleton live | 11 Oct 2026 | Approved | CI required on `main`; production `/api/health` ok through the web origin (`gru1` → Neon `sa-east-1`); Neon migrations baselined + seeded; README live links; tag `v0.1.0`. Owner approval in chat |
-| G2 · Catalog + cart | | | |
-| G3 · Feature complete | | | |
+| G2 · Catalog + cart | 17 Oct 2026 | Approved | Owner tested on a phone; visual comparison, E2E and axe in CI. Approved in chat together with the release; the 29 Oct demo slot was not needed |
+| G3 · Feature complete | 17 Oct 2026 | Approved | Every US-01…US-22 AC has a passing test (05 §5) or a manual check; full journey verified on a phone and in E2E. Tagged `v1.0.0` directly instead of `v1.0.0-rc.1` |
 | G4 · Situação 2 | | | |
 | G5 · Situação 3 | | | |
 | G6 · Submitted | | | |
@@ -405,3 +405,4 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | 1.8 | 11 Oct 2026 | E8-01 (Playwright journeys, CI job) and E8-02 (overflow, axe, Lighthouse) done; E8-03…E8-08 pending |
 | 1.9 | 11 Oct 2026 | Owner feedback on the live app: product photos were broken in production (`/_next/image` 404 behind Vercel Services; photos now unoptimized, E2E + release smoke test added) and the filter chips are now sticky (US-02 AC5) |
 | 2.0 | 11 Oct 2026 | Owner UI feedback: sticky headers (chips stick below), cart header in the same container, 24 px spacing rhythm on the catalog, circular cart badge |
+| 2.1 | 17 Oct 2026 | E8-04 done: v1.0.0 released; gates G2 and G3 approved; E8-03 partially done (owner phone test, matrix not recorded); coverage gate enforced; release Lighthouse reports |
