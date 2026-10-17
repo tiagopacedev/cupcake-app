@@ -2,7 +2,7 @@
 
 Mobile-first web store for a cupcake shop: browse, add to cart, check out with just a name and phone, and pick up (and pay) at the counter. Built for the PIT II (Software Engineering) course as a spec-driven, AI-assisted project — see [`docs/00-project-overview.md`](docs/00-project-overview.md).
 
-**Status:** walking skeleton (E3) deployed; catalog work (E4) next — see `docs/08-execution-plan.md` §16.
+**Status:** **v1.0.0 released** (17 Oct 2026): the full customer journey is live. Next: validation with real users (E9) — see `docs/08-execution-plan.md` §16.
 
 ## Documentation
 
