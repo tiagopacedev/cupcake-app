@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 2.1 (17 Oct 2026) |
+| **Version** | 2.2 (17 Oct 2026) |
 | **Status** | **Approved by the owner on 11 Oct 2026.** E0-01/E0-02 done; **E1 (Foundation) done**, all 7 tasks, lint/typecheck/tests green. E0-03–E0-06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) remain owner-side tasks tracked below — still needed before E3 (CI, cloud deploy). |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
 | **Executor** | Claude Code, one task at a time, reviewed by the owner |
@@ -368,7 +368,7 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E8-06 | ☐ | | | |
 | E8-07 | ☐ | | | |
 | E8-08 | ☐ | | | |
-| E9-01 | ☐ | | | |
+| E9-01 | ◐ | | | Tester kit ready: [`docs/situacao-3/kit-de-teste.md`](situacao-3/kit-de-teste.md) (invite, consent, 6-task script, questionnaire mapped to the university table). Open, owner-side: recruit 5 + 1 spare by 31 Oct, create the Google Form, record names (with consent) and the form link in `docs/situacao-3/` |
 | E9-02 | ☐ | | | |
 | E9-03 | ☐ | | | |
 | E9-04 | ☐ | | | |
@@ -406,3 +406,4 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | 1.9 | 11 Oct 2026 | Owner feedback on the live app: product photos were broken in production (`/_next/image` 404 behind Vercel Services; photos now unoptimized, E2E + release smoke test added) and the filter chips are now sticky (US-02 AC5) |
 | 2.0 | 11 Oct 2026 | Owner UI feedback: sticky headers (chips stick below), cart header in the same container, 24 px spacing rhythm on the catalog, circular cart badge |
 | 2.1 | 17 Oct 2026 | E8-04 done: v1.0.0 released; gates G2 and G3 approved; E8-03 partially done (owner phone test, matrix not recorded); coverage gate enforced; release Lighthouse reports |
+| 2.2 | 17 Oct 2026 | E9-01 started: pt-BR tester kit (invite, consent, task script, questionnaire) in `docs/situacao-3/kit-de-teste.md` |
