@@ -2,7 +2,7 @@ name: CI
 
 # 06-development-workflow.md §4. `quality` and `test` must both be green for
 # a PR to merge (branch protection, E3-01). `audit` is non-blocking. `e2e` runs
-# on pushes to main and on PRs labeled `e2e` (E8-01); not a required check.
+# on every PR and on pushes to main (E8-01); not a required check.
 on:
   push:
     branches: [main]
@@ -114,8 +114,6 @@ jobs:
 
   e2e:
     name: e2e
-    # 06-development-workflow.md §4: on every push to main and on PRs labeled `e2e`.
-    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'e2e')
     runs-on: ubuntu-latest
     services:
       postgres:
