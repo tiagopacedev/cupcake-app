@@ -1,11 +1,12 @@
 import { Clock, MapPin } from "lucide-react";
-import { STORE } from "shared";
+import { STORE, formatOpeningHours } from "shared";
 import { InfoRow } from "@/components/info-row";
 
 /**
  * Catalog footer with the store info (04-ui-design-system.md §6.10, ref 01 and
- * 08): stacked and centered on mobile, one row in the desktop container.
- * Values come from the shared STORE config.
+ * 08): stacked and centered on mobile, one row in the desktop container. Values
+ * come from the shared STORE config (D-24), so the footer is part of the first
+ * paint with nothing to load.
  */
 export function StoreFooter() {
   return (
@@ -16,7 +17,7 @@ export function StoreFooter() {
           {STORE.address}
         </InfoRow>
         <InfoRow icon={Clock} iconClassName="size-4">
-          {STORE.openingHours}
+          {formatOpeningHours(STORE.openingHours)}
         </InfoRow>
       </div>
     </footer>

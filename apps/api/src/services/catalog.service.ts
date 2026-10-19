@@ -1,4 +1,5 @@
 import type { ProductFilter, ProductRecord } from "../repositories/product.repository.js";
+import type { OrderExpiry } from "./order-expiry.service.js";
 import { maxQuantityOf, stockStateOf, type StockState } from "./stock.service.js";
 
 interface NamedSlug {
@@ -53,16 +54,19 @@ interface TagSource {
   findAll(): PromiseLike<NamedSlug[]>;
 }
 
-/** Catalog read rules: BR-02, BR-03, BR-04, BR-06 (US-01…US-04). */
+/** Catalog read rules: BR-02, BR-03, BR-04, BR-06, BR-20 (US-01…US-04, US-25). */
 export class CatalogService {
   constructor(
     private readonly products: ProductSource,
     private readonly categories: CategorySource,
     private readonly tags: TagSource,
+    /** Gives the units of overdue orders back before stock is shown (BR-20). */
+    private readonly expiry: OrderExpiry,
   ) {}
 
   /** Active products, optionally narrowed by one category or one tag; an unknown slug yields []. */
   async listProducts(filter: ProductFilter = {}): Promise<ProductDto[]> {
+    await this.expiry.expireOverdue();
     return (await this.products.findActive(filter)).map(toProductDto);
   }
 

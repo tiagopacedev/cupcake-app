@@ -74,7 +74,9 @@ export interface paths {
          * Place an order and reserve stock (US-11, US-15, BR-10, BR-11, BR-15)
          * @description Creates the order in one transaction: conditional stock decrement for every line,
          *     customer upsert by normalized phone, totals from database prices, unique order code.
-         *     The order starts as AWAITING_PICKUP. No payment is taken (BR-09).
+         *     The order starts as AWAITING_PICKUP. No payment is taken (BR-09). `readyAt` and `expiresAt`
+         *     come from the store's opening hours (BR-12): an order placed while the store is closed is
+         *     accepted and ready after the next opening.
          *     Rate limit: 10 requests per minute per IP.
          *
          */
@@ -96,6 +98,8 @@ export interface paths {
          * Public order view for Meu pedido and staff verification (US-16…US-18, US-20, US-22)
          * @description Returns the customer's first name only; never the phone (BR-16).
          *     Malformed and unknown codes both return 404 ORDER_NOT_FOUND.
+         *     Overdue orders are expired before the response is built (BR-20), so an order past its
+         *     `expiresAt` is returned as EXPIRED.
          *
          */
         get: operations["getOrder"];
@@ -105,6 +109,31 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/orders/{code}/pickup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Staff records that the order was handed over (US-24, BR-21)
+         * @description Marks an AWAITING_PICKUP order as PICKED_UP. No request body and no UI: staff call it
+         *     with the secret staff token (`STAFF_API_TOKEN`) after handing over the order. Picked-up
+         *     orders never release stock. A missing or wrong token, or a server without a configured
+         *     token, returns 401 UNAUTHORIZED. An order that is already PICKED_UP or EXPIRED returns
+         *     409 INVALID_ORDER_STATUS.
+         *
+         */
+        patch: operations["markOrderPickedUp"];
         trace?: never;
     };
 }
@@ -119,6 +148,14 @@ export interface components {
          * @example 1190
          */
         MoneyCents: number;
+        /**
+         * @description AWAITING_PICKUP on creation (BR-10); PICKED_UP when staff record the handover (BR-21);
+         *     EXPIRED when it was not collected by `expiresAt` and its stock was released (BR-20).
+         *     PICKED_UP and EXPIRED are final.
+         *
+         * @enum {string}
+         */
+        PickupStatus: "AWAITING_PICKUP" | "PICKED_UP" | "EXPIRED";
         Health: {
             /** @enum {string} */
             status: "ok";
@@ -198,6 +235,7 @@ export interface components {
          *       "customerFirstName": "Ana",
          *       "createdAt": "2026-10-11T17:35:00.000Z",
          *       "readyAt": "2026-10-11T17:50:00.000Z",
+         *       "expiresAt": "2026-10-11T22:00:00.000Z",
          *       "items": [
          *         {
          *           "productId": "3f6c1d2a-6a4e-4b8e-9a1f-2c3d4e5f6a7b",
@@ -222,8 +260,7 @@ export interface components {
          *     } */
         Order: {
             code: components["schemas"]["OrderCode"];
-            /** @enum {string} */
-            pickupStatus: "AWAITING_PICKUP" | "PICKED_UP";
+            pickupStatus: components["schemas"]["PickupStatus"];
             /** @example Ana */
             customerFirstName: string;
             /**
@@ -233,15 +270,21 @@ export interface components {
             createdAt: string;
             /**
              * Format: date-time
-             * @description createdAt + 15 minutes (BR-12)
+             * @description First moment the order can be collected, within opening hours (BR-12)
              * @example 2026-10-11T17:50:00.000Z
              */
             readyAt: string;
+            /**
+             * Format: date-time
+             * @description Closing time of the pickup day; an order not collected by then expires (BR-20)
+             * @example 2026-10-11T22:00:00.000Z
+             */
+            expiresAt: string;
             items: components["schemas"]["OrderItem"][];
             totalCents: components["schemas"]["MoneyCents"];
         };
         /** @enum {string} */
-        ErrorCode: "VALIDATION_ERROR" | "ORDER_NOT_FOUND" | "NOT_FOUND" | "PRODUCT_NOT_FOUND" | "INSUFFICIENT_STOCK" | "RATE_LIMITED" | "INTERNAL_ERROR";
+        ErrorCode: "VALIDATION_ERROR" | "ORDER_NOT_FOUND" | "NOT_FOUND" | "PRODUCT_NOT_FOUND" | "INSUFFICIENT_STOCK" | "INVALID_ORDER_STATUS" | "UNAUTHORIZED" | "RATE_LIMITED" | "INTERNAL_ERROR";
         FieldError: {
             /**
              * @description Dotted path of the invalid field
@@ -266,6 +309,7 @@ export interface components {
                     fields?: components["schemas"]["FieldError"][];
                     items?: components["schemas"]["StockShortage"][];
                     productIds?: string[];
+                    pickupStatus?: components["schemas"]["PickupStatus"];
                 };
                 requestId: string;
             };
@@ -307,6 +351,22 @@ export interface components {
                  *         "code": "ORDER_NOT_FOUND",
                  *         "message": "Order not found.",
                  *         "requestId": "8f2c1b6e-0d1a-4c55-9a77-1b2c3d4e5f63"
+                 *       }
+                 *     } */
+                "application/json": components["schemas"]["ErrorResponse"];
+            };
+        };
+        /** @description Missing or wrong staff token, or no token configured on the server */
+        Unauthorized: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                /** @example {
+                 *       "error": {
+                 *         "code": "UNAUTHORIZED",
+                 *         "message": "Staff token required.",
+                 *         "requestId": "8f2c1b6e-0d1a-4c55-9a77-1b2c3d4e5f65"
                  *       }
                  *     } */
                 "application/json": components["schemas"]["ErrorResponse"];
@@ -509,6 +569,52 @@ export interface operations {
                 };
             };
             404: components["responses"]["OrderNotFound"];
+            429: components["responses"]["RateLimited"];
+            500: components["responses"]["InternalError"];
+        };
+    };
+    markOrderPickedUp: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @example CUP-7K3Q9F */
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The order, now PICKED_UP */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            404: components["responses"]["OrderNotFound"];
+            /** @description The order is already PICKED_UP or EXPIRED; nothing changed */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "error": {
+                     *         "code": "INVALID_ORDER_STATUS",
+                     *         "message": "Only an order awaiting pickup can be marked as picked up.",
+                     *         "details": {
+                     *           "pickupStatus": "EXPIRED"
+                     *         },
+                     *         "requestId": "8f2c1b6e-0d1a-4c55-9a77-1b2c3d4e5f64"
+                     *       }
+                     *     } */
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
             429: components["responses"]["RateLimited"];
             500: components["responses"]["InternalError"];
         };

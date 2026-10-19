@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
+import { ActiveOrderCards } from "@/components/active-order-cards";
 import { AppHeader } from "@/components/app-header";
 import { EmptyState } from "@/components/empty-state";
 import { FilterChips } from "@/components/filter-chips";
-import { LatestOrderCard } from "@/components/latest-order-card";
 import { LoadError } from "@/components/load-error";
 import { CatalogProductCard } from "@/components/catalog-product-card";
 import { StoreFooter } from "@/components/store-footer";
@@ -14,7 +14,7 @@ import { parseFilter, queryForFilter } from "@/lib/filters";
 /**
  * SCR-01 Catálogo (docs/04-ui-design-system.md §7.1), server-rendered from
  * `GET /api/products` for the `?filter=` in the URL (US-01…US-03), with the
- * latest-order card of this browser above the chips (US-22).
+ * active-order cards of this browser above the chips (US-22).
  */
 export default async function HomePage({
   searchParams,
@@ -28,7 +28,7 @@ export default async function HomePage({
     <>
       <AppHeader variant="catalog" />
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-4 pt-6 pb-8 lg:px-6 lg:pb-12">
-        <LatestOrderCard />
+        <ActiveOrderCards />
         <FilterChips selected={filter} />
         {products === null ? (
           <LoadError />

@@ -29,6 +29,16 @@ export const db = {
     );
     await seedCatalog(client());
   },
+  /** Moves an order into the past so that its closing time has already gone by (BR-20). */
+  async makeOverdue(code: string): Promise<void> {
+    await client().$executeRawUnsafe(
+      "UPDATE orders SET created_at = now() - interval '2 days', ready_at = now() - interval '2 days' + interval '15 minutes', expires_at = now() - interval '1 day' WHERE code = $1",
+      code,
+    );
+  },
+  async statusOf(code: string): Promise<string> {
+    return (await client().order.findUniqueOrThrow({ where: { code } })).pickupStatus;
+  },
   async setStock(slug: string, stockQuantity: number): Promise<void> {
     await client().product.update({ where: { slug }, data: { stockQuantity } });
   },

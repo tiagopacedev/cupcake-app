@@ -1,8 +1,8 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { CheckoutView } from "./checkout-view";
 import { useCartStore } from "@/lib/cart-store";
-import { LAST_ORDER_KEY } from "@/lib/last-order-store";
+import { ORDERS_KEY } from "@/lib/recent-orders-store";
 import { makeProduct } from "@/test-utils/fixtures";
 
 vi.mock("@/lib/api/client", () => ({ api: { GET: vi.fn(), POST: vi.fn() } }));
@@ -10,6 +10,9 @@ const replace = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace, refresh: vi.fn() }) }));
 
 import { api } from "@/lib/api/client";
+
+/** Tuesday 2026-10-13 14:35 in Sao Paulo: the store is open. */
+const TUESDAY_AFTERNOON = new Date("2026-10-13T17:35:00.000Z");
 
 const crush = makeProduct({
   id: "crush",
@@ -32,6 +35,7 @@ const created = {
   customerFirstName: "Ana",
   createdAt: "2026-10-11T17:35:00.000Z",
   readyAt: "2026-10-11T17:50:00.000Z",
+  expiresAt: "2026-10-11T22:00:00.000Z",
   items: [],
   totalCents: 3570,
 };
@@ -53,7 +57,11 @@ const fill = (nameValue: string, phoneValue: string) => {
 };
 const money = (cents: string) => new RegExp(`^R\\$\\s${cents}$`);
 
+// Only `Date` is faked: the ready label depends on the time of day, timers stay real.
+afterEach(() => vi.useRealTimers());
+
 beforeEach(() => {
+  vi.useFakeTimers({ toFake: ["Date"], now: TUESDAY_AFTERNOON });
   vi.clearAllMocks();
   window.localStorage.clear();
   useCartStore.setState({ lines: [], hydrated: true });
@@ -126,6 +134,23 @@ describe("US-13 / US-14 order summary and pickup", () => {
     expect(pickup).toHaveTextContent("Pagamento na loja");
   });
 
+  it("BR-12 / US-13 AC4: at 22:00 the pickup block says when it will be ready, and the order can still be placed", async () => {
+    vi.setSystemTime(new Date("2026-10-14T01:00:00.000Z")); // Tuesday 22:00 in Sao Paulo
+    await openCheckout();
+    const pickup = screen.getByRole("heading", { name: "Retirada" }).closest("section");
+    expect(pickup).toHaveTextContent("Pronto amanhã às 10:15");
+    expect(pickup).not.toHaveTextContent("Pronto em ~15 min");
+    expect(pickup).toHaveTextContent("Pagamento na loja");
+    expect(submitButtons()[0]).toBeEnabled();
+  });
+
+  it("BR-12: on Monday (closed) the preview points to Tuesday", async () => {
+    vi.setSystemTime(new Date("2026-10-12T15:00:00.000Z")); // Monday 12:00
+    await openCheckout();
+    const pickup = screen.getByRole("heading", { name: "Retirada" }).closest("section");
+    expect(pickup).toHaveTextContent("Pronto amanhã às 10:15");
+  });
+
   it("US-10: refreshes the cart when it opens and says why a quantity changed", async () => {
     setCart([{ productId: "crush", quantity: 25 }]);
     render(<CheckoutView />);
@@ -192,10 +217,9 @@ describe("US-15 place the order", () => {
       },
     });
     expect(useCartStore.getState().lines).toEqual([]);
-    expect(JSON.parse(window.localStorage.getItem(LAST_ORDER_KEY) ?? "null")).toEqual({
-      code: "CUP-7K3Q9F",
-      createdAt: "2026-10-11T17:35:00.000Z",
-    });
+    expect(JSON.parse(window.localStorage.getItem(ORDERS_KEY) ?? "null")).toEqual([
+      { code: "CUP-7K3Q9F", createdAt: "2026-10-11T17:35:00.000Z" },
+    ]);
     // The empty cart must not bounce the customer back to /cart.
     expect(replace).not.toHaveBeenCalledWith("/cart");
   });
@@ -227,7 +251,7 @@ describe("US-15 place the order", () => {
     expect(notice).toHaveTextContent("Não foi possível carregar. Verifique sua conexão.");
     expect(submitButtons()[0]).toBeEnabled();
     expect(useCartStore.getState().lines).toHaveLength(2);
-    expect(window.localStorage.getItem(LAST_ORDER_KEY)).toBeNull();
+    expect(window.localStorage.getItem(ORDERS_KEY)).toBeNull();
 
     vi.mocked(api.POST).mockResolvedValue({ data: created, response: { status: 201 } } as never);
     fireEvent.click(within(notice).getByRole("button", { name: "Tentar de novo" }));
@@ -261,7 +285,7 @@ describe("US-19 stock changes during checkout", () => {
     expect(within(notice).getByRole("link", { name: "Revisar" })).toHaveAttribute("href", "/cart");
     expect(screen.getByText(/2 × R\$\s11,90 · só 1 disponível/)).toHaveClass("text-destructive");
     expect(useCartStore.getState().lines).toHaveLength(2);
-    expect(window.localStorage.getItem(LAST_ORDER_KEY)).toBeNull();
+    expect(window.localStorage.getItem(ORDERS_KEY)).toBeNull();
     expect(submitButtons()[0]).toBeEnabled();
   });
 

@@ -51,6 +51,14 @@ export class ProductRepository {
     return result.count;
   }
 
+  /** Gives units back to stock when an order expires (BR-20). */
+  async incrementStock(productId: string, quantity: number): Promise<void> {
+    await this.prisma.product.update({
+      where: { id: productId },
+      data: { stockQuantity: { increment: quantity } },
+    });
+  }
+
   /** Current stock of a product, or `null` when it does not exist. */
   async findStock(productId: string): Promise<number | null> {
     const product = await this.prisma.product.findUnique({

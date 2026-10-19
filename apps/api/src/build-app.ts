@@ -8,11 +8,16 @@ import prismaPlugin from "./plugins/prisma.js";
 import healthRoutes from "./routes/health.routes.js";
 import catalogRoutes from "./routes/catalog.routes.js";
 import ordersRoutes from "./routes/orders.routes.js";
+import { OrderRepository } from "./repositories/order.repository.js";
+import { ProductRepository } from "./repositories/product.repository.js";
+import { OrderExpiryService } from "./services/order-expiry.service.js";
 import { globalErrorHandler, notFoundHandler } from "./errors/error-handler.js";
 
 export interface BuildAppOverrides {
   /** Test-only: a fake Prisma Client instead of the shared singleton (apps/api/test/helpers/fake-prisma.ts). */
   prisma?: PrismaClient;
+  /** Test-only: the clock for order times and expiry (BR-12, BR-20); defaults to the real time. */
+  now?: () => Date;
 }
 
 /**
@@ -39,9 +44,16 @@ export async function buildApp(
   app.setErrorHandler(globalErrorHandler);
   app.setNotFoundHandler(notFoundHandler);
 
+  // Lazy expiry of unclaimed orders (BR-20), shared by every route that reads or changes stock or orders.
+  const expiry = new OrderExpiryService(
+    app.prisma,
+    (tx) => ({ orders: new OrderRepository(tx), products: new ProductRepository(tx) }),
+    overrides.now,
+  );
+
   await app.register(healthRoutes, { prefix: "/api" });
-  await app.register(catalogRoutes, { prefix: "/api" });
-  await app.register(ordersRoutes, { prefix: "/api", config });
+  await app.register(catalogRoutes, { prefix: "/api", expiry });
+  await app.register(ordersRoutes, { prefix: "/api", config, expiry, now: overrides.now });
 
   return app;
 }

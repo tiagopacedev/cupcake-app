@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { formatDayMonth, formatPrice, formatTime, isToday } from "./format";
+import {
+  formatDayMonth,
+  formatDeadline,
+  formatPrice,
+  formatReadyLabel,
+  formatReadyMeta,
+  formatTime,
+  isToday,
+} from "./format";
 
 describe("NFR-04 money format", () => {
   it.each([
@@ -26,7 +34,7 @@ describe("NFR-04 times in America/Sao_Paulo (UTC-3, no DST)", () => {
   });
 });
 
-describe("BR-19 'today' in America/Sao_Paulo", () => {
+describe("'today' in America/Sao_Paulo", () => {
   const at = (iso: string) => new Date(iso);
 
   it("is true for the same Sao Paulo calendar day", () => {
@@ -45,5 +53,88 @@ describe("BR-19 'today' in America/Sao_Paulo", () => {
   it("is false for yesterday and tomorrow", () => {
     expect(isToday("2026-10-10T15:00:00.000Z", at("2026-10-11T15:00:00.000Z"))).toBe(false);
     expect(isToday("2026-10-12T15:00:00.000Z", at("2026-10-11T15:00:00.000Z"))).toBe(false);
+  });
+});
+
+// 2026-10-13 is a Tuesday. Sao Paulo is UTC-3, so 17:35Z is 14:35.
+const TUESDAY_14_35 = new Date("2026-10-13T17:35:00.000Z");
+
+describe("BR-12 ready label (checkout and 'Pedido feito!' notice)", () => {
+  it("says 'em ~15 min' when the order is ready within the preparation time", () => {
+    expect(formatReadyLabel("2026-10-13T17:50:00.000Z", TUESDAY_14_35, 15)).toBe(
+      "Pronto em ~15 min",
+    );
+  });
+
+  it("uses the preparation time of the store, not a fixed 15", () => {
+    expect(formatReadyLabel("2026-10-13T17:55:00.000Z", TUESDAY_14_35, 20)).toBe(
+      "Pronto em ~20 min",
+    );
+  });
+
+  it("says the time when the store is not open now but opens later today", () => {
+    // Created 08:00, ready 10:15.
+    const earlyMorning = new Date("2026-10-13T11:00:00.000Z");
+    expect(formatReadyLabel("2026-10-13T13:15:00.000Z", earlyMorning, 15)).toBe("Pronto às 10:15");
+  });
+
+  it("says 'amanhã' for the next calendar day, even a few hours away", () => {
+    const night = new Date("2026-10-14T01:00:00.000Z"); // Tuesday 22:00
+    expect(formatReadyLabel("2026-10-14T13:15:00.000Z", night, 15)).toBe("Pronto amanhã às 10:15");
+  });
+
+  it("says the date when it is two or more days away (closed Monday after Sunday evening)", () => {
+    const sundayNight = new Date("2026-10-19T01:00:00.000Z"); // Sunday 18 Oct, 22:00
+    expect(formatReadyLabel("2026-10-20T13:15:00.000Z", sundayNight, 15)).toBe(
+      "Pronto 20/10 às 10:15",
+    );
+  });
+
+  it("uses the Sao Paulo calendar day, not UTC: 22:30 local is already the next day in UTC", () => {
+    const created = new Date("2026-10-14T01:30:00.000Z"); // Tuesday 22:30
+    expect(formatReadyLabel("2026-10-14T13:15:00.000Z", created, 15)).toBe(
+      "Pronto amanhã às 10:15",
+    );
+  });
+
+  it("without the preparation time only the time form is used", () => {
+    expect(formatReadyLabel("2026-10-13T17:50:00.000Z", TUESDAY_14_35)).toBe("Pronto às 14:50");
+  });
+});
+
+describe("BR-12 ready part of the Meu pedido meta line", () => {
+  it("same day: 'pronto às HH:mm'", () => {
+    expect(formatReadyMeta("2026-10-13T17:50:00.000Z", "2026-10-13T17:35:00.000Z")).toBe(
+      "pronto às 14:50",
+    );
+  });
+
+  it("order placed after closing: 'pronto amanhã às HH:mm'", () => {
+    expect(formatReadyMeta("2026-10-14T13:15:00.000Z", "2026-10-14T01:00:00.000Z")).toBe(
+      "pronto amanhã às 10:15",
+    );
+  });
+
+  it("further away: 'pronto dd/mm às HH:mm'", () => {
+    expect(formatReadyMeta("2026-10-20T13:15:00.000Z", "2026-10-19T01:00:00.000Z")).toBe(
+      "pronto 20/10 às 10:15",
+    );
+  });
+});
+
+describe("BR-20 pickup deadline ('Retire até')", () => {
+  const closing = "2026-10-13T22:00:00.000Z"; // Tuesday 19:00
+
+  it("same day: 'hoje, 19:00'", () => {
+    expect(formatDeadline(closing, TUESDAY_14_35)).toBe("hoje, 19:00");
+  });
+
+  it("the next day: 'amanhã, 19:00'", () => {
+    expect(formatDeadline(closing, new Date("2026-10-12T18:00:00.000Z"))).toBe("amanhã, 19:00");
+  });
+
+  it("any other day: the date", () => {
+    expect(formatDeadline(closing, new Date("2026-10-09T18:00:00.000Z"))).toBe("13/10, 19:00");
+    expect(formatDeadline(closing, new Date("2026-10-14T18:00:00.000Z"))).toBe("13/10, 19:00");
   });
 });

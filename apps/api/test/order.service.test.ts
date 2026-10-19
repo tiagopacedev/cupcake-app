@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { createOrderSchema } from "shared";
+import { STORE, createOrderSchema, type PickupStatus, type StoreInfo } from "shared";
 import { AppError } from "../src/errors/app-error.js";
 import { OrderService, type Db, type OrderRepos } from "../src/services/order.service.js";
-import { firstName, readyAt, toOrderDto } from "../src/services/order.mapper.js";
+import { firstName, toOrderDto } from "../src/services/order.mapper.js";
 
 const A = "11111111-1111-4111-8111-111111111111";
 const B = "22222222-2222-4222-8222-222222222222";
@@ -26,13 +26,51 @@ const catalog = [
   },
 ];
 
+/** Tuesday 2026-10-13 14:35 in Sao Paulo (UTC-3). */
+const TUESDAY_AFTERNOON = new Date("2026-10-13T17:35:00.000Z");
+
 const request = (items: { productId: string; quantity: number }[]) =>
   createOrderSchema.parse({ customer: { name: "Ana Souza", phone: "(11) 91234-5678" }, items });
 
-function setup(options: { stock?: Record<string, number>; failCreate?: unknown[] } = {}) {
+function storedOrder(
+  overrides: Partial<{ code: string; pickupStatus: PickupStatus }> = {},
+): NonNullable<Awaited<ReturnType<OrderRepos["orders"]["findByCode"]>>> {
+  return {
+    code: "CUP-7K3Q9F",
+    pickupStatus: "AWAITING_PICKUP",
+    customer: { name: "Ana Souza" },
+    createdAt: new Date("2026-10-13T17:35:00.000Z"),
+    readyAt: new Date("2026-10-13T17:50:00.000Z"),
+    expiresAt: new Date("2026-10-13T22:00:00.000Z"),
+    totalCents: 1190,
+    items: [
+      {
+        product: { id: A, slug: "chocolate-crush", name: "Chocolate Crush", imageUrl: "/a.jpg" },
+        quantity: 1,
+        unitPriceCents: 1190,
+      },
+    ],
+    ...overrides,
+  };
+}
+
+function setup(
+  options: {
+    stock?: Record<string, number>;
+    failCreate?: unknown[];
+    now?: Date;
+    /** Overrides the shared store config (opening hours, preparation time). */
+    store?: StoreInfo;
+    /** Successive results of `orders.findByCode`; the last one repeats. */
+    stored?: (ReturnType<typeof storedOrder> | null)[];
+    markPickedUpResult?: number;
+  } = {},
+) {
   const stock = { [A]: 10, [B]: 10, [C]: 10, ...options.stock } as Record<string, number>;
   const failures = [...(options.failCreate ?? [])];
+  const stored = [...(options.stored ?? [null])];
   const calls: string[] = [];
+  const now = options.now ?? TUESDAY_AFTERNOON;
   const repos: OrderRepos = {
     products: {
       findActiveByIds: async (ids) => catalog.filter((product) => ids.includes(product.id)),
@@ -46,19 +84,25 @@ function setup(options: { stock?: Record<string, number>; failCreate?: unknown[]
     },
     customers: { upsertByPhone: vi.fn(async () => ({ id: "customer-1" })) },
     orders: {
-      create: vi.fn(async () => {
+      create: vi.fn(async (order) => {
         const failure = failures.shift();
         if (failure) throw failure;
         return {
-          createdAt: new Date("2026-10-11T17:35:00.000Z"),
+          createdAt: order.createdAt,
+          readyAt: order.readyAt,
+          expiresAt: order.expiresAt,
           pickupStatus: "AWAITING_PICKUP" as const,
         };
       }),
-      findByCode: vi.fn(async () => null),
+      findByCode: vi.fn(async () => (stored.length > 1 ? stored.shift() : stored[0]) ?? null),
+      markPickedUp: vi.fn(async () => options.markPickedUpResult ?? 1),
     },
   };
   const db = {
-    $transaction: async (run: (tx: unknown) => Promise<unknown>) => run({}),
+    $transaction: async (run: (tx: unknown) => Promise<unknown>) => {
+      calls.push("transaction");
+      return run({});
+    },
   } as unknown as Db;
   const codes = [
     "CUP-AAAAAA",
@@ -69,12 +113,24 @@ function setup(options: { stock?: Record<string, number>; failCreate?: unknown[]
     "CUP-FFFFFF",
   ];
   const generateCode = vi.fn(() => codes.shift() ?? "CUP-ZZZZZZ");
+  const expiry = {
+    expireOverdue: vi.fn(async () => {
+      calls.push("expire");
+      return 0;
+    }),
+  };
   return {
-    service: new OrderService(db, () => repos, generateCode),
+    service: new OrderService(db, () => repos, {
+      expiry,
+      now: () => now,
+      store: options.store ?? STORE,
+      generateCode,
+    }),
     repos,
     stock,
     calls,
     generateCode,
+    expiry,
   };
 }
 
@@ -114,16 +170,65 @@ describe("BR-07 / BR-08 totals come from database prices", () => {
     expect(JSON.stringify(order)).not.toMatch(/5511|91234|Souza/);
   });
 
-  it("BR-12: readyAt is createdAt + 15 minutes", async () => {
-    const order = await setup().service.create(request([{ productId: A, quantity: 1 }]));
-    expect(order.createdAt).toBe("2026-10-11T17:35:00.000Z");
-    expect(order.readyAt).toBe("2026-10-11T17:50:00.000Z");
-  });
-
   it("BR-15: upserts the customer by the normalized phone with the new name", async () => {
     const { service, repos } = setup();
     await service.create(request([{ productId: A, quantity: 1 }]));
     expect(repos.customers.upsertByPhone).toHaveBeenCalledWith("Ana Souza", "+5511912345678");
+  });
+});
+
+describe("BR-12 pickup schedule from the store's opening hours", () => {
+  const create = (now: Date) =>
+    setup({ now }).service.create(request([{ productId: A, quantity: 1 }]));
+
+  it("open: ready 15 minutes after the order, expires at closing time", async () => {
+    const order = await create(TUESDAY_AFTERNOON);
+    expect(order.createdAt).toBe("2026-10-13T17:35:00.000Z");
+    expect(order.readyAt).toBe("2026-10-13T17:50:00.000Z"); // 14:50
+    expect(order.expiresAt).toBe("2026-10-13T22:00:00.000Z"); // 19:00
+  });
+
+  it("tester finding: an order at 22:00 is ready the next day at 10:15, not at 22:15", async () => {
+    const order = await create(new Date("2026-10-14T01:00:00.000Z")); // Tuesday 22:00
+    expect(order.readyAt).toBe("2026-10-14T13:15:00.000Z"); // Wednesday 10:15
+    expect(order.expiresAt).toBe("2026-10-14T22:00:00.000Z"); // Wednesday 19:00
+  });
+
+  it("Monday is closed: an order on Monday is ready on Tuesday", async () => {
+    const order = await create(new Date("2026-10-12T15:00:00.000Z")); // Monday 12:00
+    expect(order.readyAt).toBe("2026-10-13T13:15:00.000Z");
+  });
+
+  it("stores the schedule it computed, with the clock's time as createdAt", async () => {
+    const { service, repos } = setup();
+    await service.create(request([{ productId: A, quantity: 1 }]));
+    expect(repos.orders.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        createdAt: TUESDAY_AFTERNOON,
+        readyAt: new Date("2026-10-13T17:50:00.000Z"),
+        expiresAt: new Date("2026-10-13T22:00:00.000Z"),
+      }),
+    );
+  });
+
+  it("uses the store's own hours and preparation time: closed on Wednesday, 30 minutes to prepare", async () => {
+    const store: StoreInfo = {
+      ...STORE,
+      readyMinutes: 30,
+      openingHours: STORE.openingHours.filter((hours) => hours.weekday !== 3),
+    };
+    const { service } = setup({ store, now: new Date("2026-10-14T01:00:00.000Z") }); // Tuesday 22:00
+    const order = await service.create(request([{ productId: A, quantity: 1 }]));
+    expect(order.readyAt).toBe("2026-10-15T13:30:00.000Z"); // Thursday 10:30
+    expect(order.expiresAt).toBe("2026-10-15T22:00:00.000Z");
+  });
+
+  it("fails (nothing stored) when the store has no usable opening hours", async () => {
+    const { service, repos } = setup({ store: { ...STORE, openingHours: [] } });
+    await expect(service.create(request([{ productId: A, quantity: 1 }]))).rejects.toThrow(
+      /no usable opening hours/i,
+    );
+    expect(repos.orders.create).not.toHaveBeenCalled();
   });
 });
 
@@ -137,7 +242,11 @@ describe("BR-11 stock reservation rules", () => {
         { productId: B, quantity: 1 },
       ]),
     );
-    expect(calls).toEqual([`decrement:${A}`, `decrement:${B}`, `decrement:${C}`]);
+    expect(calls.filter((call) => call.startsWith("decrement"))).toEqual([
+      `decrement:${A}`,
+      `decrement:${B}`,
+      `decrement:${C}`,
+    ]);
   });
 
   it("US-19: lists every short line (in request order) and creates nothing", async () => {
@@ -176,7 +285,26 @@ describe("BR-11 stock reservation rules", () => {
       .catch((e: unknown) => e);
     expect((error as AppError).code).toBe("PRODUCT_NOT_FOUND");
     expect((error as AppError).details).toEqual({ productIds: [ghost] });
-    expect(calls).toEqual([]);
+    expect(calls.filter((call) => call.startsWith("decrement"))).toEqual([]);
+  });
+});
+
+describe("BR-20 expiry runs before stock is read or reserved", () => {
+  it("creating an order first gives back the units of overdue orders, then opens the transaction", async () => {
+    const { service, calls } = setup();
+    await service.create(request([{ productId: A, quantity: 1 }]));
+    expect(calls.slice(0, 2)).toEqual(["expire", "transaction"]);
+  });
+
+  it("opening an order expires overdue orders before looking it up", async () => {
+    const { service, expiry, repos } = setup({
+      stored: [storedOrder({ pickupStatus: "EXPIRED" })],
+    });
+    const order = await service.getByCode("CUP-7K3Q9F");
+    expect(order.pickupStatus).toBe("EXPIRED");
+    expect(expiry.expireOverdue.mock.invocationCallOrder[0]).toBeLessThan(
+      vi.mocked(repos.orders.findByCode).mock.invocationCallOrder[0] ?? 0,
+    );
   });
 });
 
@@ -221,6 +349,67 @@ describe("US-18 getByCode", () => {
     });
     expect(repos.orders.findByCode).toHaveBeenCalledWith("CUP-7K3Q9F");
   });
+
+  it("returns the stored schedule and status", async () => {
+    const { service } = setup({ stored: [storedOrder()] });
+    expect(await service.getByCode("CUP-7K3Q9F")).toMatchObject({
+      pickupStatus: "AWAITING_PICKUP",
+      readyAt: "2026-10-13T17:50:00.000Z",
+      expiresAt: "2026-10-13T22:00:00.000Z",
+    });
+  });
+});
+
+describe("BR-21 staff pickup (US-24)", () => {
+  it("AC1: marks an awaiting order as PICKED_UP and returns it", async () => {
+    const { service, repos } = setup({ stored: [storedOrder()] });
+    const order = await service.markPickedUp("cup-7k3q9f");
+    expect(order.pickupStatus).toBe("PICKED_UP");
+    expect(repos.orders.markPickedUp).toHaveBeenCalledWith("CUP-7K3Q9F");
+  });
+
+  it.each(["PICKED_UP", "EXPIRED"] as const)(
+    "AC3: an order that is already %s is INVALID_ORDER_STATUS and nothing changes",
+    async (pickupStatus) => {
+      const { service, repos } = setup({ stored: [storedOrder({ pickupStatus })] });
+      const error = await service.markPickedUp("CUP-7K3Q9F").catch((e: unknown) => e);
+      expect(error).toBeInstanceOf(AppError);
+      expect(error).toMatchObject({
+        code: "INVALID_ORDER_STATUS",
+        status: 409,
+        details: { pickupStatus },
+      });
+      expect(repos.orders.markPickedUp).not.toHaveBeenCalled();
+    },
+  );
+
+  it("AC4: an unknown or malformed code is ORDER_NOT_FOUND", async () => {
+    const { service, repos } = setup();
+    await expect(service.markPickedUp("CUP-7K3Q9F")).rejects.toMatchObject({
+      code: "ORDER_NOT_FOUND",
+    });
+    await expect(service.markPickedUp("nope")).rejects.toMatchObject({ code: "ORDER_NOT_FOUND" });
+    expect(repos.orders.markPickedUp).not.toHaveBeenCalled();
+  });
+
+  it("expires overdue orders first, so a past-closing order cannot be picked up", async () => {
+    const { service, calls } = setup({ stored: [storedOrder({ pickupStatus: "EXPIRED" })] });
+    await expect(service.markPickedUp("CUP-7K3Q9F")).rejects.toMatchObject({
+      code: "INVALID_ORDER_STATUS",
+    });
+    expect(calls).toEqual(["expire"]);
+  });
+
+  it("reports the real status when another request changed the order in between", async () => {
+    const { service } = setup({
+      stored: [storedOrder(), storedOrder({ pickupStatus: "EXPIRED" })],
+      markPickedUpResult: 0,
+    });
+    await expect(service.markPickedUp("CUP-7K3Q9F")).rejects.toMatchObject({
+      code: "INVALID_ORDER_STATUS",
+      details: { pickupStatus: "EXPIRED" },
+    });
+  });
 });
 
 describe("order mapper (BR-12, BR-16)", () => {
@@ -230,10 +419,22 @@ describe("order mapper (BR-12, BR-16)", () => {
     expect(firstName("Jo")).toBe("Jo");
   });
 
-  it("adds the configured preparation time", () => {
-    expect(readyAt(new Date("2026-10-11T23:50:00.000Z")).toISOString()).toBe(
-      "2026-10-12T00:05:00.000Z",
-    );
+  it("exposes the stored pickup schedule as ISO strings", () => {
+    const dto = toOrderDto({
+      code: "CUP-7K3Q9F",
+      pickupStatus: "AWAITING_PICKUP",
+      customerName: "Ana Souza",
+      createdAt: new Date("2026-10-11T23:50:00.000Z"),
+      readyAt: new Date("2026-10-12T13:15:00.000Z"),
+      expiresAt: new Date("2026-10-12T22:00:00.000Z"),
+      totalCents: 300,
+      items: [],
+    });
+    expect(dto).toMatchObject({
+      createdAt: "2026-10-11T23:50:00.000Z",
+      readyAt: "2026-10-12T13:15:00.000Z",
+      expiresAt: "2026-10-12T22:00:00.000Z",
+    });
   });
 
   it("keeps the price paid, not the current one, and sorts lines by name", () => {
@@ -242,6 +443,8 @@ describe("order mapper (BR-12, BR-16)", () => {
       pickupStatus: "AWAITING_PICKUP",
       customerName: "Ana Souza",
       createdAt: new Date("2026-10-11T17:35:00.000Z"),
+      readyAt: new Date("2026-10-11T17:50:00.000Z"),
+      expiresAt: new Date("2026-10-11T22:00:00.000Z"),
       totalCents: 900,
       items: [
         {

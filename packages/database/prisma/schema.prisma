@@ -28,6 +28,7 @@ datasource db {
 enum PickupStatus {
   AWAITING_PICKUP
   PICKED_UP
+  EXPIRED
 
   @@map("pickup_status")
 }
@@ -110,6 +111,8 @@ model Order {
   customerId   String       @map("customer_id") @db.Uuid
   totalCents   Int          @map("total_cents")
   pickupStatus PickupStatus @default(AWAITING_PICKUP) @map("pickup_status")
+  readyAt      DateTime     @map("ready_at") @db.Timestamptz
+  expiresAt    DateTime     @map("expires_at") @db.Timestamptz
   createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamptz
   updatedAt    DateTime     @updatedAt @map("updated_at") @db.Timestamptz
   customer     Customer     @relation(fields: [customerId], references: [id], map: "orders_customer_fk")
@@ -117,6 +120,7 @@ model Order {
 
   @@unique([code], map: "orders_code_key")
   @@index([customerId], map: "orders_customer_id_idx")
+  @@index([pickupStatus, expiresAt], map: "orders_status_expires_at_idx")
   @@map("orders")
 }
 

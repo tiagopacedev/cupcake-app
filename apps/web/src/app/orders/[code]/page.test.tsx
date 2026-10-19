@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import OrderPage from "./page";
 import type { Order } from "@/lib/api/types";
 
@@ -15,6 +15,7 @@ const order: Order = {
   customerFirstName: "Ana",
   createdAt: "2026-10-11T17:35:00.000Z",
   readyAt: "2026-10-11T17:50:00.000Z",
+  expiresAt: "2026-10-11T22:00:00.000Z", // closing time, 19:00 in Sao Paulo
   items: [
     {
       productId: "a",
@@ -46,7 +47,12 @@ const renderPage = async (code = "CUP-7K3Q9F", flag?: string) =>
     }),
   );
 
+/** 17:00 on the order's day in Sao Paulo (the clock only matters for the pickup deadline). */
+const sameDay = () =>
+  vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-11T20:00:00.000Z") });
+
 beforeEach(() => vi.mocked(fetchOrder).mockReset());
+afterEach(() => vi.useRealTimers());
 
 describe("SCR-04 Meu pedido (US-16 AC1, US-18, US-20)", () => {
   beforeEach(() => vi.mocked(fetchOrder).mockResolvedValue({ status: "ok", order }));
@@ -88,6 +94,23 @@ describe("SCR-04 Meu pedido (US-16 AC1, US-18, US-20)", () => {
     expect(pickup).toHaveTextContent("Ter a dom, 10h às 19h");
   });
 
+  it("BR-12: shows until when the order can be collected (the pickup deadline)", async () => {
+    sameDay();
+    await renderPage();
+    const pickup = screen.getByRole("heading", { name: "Onde retirar" }).closest("section");
+    expect(pickup).toHaveTextContent("Retire até hoje, 19:00");
+  });
+
+  it("the deadline reads 'amanhã' on the day before and the date after that", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-10T20:00:00.000Z") });
+    await renderPage();
+    expect(screen.getByText(/Retire até/)).toHaveTextContent("Retire até amanhã, 19:00");
+    cleanup();
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-08T20:00:00.000Z") });
+    await renderPage();
+    expect(screen.getByText(/Retire até/)).toHaveTextContent("Retire até 11/10, 19:00");
+  });
+
   it("has the back link, the 'Voltar ao início' button and no status badge", async () => {
     await renderPage();
     expect(screen.getByRole("heading", { level: 1, name: "Meu pedido" })).toBeInTheDocument();
@@ -108,6 +131,55 @@ describe("SCR-04 Meu pedido (US-16 AC1, US-18, US-20)", () => {
     expect(items).toHaveLength(2);
     expect(items[0]).toMatch(/Chocolate Crush.*2 × R\$\s11,90.*R\$\s23,80/);
     expect(items[1]).toMatch(/Birthday Vanilla.*1 × R\$\s9,90.*R\$\s9,90/);
+  });
+});
+
+describe("BR-12 order placed outside opening hours", () => {
+  it("shows the next-day ready time in the meta line and the success notice", async () => {
+    vi.mocked(fetchOrder).mockResolvedValue({
+      status: "ok",
+      order: {
+        ...order,
+        createdAt: "2026-10-14T01:00:00.000Z", // Tuesday 22:00
+        readyAt: "2026-10-14T13:15:00.000Z", // Wednesday 10:15
+        expiresAt: "2026-10-14T22:00:00.000Z",
+      },
+    });
+    await renderPage("CUP-7K3Q9F", "1");
+    expect(screen.getByText(/^Ana · .*22:00 · pronto amanhã às 10:15$/)).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Pedido feito! Pronto amanhã às 10:15.");
+  });
+});
+
+describe("BR-20 / BR-21 final order states (US-18 AC4)", () => {
+  it("EXPIRED: warns that the order expired, keeps the order visible and hides the pickup deadline", async () => {
+    vi.mocked(fetchOrder).mockResolvedValue({
+      status: "ok",
+      order: { ...order, pickupStatus: "EXPIRED" },
+    });
+    await renderPage();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Este pedido expirou e as unidades foram liberadas.",
+    );
+    expect(screen.getByText("CUP-7K3Q9F")).toBeInTheDocument();
+    expect(screen.getByText("Chocolate Crush")).toBeInTheDocument();
+    expect(screen.queryByText(/Retire até/)).not.toBeInTheDocument();
+  });
+
+  it("PICKED_UP: says the order was picked up and hides the pickup deadline", async () => {
+    vi.mocked(fetchOrder).mockResolvedValue({
+      status: "ok",
+      order: { ...order, pickupStatus: "PICKED_UP" },
+    });
+    await renderPage();
+    expect(screen.getByRole("status")).toHaveTextContent("Pedido retirado.");
+    expect(screen.queryByText(/Retire até/)).not.toBeInTheDocument();
+  });
+
+  it("AWAITING_PICKUP shows neither notice", async () => {
+    vi.mocked(fetchOrder).mockResolvedValue({ status: "ok", order });
+    await renderPage();
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });
 });
 

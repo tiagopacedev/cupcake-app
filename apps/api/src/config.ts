@@ -22,6 +22,13 @@ export const envSchema = z.object({
   RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60_000),
   // POST /api/orders: stricter, 10 per window per IP (07-api-spec.md §1).
   ORDERS_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(10),
+  // Secret bearer token of the staff pickup endpoint (BR-21, D-26). Optional: when it is
+  // not set (or empty) the endpoint answers 401 to everyone. Generate one with
+  // `openssl rand -hex 32`; it is never logged.
+  STAFF_API_TOKEN: z.preprocess(
+    (value) => (value === "" ? undefined : value),
+    z.string().min(32, "STAFF_API_TOKEN must have at least 32 characters").optional(),
+  ),
 });
 
 export type Config = z.infer<typeof envSchema>;

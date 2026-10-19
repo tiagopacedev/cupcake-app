@@ -1,12 +1,13 @@
-import { STORE } from "shared";
+import type { PickupStatus } from "shared";
 
 /** Shape of `Order` in docs/openapi.yaml: the public view, never the phone (BR-16). */
 export interface OrderDto {
   code: string;
-  pickupStatus: "AWAITING_PICKUP" | "PICKED_UP";
+  pickupStatus: PickupStatus;
   customerFirstName: string;
   createdAt: string;
   readyAt: string;
+  expiresAt: string;
   items: OrderItemDto[];
   totalCents: number;
 }
@@ -23,9 +24,11 @@ export interface OrderItemDto {
 
 export interface OrderView {
   code: string;
-  pickupStatus: "AWAITING_PICKUP" | "PICKED_UP";
+  pickupStatus: PickupStatus;
   customerName: string;
   createdAt: Date;
+  readyAt: Date;
+  expiresAt: Date;
   totalCents: number;
   items: {
     product: { id: string; slug: string; name: string; imageUrl: string };
@@ -39,15 +42,11 @@ export function firstName(fullName: string): string {
   return fullName.trim().split(/\s+/)[0] ?? "";
 }
 
-/** `createdAt` plus the configured preparation time (BR-12). */
-export function readyAt(createdAt: Date): Date {
-  return new Date(createdAt.getTime() + STORE.readyMinutes * 60_000);
-}
-
 /**
  * Builds the public order from stored data. Items keep the unit price paid
  * (BR-07) with the product's current name and photo, sorted by name so POST
- * and GET list them the same way.
+ * and GET list them the same way. `readyAt` and `expiresAt` are the stored
+ * pickup schedule (BR-12, BR-20).
  */
 export function toOrderDto(order: OrderView): OrderDto {
   return {
@@ -55,7 +54,8 @@ export function toOrderDto(order: OrderView): OrderDto {
     pickupStatus: order.pickupStatus,
     customerFirstName: firstName(order.customerName),
     createdAt: order.createdAt.toISOString(),
-    readyAt: readyAt(order.createdAt).toISOString(),
+    readyAt: order.readyAt.toISOString(),
+    expiresAt: order.expiresAt.toISOString(),
     items: order.items
       .map((item) => ({
         productId: item.product.id,

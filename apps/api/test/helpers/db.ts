@@ -29,7 +29,7 @@ export function createTestPrisma(): PrismaClient {
   return createPrismaClient(requireTestDatabaseUrl());
 }
 
-/** Empties every table and loads the seed catalog (three categories, one tag, six products). */
+/** Empties every table and loads the seed: three categories, one tag, six products. */
 export async function resetAndSeed(prisma: PrismaClient): Promise<void> {
   await prisma.$executeRawUnsafe(
     "TRUNCATE TABLE order_items, orders, customers, product_tags, products, tags, categories RESTART IDENTITY CASCADE",

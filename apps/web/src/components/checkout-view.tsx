@@ -15,8 +15,8 @@ import { api } from "@/lib/api/client";
 import { useCartStore } from "@/lib/cart-store";
 import { interpretFailure, type CheckoutProblem } from "@/lib/checkout-errors";
 import { validateName, validatePhone } from "@/lib/checkout-validation";
-import { saveLastOrder } from "@/lib/last-order-store";
 import { maskPhone } from "@/lib/phone-mask";
+import { saveOrder } from "@/lib/recent-orders-store";
 import { useCartRefresh } from "@/lib/use-cart-refresh";
 
 /** Submit button shared by the mobile bar and the desktop summary: disabled with "Enviando…" while the order is in flight (US-11 AC5). */
@@ -138,7 +138,7 @@ function CheckoutBody() {
       if (data) {
         // Keep the button disabled while navigating: the order exists now.
         placed.current = true;
-        saveLastOrder({ code: data.code, createdAt: data.createdAt });
+        saveOrder({ code: data.code, createdAt: data.createdAt });
         clearCart();
         router.replace(`/orders/${data.code}?new=1`);
         return;
