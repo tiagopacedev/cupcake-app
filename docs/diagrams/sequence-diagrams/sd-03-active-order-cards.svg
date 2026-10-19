@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="1023px" preserveAspectRatio="none" style="width:1425px;height:1023px;background:#FFFFFF;" version="1.1" viewBox="0 0 1425 1023" width="1425px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="27.6094" id="_title" rx="5" ry="5" style="stroke:none;stroke-width:1.0;" width="626" x="400.5" y="10"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="616" x="405.5" y="29.5332">SD-03 · Active-order cards on the home page (UC-04, BR-19) · endpoints per 07-api-spec</text><rect fill="#FFFFFF" height="772.25" style="stroke:#B9A5AA;stroke-width:1.0;" width="10" x="403" y="152.3125"/><rect fill="#FFFFFF" height="448.3281" style="stroke:#B9A5AA;stroke-width:1.0;" width="10" x="789.5" y="345.4766"/><rect fill="#FFFCFD" height="572.7891" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.5;" width="1408" x="10" y="228.0156"/><path d="M10,278.0703 L1418,278.0703 L1418,795.8047 A5,5 0 0 1 1413,800.8047 L15,800.8047 A5,5 0 0 1 10,795.8047 L10,278.0703 " fill="#FFFCFD" style="stroke:none;stroke-width:1.0;"/><rect fill="#FFFCFD" height="490.3828" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.5;" width="1388" x="20" y="303.4219"/><rect fill="#FFFCFD" height="318.9219" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.5;" width="1073.5" x="30" y="467.8828"/><path d="M30,578.6406 L1103.5,578.6406 L1103.5,781.8047 A5,5 0 0 1 1098.5,786.8047 L35,786.8047 A5,5 0 0 1 30,781.8047 L30,578.6406 " fill="#FFFCFD" style="stroke:none;stroke-width:1.0;"/><rect fill="#FFFCFD" height="115.1094" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.5;" width="704" x="40" y="664.6953"/><path d="M40,731.1016 L744,731.1016 L744,774.8047 A5,5 0 0 1 739,779.8047 L45,779.8047 A5,5 0 0 1 40,774.8047 L40,731.1016 " fill="#FFFCFD" style="stroke:none;stroke-width:1.0;"/><rect fill="#FFFCFD" height="50.0547" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.5;" width="429.5" x="40" y="814.8047"/><line style="stroke:#B9A5AA;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="81" x2="81" y1="119.9609" y2="942.5625"/><line style="stroke:#B9A5AA;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="407.5" x2="407.5" y1="119.9609" y2="942.5625"/><line style="stroke:#B9A5AA;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="674" x2="674" y1="119.9609" y2="942.5625"/><line style="stroke:#B9A5AA;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="794" x2="794" y1="119.9609" y2="942.5625"/><line style="stroke:#B9A5AA;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="1049.5" x2="1049.5" y1="119.9609" y2="942.5625"/><line style="stroke:#B9A5AA;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="1359" x2="1359" y1="119.9609" y2="942.5625"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="56" x="50" y="117.1045">Customer</text><ellipse cx="81" cy="52.1094" fill="#FDE2E4" rx="8" ry="8" style="stroke:#8C5B67;stroke-width:0.5;"/><path d="M81,60.1094 L81,87.1094 M68,68.1094 L94,68.1094 M81,87.1094 L68,102.1094 M81,87.1094 L94,102.1094 " fill="none" style="stroke:#8C5B67;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="56" x="50" y="955.0576">Customer</text><ellipse cx="81" cy="966.4141" fill="#FDE2E4" rx="8" ry="8" style="stroke:#8C5B67;stroke-width:0.5;"/><path d="M81,974.4141 L81,1001.4141 M68,982.4141 L94,982.4141 M81,1001.4141 L68,1016.4141 M81,1001.4141 L94,1016.4141 " fill="none" style="stroke:#8C5B67;stroke-width:0.5;"/><rect fill="#FFF6F7" height="46.7031" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="103" x="356.5" y="72.2578"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="74" x="371" y="92.7529">CatalogPage</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="89" x="363.5" y="109.1045">(View, SCR-01)</text><rect fill="#FFF6F7" height="46.7031" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="103" x="356.5" y="941.5625"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="74" x="371" y="962.0576">CatalogPage</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="89" x="363.5" y="978.4092">(View, SCR-01)</text><rect fill="#FFF6F7" height="46.7031" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="120" x="614" y="72.2578"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="106" x="621" y="92.7529">active-orders store</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="80" x="634" y="109.1045">(localStorage)</text><rect fill="#FFF6F7" height="46.7031" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="120" x="614" y="941.5625"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="106" x="621" y="962.0576">active-orders store</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="80" x="634" y="978.4092">(localStorage)</text><rect fill="#FFF6F7" height="46.7031" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="101" x="744" y="72.2578"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="84" x="752.5" y="92.7529">orders.routes /</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="87" x="751" y="109.1045">OrderController</text><rect fill="#FFF6F7" height="46.7031" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="101" x="744" y="941.5625"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="84" x="752.5" y="962.0576">orders.routes /</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="87" x="751" y="978.4092">OrderController</text><rect fill="#FFF6F7" height="30.3516" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="88" x="1005.5" y="88.6094"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="74" x="1012.5" y="109.1045">OrderService</text><rect fill="#FFF6F7" height="30.3516" rx="5" ry="5" style="stroke:#B5485A;stroke-width:0.5;" width="88" x="1005.5" y="941.5625"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="74" x="1012.5" y="962.0576">OrderService</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="71" x="1321" y="117.1045">PostgreSQL</text><path d="M1341.5,67.6094 C1341.5,57.6094 1359.5,57.6094 1359.5,57.6094 C1359.5,57.6094 1377.5,57.6094 1377.5,67.6094 L1377.5,93.6094 C1377.5,103.6094 1359.5,103.6094 1359.5,103.6094 C1359.5,103.6094 1341.5,103.6094 1341.5,93.6094 L1341.5,67.6094 " fill="#E8F0F7" style="stroke:#3F6A8A;stroke-width:1.5;"/><path d="M1341.5,67.6094 C1341.5,77.6094 1359.5,77.6094 1359.5,77.6094 C1359.5,77.6094 1377.5,77.6094 1377.5,67.6094 " fill="none" style="stroke:#3F6A8A;stroke-width:1.5;"/><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="71" x="1321" y="955.0576">PostgreSQL</text><path d="M1341.5,967.9141 C1341.5,957.9141 1359.5,957.9141 1359.5,957.9141 C1359.5,957.9141 1377.5,957.9141 1377.5,967.9141 L1377.5,993.9141 C1377.5,1003.9141 1359.5,1003.9141 1359.5,1003.9141 C1359.5,1003.9141 1341.5,1003.9141 1341.5,993.9141 L1341.5,967.9141 " fill="#E8F0F7" style="stroke:#3F6A8A;stroke-width:1.5;"/><path d="M1341.5,967.9141 C1341.5,977.9141 1359.5,977.9141 1359.5,977.9141 C1359.5,977.9141 1377.5,977.9141 1377.5,967.9141 " fill="none" style="stroke:#3F6A8A;stroke-width:1.5;"/><rect fill="#FFFFFF" height="772.25" style="stroke:#B9A5AA;stroke-width:1.0;" width="10" x="403" y="152.3125"/><rect fill="#FFFFFF" height="448.3281" style="stroke:#B9A5AA;stroke-width:1.0;" width="10" x="789.5" y="345.4766"/><polygon fill="#5B4A50" points="391,148.3125,401,152.3125,391,156.3125,395,152.3125" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="81" x2="397" y1="152.3125" y2="152.3125"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="88" y="147.4561">1</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="83" x="99" y="147.4561">open the store</text><polygon fill="#5B4A50" points="662,178.6641,672,182.6641,662,186.6641,666,182.6641" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="413" x2="668" y1="182.6641" y2="182.6641"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="420" y="177.8076">2</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="128" x="431" y="177.8076">read "cupcake.orders"</text><polygon fill="#5B4A50" points="424,209.0156,414,213.0156,424,217.0156,420,213.0156" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="418" x2="673" y1="213.0156" y2="213.0156"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="430" y="208.1592">3</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="226" x="441" y="208.1592">up to 5 { code, createdAt }, newest first</text><path d="M15,228.0156 L71,228.0156 L71,236.3672 L61,246.3672 L10,246.3672 L10,233.0156 A5,5 0 0 1 15,228.0156 " fill="#FFF1F3" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="572.7891" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.5;" width="1408" x="10" y="228.0156"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="16" x="25" y="242.5107">alt</text><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="99" x="86" y="243.5107">[nothing stored]</text><polygon fill="#5B4A50" points="92,266.0703,82,270.0703,92,274.0703,88,270.0703" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="86" x2="402" y1="270.0703" y2="270.0703"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="98" y="265.2139">4</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="123" x="109" y="265.2139">catalog without cards</text><line style="stroke:#8C5B67;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="10" x2="1418" y1="279.0703" y2="279.0703"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="91" x="15" y="292.5654">[stored orders]</text><path d="M25,303.4219 L93,303.4219 L93,311.7734 L83,321.7734 L20,321.7734 L20,308.4219 A5,5 0 0 1 25,303.4219 " fill="#FFF1F3" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="490.3828" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.5;" width="1388" x="20" y="303.4219"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="28" x="35" y="317.917">loop</text><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="251" x="108" y="318.917">[each stored code (requests in parallel)]</text><polygon fill="#5B4A50" points="777.5,341.4766,787.5,345.4766,777.5,349.4766,781.5,345.4766" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="413" x2="783.5" y1="345.4766" y2="345.4766"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="420" y="340.6201">5</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="131" x="431" y="340.6201">GET /api/orders/{code}</text><polygon fill="#5B4A50" points="1037.5,371.8281,1047.5,375.8281,1037.5,379.8281,1041.5,375.8281" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="799.5" x2="1043.5" y1="375.8281" y2="375.8281"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="806.5" y="370.9717">6</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="100" x="817.5" y="370.9717">getByCode(code)</text><polygon fill="#5B4A50" points="1347.5,418.5313,1357.5,422.5313,1347.5,426.5313,1351.5,422.5313" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="1049.5" x2="1353.5" y1="422.5313" y2="422.5313"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="1056.5" y="409.499">7</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="175" x="1067.5" y="401.3232">expire overdue orders (BR-20),</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="275" x="1067.5" y="417.6748">then SELECT order + items WHERE code = $1</text><polygon fill="#5B4A50" points="1060.5,448.8828,1050.5,452.8828,1060.5,456.8828,1056.5,452.8828" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="1054.5" x2="1358.5" y1="452.8828" y2="452.8828"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="1066.5" y="448.0264">8</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="59" x="1077.5" y="448.0264">row | none</text><path d="M35,467.8828 L91,467.8828 L91,476.2344 L81,486.2344 L30,486.2344 L30,472.8828 A5,5 0 0 1 35,467.8828 " fill="#FFF1F3" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="318.9219" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.5;" width="1073.5" x="30" y="467.8828"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="16" x="45" y="482.3779">alt</text><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="68" x="106" y="483.3779">[not found]</text><polygon fill="#5B4A50" points="810.5,505.9375,800.5,509.9375,810.5,513.9375,806.5,509.9375" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="804.5" x2="1048.5" y1="509.9375" y2="509.9375"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="816.5" y="505.0811">9</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="131" x="827.5" y="505.0811">ORDER_NOT_FOUND</text><polygon fill="#5B4A50" points="424,536.2891,414,540.2891,424,544.2891,420,540.2891" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="418" x2="788.5" y1="540.2891" y2="540.2891"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="430" y="535.4326">10</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="21" x="448" y="535.4326">404</text><polygon fill="#5B4A50" points="662,566.6406,672,570.6406,662,574.6406,666,570.6406" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="413" x2="668" y1="570.6406" y2="570.6406"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="420" y="565.7842">11</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="98" x="438" y="565.7842">remove this code</text><line style="stroke:#8C5B67;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="30" x2="1103.5" y1="579.6406" y2="579.6406"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="44" x="35" y="593.1357">[found]</text><polygon fill="#5B4A50" points="810.5,615.3438,800.5,619.3438,810.5,623.3438,806.5,619.3438" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="804.5" x2="1048.5" y1="619.3438" y2="619.3438"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="816.5" y="614.4873">12</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="208" x="834.5" y="614.4873">public order (first name only, BR-16)</text><polygon fill="#5B4A50" points="424,645.6953,414,649.6953,424,653.6953,420,649.6953" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="418" x2="788.5" y1="649.6953" y2="649.6953"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="430" y="644.8389">13</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="170" x="448" y="644.8389">200 { code, pickupStatus, … }</text><path d="M45,664.6953 L101,664.6953 L101,673.0469 L91,683.0469 L40,683.0469 L40,669.6953 A5,5 0 0 1 45,664.6953 " fill="#FFF1F3" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="115.1094" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.5;" width="704" x="40" y="664.6953"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="16" x="55" y="679.1904">alt</text><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="227" x="116" y="680.1904">[pickupStatus = AWAITING_PICKUP]</text><polygon fill="#5B4A50" points="92,719.1016,82,723.1016,92,727.1016,88,723.1016" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="86" x2="402" y1="723.1016" y2="723.1016"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="98" y="710.0693">14</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="192" x="116" y="701.8936">card "Seu pedido · CUP-XXXXXX ·</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="276" x="116" y="718.2451">Aguardando retirada" between header and filters</text><line style="stroke:#8C5B67;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="40" x2="744" y1="732.1016" y2="732.1016"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="158" x="45" y="745.5967">[PICKED_UP or EXPIRED]</text><polygon fill="#5B4A50" points="662,767.8047,672,771.8047,662,775.8047,666,771.8047" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="413" x2="668" y1="771.8047" y2="771.8047"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="420" y="766.9482">15</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="98" x="438" y="766.9482">remove this code</text><path d="M45,814.8047 L101,814.8047 L101,823.1563 L91,833.1563 L40,833.1563 L40,819.8047 A5,5 0 0 1 45,814.8047 " fill="#FFF1F3" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="50.0547" rx="5" ry="5" style="stroke:#8C5B67;stroke-width:1.5;" width="429.5" x="40" y="814.8047"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="16" x="55" y="829.2998">alt</text><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="161" x="116" y="830.2998">[network error on a code]</text><polygon fill="#5B4A50" points="92,852.8594,82,856.8594,92,860.8594,88,856.8594" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="86" x2="402" y1="856.8594" y2="856.8594"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="98" y="852.0029">16</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="216" x="116" y="852.0029">no card for it; the code is kept (silent)</text><polygon fill="#5B4A50" points="391,890.2109,401,894.2109,391,898.2109,395,894.2109" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;" x1="81" x2="397" y1="894.2109" y2="894.2109"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="88" y="889.3545">17</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="58" x="106" y="889.3545">tap a card</text><polygon fill="#5B4A50" points="92,920.5625,82,924.5625,92,928.5625,88,924.5625" style="stroke:#5B4A50;stroke-width:1.0;"/><line style="stroke:#5B4A50;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="86" x2="407" y1="924.5625" y2="924.5625"/><text fill="#000000" font-family="Helvetica" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="14" x="98" y="919.7061">18</text><text fill="#000000" font-family="Helvetica" font-size="13" lengthAdjust="spacing" textLength="280" x="116" y="919.7061">navigate to /orders/{code} (Meu pedido) → UC-05</text><!--MD5=[8f26a0f476db95a77e0954fa1701101f]
+@startuml sd-03-active-order-cards
+!include ../_style.iuml
+title SD-03 · Active-order cards on the home page (UC-04, BR-19) · endpoints per 07-api-spec
+autonumber
+actor Customer
+participant "CatalogPage\n(View, SCR-01)" as V
+participant "active-orders store\n(localStorage)" as LS
+participant "orders.routes /\nOrderController" as C
+participant "OrderService" as S
+database "PostgreSQL" as DB
+
+Customer -> V : open the store
+activate V
+V -> LS : read "cupcake.orders"
+LS - -> V : up to 5 { code, createdAt }, newest first
+alt nothing stored
+  V - -> Customer : catalog without cards
+else stored orders
+  loop each stored code (requests in parallel)
+    V -> C : GET /api/orders/{code}
+    activate C
+    C -> S : getByCode(code)
+    S -> DB : expire overdue orders (BR-20),\nthen SELECT order + items WHERE code = $1
+    DB - -> S : row | none
+    alt not found
+      S - -> C : ORDER_NOT_FOUND
+      C - -> V : 404
+      V -> LS : remove this code
+    else found
+      S - -> C : public order (first name only, BR-16)
+      C - -> V : 200 { code, pickupStatus, … }
+      alt pickupStatus = AWAITING_PICKUP
+        V - -> Customer : card "Seu pedido · CUP-XXXXXX ·\nAguardando retirada" between header and filters
+      else PICKED_UP or EXPIRED
+        V -> LS : remove this code
+      end
+    end
+    deactivate C
+  end
+end
+alt network error on a code
+  V - -> Customer : no card for it; the code is kept (silent)
+end
+Customer -> V : tap a card
+V - -> Customer : navigate to /orders/{code} (Meu pedido) → UC-05
+deactivate V
+@enduml
+
+@startuml sd-03-active-order-cards
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam roundCorner 10
+skinparam ArrowColor #5B4A50
+skinparam BorderColor #8C5B67
+skinparam BackgroundColor #FFFFFF
+skinparam ActorBorderColor #8C5B67
+skinparam ActorBackgroundColor #FDE2E4
+skinparam UsecaseBackgroundColor #FFF6F7
+skinparam UsecaseBorderColor #B5485A
+skinparam ClassBackgroundColor #FFF9FA
+skinparam ClassBorderColor #B5485A
+skinparam ClassHeaderBackgroundColor #FDE2E4
+skinparam PackageBackgroundColor #FFFCFD
+skinparam PackageBorderColor #8C5B67
+skinparam NoteBackgroundColor #FFF1D6
+skinparam NoteBorderColor #B07D1F
+skinparam ParticipantBackgroundColor #FFF6F7
+skinparam ParticipantBorderColor #B5485A
+skinparam DatabaseBackgroundColor #E8F0F7
+skinparam DatabaseBorderColor #3F6A8A
+skinparam SequenceLifeLineBorderColor #B9A5AA
+skinparam SequenceGroupBackgroundColor #FFF1F3
+skinparam ActivityBackgroundColor #FFF6F7
+skinparam ActivityBorderColor #B5485A
+skinparam ActivityDiamondBackgroundColor #FFF1D6
+skinparam ActivityDiamondBorderColor #B07D1F
+skinparam SwimlaneTitleFontStyle bold
+title SD-03 · Active-order cards on the home page (UC-04, BR-19) · endpoints per 07-api-spec
+autonumber
+actor Customer
+participant "CatalogPage\n(View, SCR-01)" as V
+participant "active-orders store\n(localStorage)" as LS
+participant "orders.routes /\nOrderController" as C
+participant "OrderService" as S
+database "PostgreSQL" as DB
+
+Customer -> V : open the store
+activate V
+V -> LS : read "cupcake.orders"
+LS - -> V : up to 5 { code, createdAt }, newest first
+alt nothing stored
+  V - -> Customer : catalog without cards
+else stored orders
+  loop each stored code (requests in parallel)
+    V -> C : GET /api/orders/{code}
+    activate C
+    C -> S : getByCode(code)
+    S -> DB : expire overdue orders (BR-20),\nthen SELECT order + items WHERE code = $1
+    DB - -> S : row | none
+    alt not found
+      S - -> C : ORDER_NOT_FOUND
+      C - -> V : 404
+      V -> LS : remove this code
+    else found
+      S - -> C : public order (first name only, BR-16)
+      C - -> V : 200 { code, pickupStatus, … }
+      alt pickupStatus = AWAITING_PICKUP
+        V - -> Customer : card "Seu pedido · CUP-XXXXXX ·\nAguardando retirada" between header and filters
+      else PICKED_UP or EXPIRED
+        V -> LS : remove this code
+      end
+    end
+    deactivate C
+  end
+end
+alt network error on a code
+  V - -> Customer : no card for it; the code is kept (silent)
+end
+Customer -> V : tap a card
+V - -> Customer : navigate to /orders/{code} (Meu pedido) → UC-05
+deactivate V
+@enduml
+
+PlantUML version 1.2022.12(Sun Oct 23 15:12:26 BRT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: pt
+Country: BR
+--></g></svg>

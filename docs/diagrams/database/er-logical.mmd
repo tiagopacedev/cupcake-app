@@ -1,5 +1,5 @@
 ---
-title: Cupcake App · Logical model (3NF)
+title: Cupcake Store · Logical model (3NF)
 ---
 erDiagram
   %% Logical model (3NF): attributes with domains, keys (03-data-model.md §3)
@@ -47,6 +47,8 @@ erDiagram
     Identifier customerId FK
     MoneyCents totalCents "snapshot"
     PickupStatus pickupStatus "default AWAITING_PICKUP"
+    Timestamp readyAt "BR-12"
+    Timestamp expiresAt "BR-20"
     Timestamp createdAt
   }
   OrderItem {

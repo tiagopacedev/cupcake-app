@@ -29,6 +29,7 @@ else products
   activate C
   C -> C : validate query (category | tag, optional)
   C -> S : listProducts({ category: "chocolate" })
+  S -> DB : expire overdue orders, their units\nback to stock (BR-20)
   S -> PR : findActive({ categorySlug })
   PR -> DB : SELECT … FROM products JOIN categories\nLEFT JOIN product_tags/tags\nWHERE is_active AND category.slug = $1
   DB --> PR : rows

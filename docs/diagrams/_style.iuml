@@ -1,4 +1,4 @@
-' Shared PlantUML style for Cupcake App diagrams
+' Shared PlantUML style for Cupcake Store diagrams
 skinparam shadowing false
 skinparam defaultFontName Helvetica
 skinparam defaultFontSize 13
