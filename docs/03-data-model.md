@@ -2,8 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.1 (Phase 3, 11 Oct 2026) |
-| **Status** | Updated for the approved UI (pay at the store, six-product seed) |
+| **Version** | 1.3 (18 Oct 2026) |
 | **DBMS** | PostgreSQL 16 |
 | **Physical source of truth** | [`diagrams/database/physical-model.sql`](diagrams/database/physical-model.sql) |
 | **Related** | [01-prd.md](01-prd.md) (BR-xx), [class diagram](diagrams/class-diagram/class-diagram.svg) |
@@ -82,7 +81,7 @@ A domain is the set of valid values of an attribute, which is more than its data
 | `PersonName` | Text, 2–80 characters after trimming (BR-14) | Customer.name |
 | `PhoneE164` | Brazilian mobile in E.164: `^\+55[1-9]{2}9[0-9]{8}$` (BR-14) | Customer.phone |
 | `OrderCode` | `^CUP-[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{6}$`: 31-symbol alphabet without 0/O/1/I/L (BR-13) | Order.code |
-| `PickupStatus` | {AWAITING_PICKUP, PICKED_UP} | Order.pickupStatus |
+| `PickupStatus` | {AWAITING_PICKUP, PICKED_UP, EXPIRED} | Order.pickupStatus |
 | `Timestamp` | Instant with time zone | createdAt, updatedAt |
 | `SortOrder` | Small integer, default 0 | Category.sortOrder |
 
@@ -95,7 +94,7 @@ Notation: <u>primary key</u>, *foreign key* → referenced relation.
 - **Product** (<u>id</u>, *categoryId* → Category, name ᵁᴷ, slug ᵁᴷ, description, priceCents, stockQuantity, imageUrl, isActive, createdAt, updatedAt)
 - **ProductTag** (<u>*productId* → Product, *tagId* → Tag</u>)
 - **Customer** (<u>id</u>, name, phone ᵁᴷ, createdAt, updatedAt)
-- **Order** (<u>id</u>, code ᵁᴷ, *customerId* → Customer, totalCents, pickupStatus, createdAt, updatedAt)
+- **Order** (<u>id</u>, code ᵁᴷ, *customerId* → Customer, totalCents, pickupStatus, readyAt, expiresAt, createdAt, updatedAt)
 - **OrderItem** (<u>id</u>, *orderId* → Order, *productId* → Product, quantity, unitPriceCents, createdAt), with UK (orderId, productId)
 
 **Candidate keys:** besides the surrogate `id`, the natural keys are Category.slug and .name, Tag.slug and .name, Product.slug and .name, Customer.phone, Order.code, and OrderItem (orderId, productId). Surrogate UUIDs are used as primary keys so that natural keys (e.g. a renamed product) can change without cascading updates, and so internal IDs reveal nothing about volume.
@@ -108,6 +107,8 @@ Notation: <u>primary key</u>, *foreign key* → referenced relation.
 | Prices and unit prices are positive | BR-07 |
 | A line's quantity is 1–20; a product appears at most once per order | BR-06 |
 | A new order starts as AWAITING_PICKUP; payment is not recorded (it happens at the counter) | BR-09, BR-10 |
+| An order is ready no earlier than it was created and expires after it is ready | BR-12, BR-20 |
+| An order leaves AWAITING_PICKUP once, for PICKED_UP or EXPIRED, and both are final | BR-10, BR-20, BR-21 |
 | Stock is decremented in the same transaction that creates the order | BR-11 |
 | Order codes are unique and follow the code format | BR-13 |
 | Phone numbers are unique and normalized | BR-14, BR-15 |
@@ -172,8 +173,7 @@ Result: **Category, Tag, Product, ProductTag, Customer, Order, OrderItem** (§3.
 |---|---|---|
 | `OrderItem.unitPriceCents` | **Stored** | It isn't redundant with `Product.priceCents`. It records a **historical fact** (the price paid), which must not change when the catalog price changes (BR-07). |
 | `Order.totalCents` | **Stored (controlled denormalization)** | Derivable as Σ(quantity × unitPriceCents). It's stored as an immutable snapshot computed by the server in the same transaction that creates the items, never updated afterward, so it can't drift. It simplifies reads and documents the amount the customer is asked to pay at the counter ("Total a pagar na loja"). Integration tests assert total = Σ lines. |
-| Ready time (`readyAt`) | **Derived, not stored** | `createdAt + 15 min` (BR-12, configurable `PICKUP_READY_MINUTES`). Shown as "pronto às HH:mm". |
-| "Order from today" | **Derived** | `createdAt` falls on the current date in America/Sao_Paulo. Used by the home latest-order card (BR-19). |
+| Ready time (`readyAt`) and expiry (`expiresAt`) | **Stored (computed once by the server)** | Computed from the store's opening hours and preparation time at creation (BR-12) and never recomputed: the store's opening hours can change later, and an existing order must keep the pickup time it was promised. v1.0.0 derived `readyAt` as `createdAt + 15 min`; the migration backfills old orders with that rule (§11). |
 | Customer first name | **Derived** | First word of `Customer.name`, computed for public views (BR-16) |
 | Line total | **Derived** | quantity × unitPriceCents |
 | Customer name on reuse | **Overwritten** with the latest name (BR-15) | Keeps 3NF (one name per customer). Consequence: older orders display the customer's current first name. That's acceptable because pickup verification relies on the order code and items (BR-18). |
@@ -191,11 +191,11 @@ Result: **Category, Tag, Product, ProductTag, Customer, Order, OrderItem** (§3.
 | Primary keys | `uuid DEFAULT gen_random_uuid()` | Non-guessable, no sequence leakage; built into PostgreSQL 13+ |
 | Money | `integer` cents | Exact arithmetic; no floating-point rounding (BR-07) |
 | Time | `timestamptz` | Unambiguous instants; displayed in America/Sao_Paulo by the UI (NFR-04) |
-| Status field | Native `ENUM` type `pickup_status` | Domain enforced by the database; maps to a Prisma enum. There is no payment status: payment happens at the counter (BR-09). |
+| Status field | Native `ENUM` type `pickup_status` (AWAITING_PICKUP, PICKED_UP, EXPIRED) | Domain enforced by the database; maps to a Prisma enum. There is no payment status: payment happens at the counter (BR-09). |
 | Text lengths | `varchar(n)` matching domain maximums, plus `CHECK` on trimmed minimum length | Domain enforcement in the database, not only in the application (NFR-08) |
 | Formats | `CHECK` with regular expressions for slug, phone and order code | Last line of defense if application validation is bypassed |
 | FK actions | `RESTRICT` on categories→products, customers→orders, products→order_items; `CASCADE` on orders→order_items and product/tag→product_tags | Order history can't be orphaned; join rows and items die with their owner |
-| Indexes | PK and UNIQUE indexes (automatic), plus `products(category_id)`, `product_tags(tag_id)`, `orders(customer_id)`, `order_items(product_id)` | Supports filters, joins and FK checks. `order_items(order_id)` is covered by the composite UNIQUE. |
+| Indexes | PK and UNIQUE indexes (automatic), plus `products(category_id)`, `product_tags(tag_id)`, `orders(customer_id)`, `order_items(product_id)`, `orders(pickup_status, expires_at)` (the lazy-expiry lookup, BR-20) | Supports filters, joins and FK checks. `order_items(order_id)` is covered by the composite UNIQUE. |
 | `updated_at` | Default `now()`; updated by the application (Prisma `@updatedAt`) | Avoids triggers; keeps behavior visible in code |
 | Concurrency | Order creation decrements stock with conditional `UPDATE … WHERE stock_quantity >= $q`, in product-id order, inside the creation transaction | Prevents overselling and avoids deadlocks (BR-11, SD-02) |
 | Order code collisions | Unique violation (SQLSTATE 23505) → the whole creation transaction is retried with a new code, up to 5 times | 31⁶ ≈ 887 million codes makes collisions rare. PostgreSQL aborts a transaction after an error, so the retry wraps the entire transaction. |
@@ -212,6 +212,8 @@ Result: **Category, Tag, Product, ProductTag, Customer, Order, OrderItem** (§3.
 | `customers_phone_key` | customers | BR-15 |
 | `orders_code_fmt`, `orders_code_key` | orders | BR-13 |
 | `orders_total_pos` | orders | Orders have at least one priced line |
+| `orders_ready_after_created` | orders | BR-12 |
+| `orders_expires_after_ready` | orders | BR-20 |
 
 The full DDL is in [`diagrams/database/physical-model.sql`](diagrams/database/physical-model.sql).
 
@@ -283,8 +285,10 @@ Legend: **PK** primary key · **FK** foreign key · **UK** unique · **NN** not 
 | code | varchar(10) | NN | none | UK; CK `^CUP-[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{6}$` | OrderCode | Public order code presented at pickup |
 | customer_id | uuid | NN | none | FK → customers.id (RESTRICT); indexed | Identifier | Customer who placed the order |
 | total_cents | integer | NN | none | CK > 0 | MoneyCents | Snapshot of Σ(quantity × unit_price_cents), set at creation (§5) |
-| pickup_status | pickup_status | NN | 'AWAITING_PICKUP' | enum | PickupStatus | AWAITING_PICKUP on creation → PICKED_UP (future, outside MVP) |
-| created_at | timestamptz | NN | now() | none | Timestamp | Order creation. Basis of the ready time (+15 min, BR-12) and of the "today" rule (BR-19). |
+| pickup_status | pickup_status | NN | 'AWAITING_PICKUP' | enum | PickupStatus | AWAITING_PICKUP on creation → PICKED_UP (staff, BR-21) or EXPIRED (BR-20); both final |
+| ready_at | timestamptz | NN | none | CK ≥ created_at | Timestamp | First moment the order can be collected, within opening hours (BR-12) |
+| expires_at | timestamptz | NN | none | CK > ready_at; indexed with pickup_status | Timestamp | Closing time of the pickup day; the order expires after it (BR-20) |
+| created_at | timestamptz | NN | now() | none | Timestamp | Order creation instant (set by the server's clock when the order is created). Basis of the pickup schedule (BR-12). |
 | updated_at | timestamptz | NN | now() | none | Timestamp | Last status change |
 
 ### 7.7 `order_items`: order lines (BR-06, BR-07)
@@ -303,7 +307,10 @@ Legend: **PK** primary key · **FK** foreign key · **UK** unique · **NN** not 
 | Type | Values | Meaning |
 |---|---|---|
 | `pickup_status` | `AWAITING_PICKUP` | Order placed and stock reserved; waiting for the customer, who pays at the counter |
-| | `PICKED_UP` | Handed over. Reserved for future use; not set by the MVP (BR-18). |
+| | `PICKED_UP` | Handed over; set by staff through `PATCH /api/orders/{code}/pickup` (BR-21). Final; the reserved stock is not released. |
+| | `EXPIRED` | Not collected by `expires_at`; the reserved stock was released exactly once (BR-20). Final. |
+
+**State machine:** `AWAITING_PICKUP → PICKED_UP` (staff, while `now < expires_at`) and `AWAITING_PICKUP → EXPIRED` (the system, when `now ≥ expires_at`, evaluated lazily when the API handles a request). Neither final state changes again; the conditional `UPDATE … WHERE pickup_status = 'AWAITING_PICKUP'` is what makes each transition happen once.
 
 ---
 
@@ -366,14 +373,15 @@ The v1.1 DDL and seed were run against **PostgreSQL 16.15** on 11 Oct 2026 (scri
 | 13 | Delete an ordered product | order_items_product_fk (RESTRICT) |
 | 14 | Slug with spaces and capitals | categories_slug_fmt |
 
-These checks become automated integration tests in Phase 5 (NFR-08, NFR-10).
+These checks run automatically in `packages/database/test/constraints.int.test.ts`, together with two for the order schedule: an order ready before it was created, and one that expires before it is ready (NFR-08, NFR-10).
 
-## 10. Notes for Phase 4 (Prisma mapping)
+## 10. Prisma mapping
 
 - Models `Category`, `Tag`, `Product`, `ProductTag`, `Customer`, `Order`, `OrderItem` use `@@map("<table>")` and `@map("<column>")` for snake_case names; enum `PickupStatus` uses `@@map`.
 - `@default(dbgenerated("gen_random_uuid()")) @db.Uuid` for IDs; `@db.VarChar(n)`, `@db.SmallInt`, `@db.Timestamptz` to match types; `@updatedAt` for `updatedAt`.
 - Prisma doesn't express `CHECK` constraints: add them in a raw SQL migration copied from `physical-model.sql`, and verify with a schema-diff test that the migrated database matches this document.
 - The conditional stock decrement uses `updateMany({ where: { id, stockQuantity: { gte: q } }, data: { stockQuantity: { decrement: q } } })` and checks `count`. It runs inside the interactive transaction that creates the order; if any `count` is 0 the transaction is rolled back.
+- Order expiry uses `updateManyAndReturn({ where: { pickupStatus: AWAITING_PICKUP, expiresAt: { lte: now } } })`; the conditional update releases each order's stock exactly once (`02-architecture.md` §6.1b).
 
 ## 11. Change log
 
@@ -381,3 +389,5 @@ These checks become automated integration tests in Phase 5 (NFR-08, NFR-10).
 |---|---|---|
 | 1.0 | 10 Oct 2026 | Initial conceptual, logical (3NF/BCNF) and physical models; data dictionary; seed catalog; validation evidence |
 | 1.1 | 11 Oct 2026 | Approved UI: payment at the store (removed `payment_status`, `paid_at` and their CHECKs; `pickup_status` = AWAITING_PICKUP \| PICKED_UP); stock decremented at order creation; derived ready time (+15 min) and "today" rule; six-product photographed seed; re-validated on PostgreSQL 16 |
+| 1.2 | 18 Oct 2026 | User validation (E9-03/E9-08): `orders.ready_at` and `orders.expires_at` stored instead of a derived ready time (BR-12, BR-20); `EXPIRED` status and state machine (D-25); CHECKs `orders_ready_after_created` and `orders_expires_after_ready`; index `orders(pickup_status, expires_at)`; the "created today" derived item is gone with BR-19. The store's opening hours stay in the shared config (D-24): the `stores`/`store_opening_hours` tables were built and dropped, so there is no store entity in the database. Migration `20261018000001_order_schedule_and_expiry` backfills old orders (ready = created + 15 min, expires at 19:00 of the ready day or the next). The ER image exports (`er-*.svg/png`) still show v1.1: re-render them from the `.mmd` sources (`diagrams/README.md`) |
+| 1.3 | 18 Oct 2026 | Documentation review: §9 points to the automated constraint tests; §10 renamed to Prisma mapping, with the expiry update |

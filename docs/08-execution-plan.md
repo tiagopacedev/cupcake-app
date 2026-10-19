@@ -2,11 +2,10 @@
 
 | | |
 |---|---|
-| **Version** | 2.2 (17 Oct 2026) |
-| **Status** | **Approved by the owner on 11 Oct 2026.** E0-01/E0-02 done; **E1 (Foundation) done**, all 7 tasks, lint/typecheck/tests green. E0-03–E0-06 (tutor message, GitHub repo, cloud accounts, Situação 1 package) remain owner-side tasks tracked below — still needed before E3 (CI, cloud deploy). |
+| **Version** | 2.6 (18 Oct 2026) |
+| **Status** | Approved on 11 Oct 2026. v1.0.0 released on 17 Oct; the fixes from user validation (E9-07…E9-13) are implemented and await review before the v1.1.0 release. Live status: §16. |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
-| **Executor** | Claude Code, one task at a time, reviewed by the owner |
-| **Related** | [CLAUDE.md](../CLAUDE.md) · [01-prd.md](01-prd.md) §9–§10 (backlog, T-ids) · [02-architecture.md](02-architecture.md) · [04-ui-design-system.md](04-ui-design-system.md) · [05-testing-strategy.md](05-testing-strategy.md) · [06-development-workflow.md](06-development-workflow.md) · [07-api-spec.md](07-api-spec.md) |
+| **Related** | [01-prd.md](01-prd.md) §9–§10 (backlog, T-ids) · [02-architecture.md](02-architecture.md) · [04-ui-design-system.md](04-ui-design-system.md) · [05-testing-strategy.md](05-testing-strategy.md) · [06-development-workflow.md](06-development-workflow.md) · [07-api-spec.md](07-api-spec.md) |
 
 This plan breaks the build into **small, verifiable tasks** grouped in phases. Every task names what it implements (US / BR / T-id), what it depends on, what it produces and how to check it's done. Every phase ends with a **review gate** where the owner validates the result before the next phase starts. Progress is tracked in this file (§16).
 
@@ -18,10 +17,10 @@ This plan breaks the build into **small, verifiable tasks** grouped in phases. E
 
 1. **One task = one branch = one PR.** Branch name: `feat/<task-id>-<slug>` (e.g. `feat/e6-05-order-transaction`). Bigger than ~6 h? Split it before starting.
 2. **Follow the order.** A task starts only when its dependencies are ✅ and its phase gate's predecessor is approved. Tasks without a dependency between them may run in any order inside the phase.
-3. **The docs are the spec.** Each task lists the documents to read. If something isn't specified, **stop and ask** (CLAUDE.md §3). Never add scope.
-4. **Done means the acceptance criteria are met** *and* the Definition of Done in CLAUDE.md §8 holds (lint, types, tests, docs, copy, visual check for UI).
+3. **The docs are the spec.** Each task lists the documents to read. If something isn't specified, **decide it in the docs first** (06 §3). Never add scope.
+4. **Done means the acceptance criteria are met** *and* the Definition of Done (06 §3) holds (lint, types, tests, docs, copy, visual check for UI).
 5. **Update this file in the same PR**: tick the task (§16), add actual hours and the PR link.
-6. **Gates are real stops.** At a gate Claude Code presents the gate checklist with evidence; the owner approves, or lists fixes that become new tasks.
+6. **Gates are real stops.** At a gate the checklist is presented with evidence; the owner approves, or lists fixes that become new tasks.
 7. **External or irreversible actions** (creating Vercel/Neon resources, deploying to production, running migrations on production, deleting anything) need the owner's explicit go-ahead at the moment they happen.
 
 ### 1.2 Task card (template)
@@ -38,17 +37,9 @@ Every task below follows this card; the tables are its compact form.
 | **Acceptance criteria** | Objective checks (tests, commands, visual comparison) |
 | **Estimate** | Hours (from PRD §10; new tasks marked *new*) |
 
-### 1.3 Prompt template for Claude Code (per task)
+### 1.3 Task routine
 
-```
-Task <ID> from docs/08-execution-plan.md.
-1. Read CLAUDE.md and the "Read first" docs of the task.
-2. Restate the task, list files you'll create/change and the tests you'll write. Wait for my OK.
-3. Implement test-first where practical. Use only what the docs specify.
-4. Run: pnpm lint && pnpm typecheck && pnpm test && pnpm test:int (and test:e2e if UI flow).
-5. For UI: screenshot at 390 px and 1280 px and compare with docs/design/screenshots/<ref>.png.
-6. Show me the acceptance criteria with evidence, then update §16 of the plan and open the PR.
-```
+Each task follows the routine in `06-development-workflow.md` §7: restate the task and the tests from the referenced docs, implement test-first, run the checks, compare UI screens at 390 and 1280 px, then update §16 and open the PR.
 
 ---
 
@@ -81,7 +72,7 @@ Critical path: **E1 → E2 → E3 (G1) → E6 → E7 (G3) → E8 (G4) → E9 (G5
 
 ---
 
-## 3. E0 · Plan approval and setup decisions (owner + Claude, no code)
+## 3. E0 · Plan approval and setup decisions (owner, no code)
 
 **Goal:** everything needed to start coding is decided and available.
 **Outcome:** approved plan; open items closed in the docs; empty GitHub repository with the docs; accounts ready.
@@ -91,20 +82,20 @@ Critical path: **E1 → E2 → E3 (G1) → E6 → E7 (G3) → E8 (G4) → E9 (G5
 | E0-01 | Review and approve this plan | n/a | n/a | Owner's approval recorded in the gate log (§16) | Gate log has the G0 line with date | 1 |
 | E0-02 | Close design open items | A-08, UI doc §11 G-1, G-4 | E0-01 | Decisions: privacy line at checkout (yes/no + copy), the five *(proposed)* messages, desktop subtitle | PRD/UI doc/overview updated; no "open" left for these items | 1 |
 | E0-03 | Ask the tutor about the back-end language | R-01 | n/a | Message sent; reply stored in `docs/situacao-1/` | Message sent (date logged); reply filed when received | 0.5 |
-| E0-04 | Create the GitHub repository and push the docs | 06 §2 | E0-01 | Public repo `cupcake-app` with `docs/`, `CLAUDE.md`, branch protection on `main` | Repo URL in README draft; `main` protected (PR + CI required once CI exists) | 1 |
+| E0-04 | Create the GitHub repository and push the docs | 06 §2 | E0-01 | Public repo `cupcake-app` with `docs/`, branch protection on `main` | Repo URL in README draft; `main` protected (PR + CI required once CI exists) | 1 |
 | E0-05 | Accounts ready (owner) | 02 §10 | n/a | Vercel account (Hobby) linked to GitHub; Neon via Vercel Marketplace available | Owner confirms; no resources created yet | 0.5 |
 | E0-06 | Situação 1 package (pt-BR) | Overview §5, D-01 | E0-02 | `docs/situacao-1/README.md` (índice), `alteracoes-pit-i.md`, `revisao-por-pares.md` (template; critiques collected 19–21 Oct) | Files exist, link every Situação 1 artifact; peer-review form ready to send | 4 |
 
-**Gate G0 · Ready to build**: ✅ plan approved (11 Oct) · ✅ open items decided (E0-02, see UI doc v1.2 and overview D-22) · ☐ repo created · ☐ accounts ready.
+**Gate G0 · Ready to build**: ✅ plan approved (11 Oct) · ✅ open items decided (E0-02, D-22) · ✅ repo created · ✅ accounts ready.
 
-> G0 is **partially satisfied**: the owner approved the plan and closed the design open items, and explicitly asked to start E1 now rather than wait on E0-03…06. E0-04 (repo) and E0-05 (accounts) are still required before E3 (CI, cloud deploy) can start, and E0-03/E0-06 remain owner-side. Claude Code will flag again at the top of E3 if any of these are still open.
+> The owner started E1 before E0-03 and E0-06 were done; the repository and the accounts (E0-04, E0-05) were ready before E3.
 
 ---
 
 ## 4. E1 · Foundation
 
 **Goal:** a monorepo where web and API start locally, with the error model and security in place.
-**Read first:** 02-architecture §3–§9, 06 §1, CLAUDE.md §5–§6a.
+**Read first:** 02-architecture §3–§9, 06 §1 and §3.
 **Outcome:** `pnpm dev` runs web (:3000) and API (:4000); `GET /api/health` responds; lint/types/tests run.
 
 | ID | Task | Implements | Depends on | Outcome | Acceptance criteria | h |
@@ -261,10 +252,19 @@ Critical path: **E1 → E2 → E3 (G1) → E6 → E7 (G3) → E8 (G4) → E9 (G5
 |---|---|---|---|---|---|---|
 | E9-01 | Tester recruitment and form | *new* · R-03 | E0-06 | 5 testers + 1 spare confirmed by **31 Oct**; Google Form (tasks + satisfaction questions, consent) | Names (with consent) and form link in `docs/situacao-3/` | 2 |
 | E9-02 | Testing window 7–10 Nov | *new* | G4, E9-01 | Testers use production; responses exported to PDF | 5 complete responses; PDF in `docs/situacao-3/` | 2 |
-| E9-03 | Triage and fixes | *new* (buffer) | E9-02 | Issues logged with severity; fixes as normal tasks (branch + tests); re-test | All high/medium issues fixed or justified; tag `v1.0.x` | 8 |
+| E9-03 | Triage and fixes | *new* (buffer) | E9-02 | Issues logged with severity; fixes as normal tasks (branch + tests); re-test. **Split on 18 Oct into E9-07…E9-14 below** | All high/medium issues fixed or justified; tag **`v1.1.0`** (behavior changes, not just a `v1.0.x` patch) | 8 |
 | E9-04 | Quality report (laudo) | *new* | E9-03 | `docs/situacao-3/laudo-de-qualidade.md`: findings, fixes, metrics, before/after | Each finding traced to a fix or decision | 3 |
 | E9-05 | Updated video (≤ 5 min) | *new* | E9-03 | Script `roteiro-video-atualizado.md` + link | Shows changes after validation; ≤ 5 min | 4 |
 | E9-06 | Situação 3 index | *new* | E9-04, E9-05 | `docs/situacao-3/README.md` (pt-BR) | All links work logged out | 1 |
+
+| E9-07 | Tester report and spec changes | *new* · E9-03 | E9-02 | `docs/situacao-3/relatorio-de-testes.md` (pt-BR, triage table); PRD v1.4 (BR-12, BR-19 rewritten, BR-20, BR-21, US-22 rewritten, US-23…US-25), overview D-24…D-28, UI doc v1.8, this plan | Every finding maps to a story, a decision or an out-of-scope justification; owner reviews the docs before any code | 2 |
+| E9-08 | Database: order schedule and EXPIRED | US-25, BR-12, BR-20 · D-25 | E9-07 | `orders.ready_at`/`expires_at`; status `EXPIRED`; migration with backfill; `physical-model.sql` and `03-data-model.md` updated | Migration applies on an empty and a populated database; schema-diff tests pass | 2 |
+| E9-09 | Store config and pickup schedule | BR-12 · D-24 | E9-08 | `STORE` config, `computePickup` and `formatOpeningHours` in `packages/shared`; order creation stores `readyAt`/`expiresAt` | Orders at 22h, on Monday and at 18:31 get the right times; contract tests pass | 4 |
+| E9-10 | Order expiry and staff pickup | US-24, US-25, BR-20, BR-21 · D-25, D-26 | E9-09 | Lazy `expireOverdue` releasing stock once; `PATCH /api/orders/{code}/pickup` with `STAFF_API_TOKEN`; error codes `UNAUTHORIZED`, `INVALID_ORDER_STATUS` | Concurrency test shows stock released once; all 401/404/409 paths tested; docs 02, 06, 07 and `openapi.yaml` updated | 6 |
+| E9-11 | Web: ready and expiry copy | US-13 AC4, US-16, US-17, US-18 AC4 · D-24 | E9-09 | Header, footer and pickup rows from `STORE`; ready label and pickup deadline; expired and picked-up notices | First paint without loading states; copy matches `04` §9 | 3 |
+| E9-12 | Web: several active orders and share | US-22, US-23 · D-27, D-28 | E9-10 | `cupcake.orders` store (max 5, migration of `cupcake.lastOrder`); one card per active order; "Compartilhar" | A previous-day order still shows its card; pruning on 404/PICKED_UP/EXPIRED; share and fallback tested | 5 |
+| E9-13 | Web: guidance at the cap of 20 | US-06 AC5 · D-28 | E9-07 | `card.max.cap` message on the card and the cart line | Shown only when the cap (not the stock) is the limit | 1 |
+| E9-14 | Release v1.1.0 and re-test | E9-03 | E9-08…E9-13, owner review | `STAFF_API_TOKEN` configured; Neon `preview` then `main` migrated and seeded; tag `v1.1.0`; the findings re-tested on production | Owner approves each step; results recorded in the test report | 2 |
 
 **Gate G5 · Situação 3 complete (14 Nov)**: ☐ tests PDF, report, video published · ☐ production on the final tag · ☐ owner approved.
 
@@ -273,7 +273,7 @@ Critical path: **E1 → E2 → E3 (G1) → E6 → E7 (G3) → E8 (G4) → E9 (G5
 | ID | Task | Implements | Depends on | Outcome | Acceptance criteria | h |
 |---|---|---|---|---|---|---|
 | E10-01 | Fill the official template | *new* | G5 | `PIT_atividade.docx` completed (pt-BR), linking all Situações | Every required section filled; links tested | 3 |
-| E10-02 | Final repository check | 06 §9 | E10-01 | README final (live links, setup, AI disclosure A-06), release tag, change logs | All links open logged out; CI green; no secrets | 1 |
+| E10-02 | Final repository check | 06 §9 | E10-01 | README final (live links, setup, disclosure line A-06), release tag, change logs | All links open logged out; CI green; no secrets | 1 |
 | E10-03 | Submit (owner) | D-14 | E10-02 | Submission on the course platform | Confirmation saved | 1 |
 
 **Gate G6 · Submitted by 16 Nov** (buffer: 17 Nov).
@@ -360,21 +360,29 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E7-11 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | "Pedido não encontrado" (also the global not-found page, "Página não encontrada"), reopened without notice, error + retry |
 | E7-12 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | `LatestOrderCard` per AD-02: stored + created today + AWAITING_PICKUP; 404 clears the key; network/5xx hides silently and keeps it. Verified live: 358×64 px above the chips |
 | E7-13 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | Manual check at 360 px on a real order: no horizontal overflow, items and quantities at 14 px, code 30 px, total 24 px, no phone; unit tests cover US-20 AC1–AC2 (items/quantities/"Total a pagar na loja"; "Pedido não encontrado") on top of the E6-06 integration tests |
-| E8-01 | ✅ | | [#7](https://github.com/tiagopacedev/cupcake-app/pull/7) | `e2e/` workspace: Playwright 1.64, mobile (390×844) and desktop (1280×800) projects, production build of web + API on ports 3100/4100, database reset per test. E2E-1…E2E-5 plus 9 extra tests for the E-level criteria of 05 §5: **75 passed, 1 skipped** (E2E-4 is desktop-only) in 3.4 min, run twice. CI job `e2e` (pushes to main, PRs labeled `e2e`; not a required check). The first runs caught a real gap: the checkout had no `<main>` landmark (fixed) |
+| E8-01 | ✅ | | [#7](https://github.com/tiagopacedev/cupcake-app/pull/7) | `e2e/` workspace: Playwright 1.64, mobile (390×844) and desktop (1280×800) projects, production build of web + API on ports 3100/4100, database reset per test. E2E-1…E2E-5 plus 9 extra tests for the E-level criteria of 05 §5: **75 passed, 1 skipped** (E2E-4 is desktop-only) in 3.4 min, run twice. CI job `e2e` (every PR and push to main; not a required check). The first runs caught a real gap: the checkout had no `<main>` landmark (fixed) |
 | E8-02 | ✅ | | [#7](https://github.com/tiagopacedev/cupcake-app/pull/7) | `quality.spec.ts`, 8 screens × 2 projects: no horizontal overflow at 360/390/768/1280/1440 px; axe WCAG 2.1 A/AA **0 violations of any severity** on all 16 combinations; screenshots saved for the visual comparison (CI artifact `e2e-evidence`). **Lighthouse mobile on production** (11 Oct, Lighthouse 12.8.2): catalog Performance **89** / Accessibility **100** / Best practices 96 / SEO 100 (FCP 1.2 s, LCP 1.5 s, TBT 290 ms, CLS 0, Speed Index 5.6 s); cart 86 / 100 / 96 / 100. Targets (Perf ≥ 85, A11y ≥ 95) met; reports in `docs/situacao-2/lighthouse/`. Photos of the first catalog row are now preloaded (`priority`) to improve Speed Index; to be re-measured after this deploys. Pixel-diff snapshots intentionally not used (05 §3.6) |
 | E8-03 | ◐ | | n/a | Owner tested the journey on a real phone with their own number (12 Oct) before approving G3. The full 05 §6 matrix (Android + iPhone + Chrome, Firefox, Safari, Edge) was **not** recorded; the owner chose to release v1.0.0 without it. Still open: fill 05 §6 and add the results to the test report (E8-05) |
 | E8-04 | ✅ | 1 | n/a | **v1.0.0 released 17 Oct 2026** (Release workflow run 39047678549, owner approved): migrations `No pending migrations`, seed ok (stock untouched), `/api/health` ok on attempt 1, first product photo `200 image/jpeg`, tag `v1.0.0` on `3d464c4`. Release checklist (06 §9): CI green on `main` incl. `e2e` ✅ · health + migrations ✅ · seed present ✅ (production stock reflects the owner's test orders, e.g. Birthday Vanilla 38/40: not reset) · E2E journeys: run in CI on the test database, **not** against production (the suite truncates tables) ✅ · visual comparison: screenshots from the E2E run (CI artifact `e2e-evidence`) ✅ · axe 0 violations ✅ · Lighthouse mobile **on production, 17 Oct**: catalog **92** / 100 / 96 / 100 (Speed Index 1.9 s), cart **93** / 100 / 96 / 100, reports in `docs/situacao-2/lighthouse/` ✅ · copy and no payment UI (test + E2E) ✅ · no secrets in the repo ✅ · README live links ✅ · coverage 82.4 % ≥ 75 %: gate now enforced in CI (was soft) ✅ · tag created ✅. Known, accepted: `/orders/<unknown>` renders the not-found UI with HTTP 200 |
 | E8-05 | ☐ | | | |
 | E8-06 | ☐ | | | |
-| E8-07 | ☐ | | | |
+| E8-07 | ◐ | | | Script written: [`docs/situacao-2/roteiro-video.md`](situacao-2/roteiro-video.md) (pt-BR, 6–7 min). Open, owner-side: record and add the link |
 | E8-08 | ☐ | | | |
 | E9-01 | ◐ | | | Tester kit ready: [`docs/situacao-3/kit-de-teste.md`](situacao-3/kit-de-teste.md) (invite, consent, 6-task script, questionnaire mapped to the university table). Open, owner-side: recruit 5 + 1 spare by 31 Oct, create the Google Form, record names (with consent) and the form link in `docs/situacao-3/` |
-| E9-02 | ☐ | | | |
-| E9-03 | ☐ | | | |
+| E9-02 | ◐ | | n/a | 5 testers used production on 15–18 Oct 2026 (earlier than the 7–10 Nov window); findings recorded in [`docs/situacao-3/relatorio-de-testes.md`](situacao-3/relatorio-de-testes.md). Open: export the responses to PDF for the submission |
+| E9-03 | ◐ | | | Split into E9-07…E9-14 (18 Oct). Implementation is reviewed by the owner before anything is committed |
 | E9-04 | ☐ | | | |
-| E9-05 | ☐ | | | |
+| E9-05 | ◐ | | | Script written: [`docs/situacao-3/roteiro-video-atualizado.md`](situacao-3/roteiro-video-atualizado.md) (pt-BR, ≤ 5 min, one scene per tester finding). Record after v1.1.0 is live |
 | E9-06 | ☐ | | | |
-| E10-01 | ☐ | | | |
+| E9-07 | ◐ | | | Docs written and kept in step with the code: PRD 1.4, overview 1.6, UI doc 1.8, data model 1.2, architecture 1.5, API spec 1.3, testing 1.3, workflow 1.6, this plan 2.3, OpenAPI 1.1.0, `relatorio-de-testes.md`; waiting for the owner's review (nothing committed) |
+| E9-08 | ◐ | | | Implemented locally, not committed: `orders.ready_at`/`expires_at`, `EXPIRED`, migration `20261018000001_order_schedule_and_expiry` (backfill checked on a scratch DB with old orders), `physical-model.sql`, validation SQL, ER sources. Local databases and the Neon `preview` branch reset and seeded; Neon `main` (production) untouched until the v1.1.0 release (E9-14). Waiting for the owner's review |
+| E9-09 | ◐ | | | Implemented locally, not committed: `STORE` config, `computePickup` + `formatOpeningHours` in `shared`, schedule stored on order creation. Waiting for the owner's review |
+| E9-10 | ◐ | | | Implemented locally, not committed: lazy `OrderExpiryService` (stock released exactly once, concurrency tested), `PATCH /api/orders/{code}/pickup`, `STAFF_API_TOKEN`, `UNAUTHORIZED`/`INVALID_ORDER_STATUS`. Waiting for the owner's review |
+| E9-11 | ◐ | | | Implemented locally, not committed: header/footer/pickup rows from `STORE`, ready label and pickup deadline, expired and picked-up notices. Waiting for the owner's review |
+| E9-12 | ◐ | | | Implemented locally, not committed: `cupcake.orders` (max 5, migration of `cupcake.lastOrder`), `ActiveOrderCards`, "Compartilhar". Waiting for the owner's review |
+| E9-13 | ◐ | | | Implemented locally, not committed: cap-of-20 message on the card and the cart line. Waiting for the owner's review |
+| E9-14 | ☐ | | | |
+| E10-01 | ◐ | | | Template filled in an editable document (pt-BR): identification, documentation, coding table, the 5 tester tables and the quality report (laudo). Open: the two video links, screenshots and the re-test results after v1.1.0 |
 | E10-02 | ☐ | | | |
 | E10-03 | ☐ | | | |
 
@@ -407,3 +415,7 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | 2.0 | 11 Oct 2026 | Owner UI feedback: sticky headers (chips stick below), cart header in the same container, 24 px spacing rhythm on the catalog, circular cart badge |
 | 2.1 | 17 Oct 2026 | E8-04 done: v1.0.0 released; gates G2 and G3 approved; E8-03 partially done (owner phone test, matrix not recorded); coverage gate enforced; release Lighthouse reports |
 | 2.2 | 17 Oct 2026 | E9-01 started: pt-BR tester kit (invite, consent, task script, questionnaire) in `docs/situacao-3/kit-de-teste.md` |
+| 2.3 | 18 Oct 2026 | User validation (E9-02 findings): E9-03 split into E9-07…E9-14 with a `v1.1.0` target; E9-02 marked in progress (testing happened 15–18 Oct); spec changes in PRD 1.4 (BR-12, BR-19, BR-20, BR-21, US-22…US-25), overview 1.6 (D-24…D-28) and UI doc 1.8 |
+| 2.4 | 18 Oct 2026 | E10-01 started (PIT template filled, video links and v1.1.0 status pending); E8-07 and E9-05 video scripts written |
+| 2.5 | 18 Oct 2026 | E9-03 revised: the store's opening hours stay in the `STORE` config (D-24) instead of database tables; no `GET /api/store`; the web is static again; migration renamed `order_schedule_and_expiry`; local databases reset; the dev seed now runs on Windows |
+| 2.6 | 18 Oct 2026 | Documentation review: neutral task routine (§1.3), G0 closed, status line current |

@@ -2,8 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.2 (11 Oct 2026) |
-| **Status** | Draft for approval |
+| **Version** | 1.4 (18 Oct 2026) |
 | **Contract** | [`openapi.yaml`](openapi.yaml) (OpenAPI 3.1, validated with Redocly CLI) |
 | **Related** | [02-architecture.md](02-architecture.md) (error model, security) · [01-prd.md](01-prd.md) (BR, US) · [04-ui-design-system.md](04-ui-design-system.md) §9.5 (error → pt-BR) |
 
@@ -20,10 +19,10 @@
 | Money | Integer BRL cents (`1190` = R$ 11,90) |
 | Time | ISO 8601 UTC (`2026-10-11T17:35:00.000Z`); displayed in America/Sao_Paulo by the UI |
 | Identifiers | Products by UUID (`id`) and `slug`; orders **only** by public `code` (`CUP-XXXXXX`) |
-| Auth | None (public API, no accounts or admin) |
+| Auth | None (public API, no accounts or admin), except `PATCH /api/orders/{code}/pickup`: `Authorization: Bearer <STAFF_API_TOKEN>` (BR-21) |
 | Errors | `ErrorResponse` with a stable `code` ([02-architecture §7](02-architecture.md#7-error-model-nfr-07)) |
 | Tracing | `x-request-id` response header on every response; same value in `error.requestId` |
-| Caching | `Cache-Control: no-store` on all endpoints (stock and orders change) |
+| Caching | Responses are not cached: the API sets no cache headers and Vercel serves function responses with `max-age=0, must-revalidate`; the web fetches products and orders with `cache: "no-store"` (stock and orders change) |
 | Rate limits | `POST /api/orders` 10/min per IP; others 120/min; `429 RATE_LIMITED` with `Retry-After` |
 
 ## 2. Endpoint summary
@@ -34,9 +33,10 @@
 | GET | `/api/catalog/filters` | Categories and tags for the chips | US-02, US-03 · BR-02, BR-03 | SCR-01 |
 | GET | `/api/products` | Active products (optional `category` or `tag`) | US-01–04, US-10 · BR-03, BR-04, BR-06 | SCR-01, SCR-02, SCR-03 |
 | POST | `/api/orders` | Place order, reserve stock | US-11, US-12, US-15, US-19 · BR-07, BR-10–BR-15 | SCR-03 |
-| GET | `/api/orders/{code}` | Public order view | US-16–18, US-20, US-22 · BR-12, BR-13, BR-16 | SCR-04, home card |
+| GET | `/api/orders/{code}` | Public order view | US-16–18, US-20, US-22 · BR-12, BR-13, BR-16, BR-20 | SCR-04, home cards |
+| PATCH | `/api/orders/{code}/pickup` | Staff marks the order as picked up (token) | US-24 · BR-21 | none (no UI) |
 
-Five endpoints, nothing else. There is deliberately **no** payment endpoint (BR-09), no order list, no lookup by phone (BR-16) and no write endpoint for the catalog.
+Six endpoints, nothing else. There is deliberately **no** payment endpoint (BR-09), no order list, no lookup by phone (BR-16) and no write endpoint for the catalog.
 
 ---
 
@@ -119,7 +119,7 @@ Response `200` is `{ "products": [ … ] }` (`ProductList` in `openapi.yaml`, ne
 | `items` | 1–50 lines, unique `productId` | `Items must not be empty` / `Duplicate product` |
 | `items[].quantity` | integer 1–20 | `Quantity must be between 1 and 20` |
 
-**Processing** ([02-architecture §6.1](02-architecture.md#61-order-creation-br-10-br-11-br-15-br-19), [SD-02](diagrams/sequence-diagrams/sd-02-place-order.svg)): one transaction → products active? → conditional stock decrement per line (product-id order) → customer upsert by phone → totals from DB prices → insert order `AWAITING_PICKUP` + items → retry on code collision (max 5).
+**Processing** ([02-architecture §6.1](02-architecture.md#61-order-creation-br-10-br-11-br-15-br-19), [SD-02](diagrams/sequence-diagrams/sd-02-place-order.svg)): overdue orders are expired first (BR-20) → one transaction → products active? → conditional stock decrement per line (product-id order) → customer upsert by phone → totals from DB prices → pickup schedule from the store's opening hours (BR-12: `readyAt`, `expiresAt`; an order placed while the store is closed is accepted and ready after the next opening) → insert order `AWAITING_PICKUP` + items → retry on code collision (max 5).
 
 **Responses**
 
@@ -131,7 +131,7 @@ Response `200` is `{ "products": [ … ] }` (`ProductList` in `openapi.yaml`, ne
 | `409` | `INSUFFICIENT_STOCK` with `details.items[] {productId, requested, available}` | Any line exceeds stock; nothing changed. Lists **every** short line. |
 | `429` | `RATE_LIMITED` | > 10 orders/min from one IP |
 
-The client then clears the cart, stores `{ code, createdAt }` as the latest order (BR-19) and navigates to `/orders/{code}?new=1`. Double submission is prevented in the UI (button disabled); the API has no idempotency key in the MVP.
+The client then clears the cart, adds `{ code, createdAt }` to the active orders of the browser (BR-19) and navigates to `/orders/{code}?new=1`. Double submission is prevented in the UI (button disabled); the API has no idempotency key in the MVP.
 
 ### 3.5 `GET /api/orders/{code}`
 
@@ -142,6 +142,7 @@ The client then clears the cart, stores `{ code, createdAt }` as the latest orde
   "customerFirstName": "Ana",
   "createdAt": "2026-10-11T17:35:00.000Z",
   "readyAt": "2026-10-11T17:50:00.000Z",
+  "expiresAt": "2026-10-11T22:00:00.000Z",
   "items": [
     { "productId": "3f6c…", "slug": "chocolate-crush", "name": "Chocolate Crush", "imageUrl": "/images/products/chocolate-crush.jpg", "quantity": 2, "unitPriceCents": 1190, "lineTotalCents": 2380 },
     { "productId": "9b8a…", "slug": "birthday-vanilla", "name": "Birthday Vanilla", "imageUrl": "/images/products/birthday-vanilla.jpg", "quantity": 1, "unitPriceCents": 990, "lineTotalCents": 990 }
@@ -152,9 +153,24 @@ The client then clears the cart, stores `{ code, createdAt }` as the latest orde
 
 - `items` are sorted by product name, the same in the `POST` and `GET` responses (the cart order isn't stored).
 - `customerFirstName` = first word of the stored name; the phone and internal ids are never returned (BR-16).
-- `readyAt = createdAt + 15 min` (BR-12). `items` keep the **unit price paid** (BR-07); `name`/`imageUrl` are the product's current values.
+- `readyAt` is the first moment the order can be collected within opening hours (BR-12) and `expiresAt` the closing time of that day (BR-20); both are stored when the order is created. `pickupStatus` is `AWAITING_PICKUP`, `PICKED_UP` or `EXPIRED`. `items` keep the **unit price paid** (BR-07); `name`/`imageUrl` are the product's current values.
+- Overdue orders are expired before the response is built (BR-20), so an order past its `expiresAt` is returned as `EXPIRED`; it stays viewable.
 - The code is upper-cased before lookup (`cup-7k3q9f` works). Malformed or unknown → `404 ORDER_NOT_FOUND`.
-- Used by Meu pedido (SSR), the home latest-order card (BR-19) and staff at the counter.
+- Used by Meu pedido (SSR), the home order cards (BR-19, one request per stored code) and staff at the counter.
+
+### 3.6 `PATCH /api/orders/{code}/pickup`
+
+Staff records that the order was handed over (US-24, BR-21). No request body, no UI: call it with the secret token after handing over the order, for example `curl -X PATCH -H "Authorization: Bearer $STAFF_API_TOKEN" https://…/api/orders/CUP-7K3Q9F/pickup`.
+
+| Status | Body | When |
+|---|---|---|
+| `200` | `Order` with `pickupStatus: "PICKED_UP"` | The order was AWAITING_PICKUP |
+| `401` | `UNAUTHORIZED` | Missing, malformed or wrong token, or the server has no `STAFF_API_TOKEN` configured (checked before anything else) |
+| `404` | `ORDER_NOT_FOUND` | Unknown or malformed code |
+| `409` | `INVALID_ORDER_STATUS` with `details.pickupStatus` | The order is already `PICKED_UP` or `EXPIRED`; nothing changes |
+| `429` | `RATE_LIMITED` | Same limit as `POST /api/orders` (10/min per IP), which also slows down token guessing |
+
+Overdue orders are expired first, so an order past closing time answers `409 EXPIRED`. The token is compared in constant time and never logged. The endpoint is not allowed by CORS (`methods: GET, POST`): it is meant for `curl`, not for a browser page.
 
 ---
 
@@ -166,6 +182,8 @@ The client then clears the cart, stores `{ code, createdAt }` as the latest orde
 | `PRODUCT_NOT_FOUND` | 409 | POST orders | Notice + "Revisar" → cart; line removed on refresh |
 | `INSUFFICIENT_STOCK` | 409 | POST orders | Notice "{nome}: só {n} disponível." + "Revisar"; summary line in red; cart adjusted |
 | `ORDER_NOT_FOUND` | 404 | GET order | "Pedido não encontrado"; home card removes the stored code |
+| `INVALID_ORDER_STATUS` | 409 | PATCH pickup | n/a (staff API, no UI) |
+| `UNAUTHORIZED` | 401 | PATCH pickup | n/a (staff API, no UI) |
 | `NOT_FOUND` | 404 | any unknown route | n/a (developer error) |
 | `RATE_LIMITED` | 429 | all | "Muitas tentativas. Tente de novo em instantes." |
 | `INTERNAL_ERROR` | 500 | all | "Não foi possível carregar · Verifique sua conexão." + "Tentar de novo" |
@@ -175,14 +193,16 @@ The client then clears the cart, stores `{ code, createdAt }` as the latest orde
 The web app generates types from the contract and uses `openapi-fetch`:
 
 ```bash
-pnpm --filter web exec openapi-typescript ../../docs/openapi.yaml -o src/lib/api/schema.d.ts
+pnpm --filter web gen:api   # openapi-typescript ../../docs/openapi.yaml -o src/lib/api/schema.d.ts
 ```
 
 ```ts
 // apps/web/src/lib/api/client.ts
 import createClient from "openapi-fetch";
 import type { paths } from "./schema";
-export const api = createClient<paths>({ baseUrl: typeof window === "undefined" ? process.env.API_URL : "" });
+export const api = createClient<paths>({
+  baseUrl: typeof window === "undefined" ? (process.env.API_URL ?? "http://localhost:4000") : "",
+});
 ```
 
 Regenerate whenever `openapi.yaml` changes (CI fails if the committed file is stale).
@@ -194,6 +214,7 @@ Regenerate whenever `openapi.yaml` changes (CI fails if the committed file is st
 | `GET /api/catalog/filters`, `GET /api/products` | UC-01, UC-02 (cart refresh) | SD-01 |
 | `POST /api/orders` | UC-03 (+UC-07) | SD-02 |
 | `GET /api/orders/{code}` | UC-04, UC-05, UC-06 | SD-03, SD-04 |
+| `PATCH /api/orders/{code}/pickup` | UC-06 (handover) | n/a |
 
 ## 7. Change log
 
@@ -202,3 +223,5 @@ Regenerate whenever `openapi.yaml` changes (CI fails if the committed file is st
 | 1.0 | 11 Oct 2026 | Initial contract: health, filters, products, create order, get order; error codes; rate limits |
 | 1.1 | 11 Oct 2026 | E4: §3.3 states the `{ "products": [...] }` envelope that `openapi.yaml` already defined |
 | 1.2 | 11 Oct 2026 | E6: order items sorted by name; unknown fields and malformed JSON are `400` |
+| 1.3 | 18 Oct 2026 | User validation (E9-09/E9-10): new `PATCH /api/orders/{code}/pickup` (staff bearer token); `Order.expiresAt` and status `EXPIRED`; `readyAt` follows the store opening hours (BR-12); expiry on request (BR-20); error codes `UNAUTHORIZED` and `INVALID_ORDER_STATUS`; OpenAPI 1.1.0 |
+| 1.4 | 18 Oct 2026 | Documentation review: caching row describes the real headers; client generation uses `gen:api` |
