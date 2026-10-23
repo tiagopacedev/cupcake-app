@@ -97,7 +97,7 @@ jobs:
       - name: Coverage
         run: |
           pnpm -r run test:coverage
-          node scripts/check-coverage.mjs --soft
+          node scripts/check-coverage.mjs
 
       - name: Upload coverage summary
         if: always()
