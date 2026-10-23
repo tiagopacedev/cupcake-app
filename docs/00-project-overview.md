@@ -6,7 +6,7 @@
 | **Course** | Engenharia de Software · Projeto Integrador Transdisciplinar II (PIT II) |
 | **Student** | Tiago Pace Greggio · RGM 34852191 |
 | **Final due date** | Tue 17 Nov 2026 |
-| **Version** | 1.7 (18 Oct 2026) |
+| **Version** | 1.8 (22 Oct 2026) |
 
 ## 1. Purpose
 
@@ -110,7 +110,8 @@ Superseded decisions stay in the log, struck through, so the reasoning remains t
 | D-25 | 18 Oct | **Orders expire at closing time** of their pickup day (status `EXPIRED`) and release their stock exactly once, checked on API requests (no scheduled job). Closes A-09 | Tester finding 4 (BR-20) |
 | D-26 | 18 Oct | **Staff API** `PATCH /api/orders/{code}/pickup` marks an order as picked up; secret bearer token (`STAFF_API_TOKEN`); no admin UI. Amends D-07 | Handed-over orders must not expire (BR-21) |
 | D-27 | 18 Oct | **Several active orders in the browser:** up to 5 codes in `localStorage`; one home card per order still awaiting pickup, regardless of the day it was placed. Still no history list or lookup field | Tester findings 1 and 6 (BR-19) |
-| D-28 | 18 Oct | **"Compartilhar" on Meu pedido** (Web Share API, copy fallback) to open an order on another device; the cap of 20 units shows "fale com a loja"; online payment stays out of scope | Tester findings 3, 5 and 7 (US-23, BR-06, D-15) |
+| D-28 | 18 Oct | The cap of 20 units shows "fale com a loja"; online payment stays out of scope. ("Compartilhar" on Meu pedido was part of this decision and was removed by D-29) | Tester findings 3, 5 and 7 (BR-06, D-15) |
+| D-29 | 22 Oct | **Clean order code block:** Meu pedido shows only the hint, the code and the meta line; "Copiar código" (US-16 AC3) and "Compartilhar" (US-23) are removed. Another device opens the order by its link | Owner decision |
 
 ## 8. Assumptions and open items
 

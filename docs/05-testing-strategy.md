@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.4 (18 Oct 2026) |
+| **Version** | 1.5 (22 Oct 2026) |
 | **Related** | [01-prd.md](01-prd.md) (AC, BR, NFR) · [02-architecture.md](02-architecture.md) · [07-api-spec.md](07-api-spec.md) · [04-ui-design-system.md](04-ui-design-system.md) · [06-development-workflow.md](06-development-workflow.md) (CI) |
 
 This document defines how the product is **verified** (built right, against the spec) during development, and how the evidence feeds the Situação 2 test report and the Situação 3 **validation** with 5 testers.
@@ -78,7 +78,7 @@ The 14 constraint checks from `03-data-model.md` §9 (plus cases 15 and 16 for t
 
 ### 3.5 Component (web)
 
-ProductCard states (add, stepper, low, sold out, max reached), FilterChips selection and no heading, CartLine remove confirmation, Checkout field errors and loading button, OrderSummary error variant, ActiveOrderCards rules (mock API: several cards, previous-day order kept, pruning on 404/PICKED_UP/EXPIRED, network error keeps the code), Meu pedido `?new=1` notice only once (with the ready label outside opening hours), expired and picked-up notices, "Compartilhar" (share sheet, copy fallback, abort), the cap-of-20 message, and the ready label and pickup rows from the store config.
+ProductCard states (add, stepper, low, sold out, max reached), FilterChips selection and no heading, CartLine remove confirmation, Checkout field errors and loading button, OrderSummary error variant, ActiveOrderCards rules (mock API: several cards, previous-day order kept, pruning on 404/PICKED_UP/EXPIRED, network error keeps the code), Meu pedido `?new=1` notice only once (with the ready label outside opening hours), expired and picked-up notices, the order code block without buttons, the cap-of-20 message, and the ready label and pickup rows from the store config.
 
 ### 3.6 End-to-end journeys (Playwright)
 
@@ -129,14 +129,14 @@ Legend: **U** unit · **I** API integration · **C** component · **E** E2E · *
 | US-13 | AC1 C+E · AC2 C · AC3 C · AC4 U+C+I |
 | US-14 | AC1 C · AC2 C · AC3 C (no payment UI test) + M |
 | US-15 | AC1 I+E · AC2 C · AC3 C · AC4 I (concurrency) |
-| US-16 | AC1 C+E · AC2 U+I · AC3 C |
+| US-16 | AC1 C+E · AC2 U+I · no copy or share button: C+E (D-29) |
 | US-17 | AC1 C · AC2 C+E · AC3 C+E |
 | US-18 | AC1 I+E · AC2 I+E · AC3 C+E · AC4 C+I+E |
 | US-19 | AC1 I+E · AC2 C+E · AC3 I |
 | US-20 | AC1 M (staff walkthrough) + I · AC2 I |
 | US-21 | AC1 I (seed test) · AC2 I · AC3 I |
 | US-22 | AC1 C+E · AC2 E · AC3 C · AC4 C+E · AC5 C+E · AC6 C+E · AC7 U |
-| US-23 | AC1 C · AC2 C · AC3 C (button presence: E) |
+| US-23 | Removed (D-29) |
 | US-24 | AC1 I · AC2 I · AC3 I · AC4 I · AC5 I |
 | US-25 | AC1 I+E · AC2 U+I · AC3 I · AC4 I+C+E |
 
@@ -166,3 +166,4 @@ NFR evidence: NFR-01 visual + manual phones · NFR-02 Lighthouse/autocannon · N
 | 1.2 | 11 Oct 2026 | US-02 AC5 (sticky chips) and "every photo loads" added to the E level |
 | 1.3 | 18 Oct 2026 | E9-03: injected clock for time-dependent API tests; cases for the pickup schedule (BR-12), expiry and exactly-once stock release (BR-20), staff pickup (BR-21), active orders (BR-19), share and the cap-of-20 message; e2e covers several cards, expiry and a closed-store order |
 | 1.4 | 18 Oct 2026 | Documentation review: test locations match the repository (contract helper, `quality.spec.ts`); traceability for US-23…US-25 and the new acceptance criteria; validation done 15–18 Oct |
+| 1.5 | 22 Oct 2026 | D-29: copy and share tests replaced by a test that the order code block has no buttons; US-16 AC3 and US-23 removed from the matrix |

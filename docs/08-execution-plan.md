@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 2.6 (18 Oct 2026) |
+| **Version** | 2.7 (22 Oct 2026) |
 | **Status** | Approved on 11 Oct 2026. v1.0.0 released on 17 Oct; the fixes from user validation (E9-07…E9-13) are implemented and await review before the v1.1.0 release. Live status: §16. |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
 | **Related** | [01-prd.md](01-prd.md) §9–§10 (backlog, T-ids) · [02-architecture.md](02-architecture.md) · [04-ui-design-system.md](04-ui-design-system.md) · [05-testing-strategy.md](05-testing-strategy.md) · [06-development-workflow.md](06-development-workflow.md) · [07-api-spec.md](07-api-spec.md) |
@@ -262,7 +262,7 @@ Critical path: **E1 → E2 → E3 (G1) → E6 → E7 (G3) → E8 (G4) → E9 (G5
 | E9-09 | Store config and pickup schedule | BR-12 · D-24 | E9-08 | `STORE` config, `computePickup` and `formatOpeningHours` in `packages/shared`; order creation stores `readyAt`/`expiresAt` | Orders at 22h, on Monday and at 18:31 get the right times; contract tests pass | 4 |
 | E9-10 | Order expiry and staff pickup | US-24, US-25, BR-20, BR-21 · D-25, D-26 | E9-09 | Lazy `expireOverdue` releasing stock once; `PATCH /api/orders/{code}/pickup` with `STAFF_API_TOKEN`; error codes `UNAUTHORIZED`, `INVALID_ORDER_STATUS` | Concurrency test shows stock released once; all 401/404/409 paths tested; docs 02, 06, 07 and `openapi.yaml` updated | 6 |
 | E9-11 | Web: ready and expiry copy | US-13 AC4, US-16, US-17, US-18 AC4 · D-24 | E9-09 | Header, footer and pickup rows from `STORE`; ready label and pickup deadline; expired and picked-up notices | First paint without loading states; copy matches `04` §9 | 3 |
-| E9-12 | Web: several active orders and share | US-22, US-23 · D-27, D-28 | E9-10 | `cupcake.orders` store (max 5, migration of `cupcake.lastOrder`); one card per active order; "Compartilhar" | A previous-day order still shows its card; pruning on 404/PICKED_UP/EXPIRED; share and fallback tested | 5 |
+| E9-12 | Web: several active orders | US-22 · D-27 | E9-10 | `cupcake.orders` store (max 5, migration of `cupcake.lastOrder`); one card per active order | A previous-day order still shows its card; pruning on 404/PICKED_UP/EXPIRED | 5 |
 | E9-13 | Web: guidance at the cap of 20 | US-06 AC5 · D-28 | E9-07 | `card.max.cap` message on the card and the cart line | Shown only when the cap (not the stock) is the limit | 1 |
 | E9-14 | Release v1.1.0 and re-test | E9-03 | E9-08…E9-13, owner review | `STAFF_API_TOKEN` configured; Neon `preview` then `main` migrated and seeded; tag `v1.1.0`; the findings re-tested on production | Owner approves each step; results recorded in the test report | 2 |
 
@@ -356,7 +356,7 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E7-07 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | POST via the typed client; on 201 clear cart, save latest order, `router.replace('/orders/{code}?new=1')`; network error → notice with "Tentar de novo", cart intact. **Journey verified live** (local API + dev database): order placed, cart emptied, latest order saved, retry after a deliberate failure worked |
 | E7-08 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | `interpretFailure`: INSUFFICIENT_STOCK → "{nome}: só N disponível." + "Revisar" + red summary lines (every short line); PRODUCT_NOT_FOUND → "{nome} não está mais disponível."; RATE_LIMITED; cart adjusts on return through the existing refresh |
 | E7-09 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | `/orders/[code]` server-rendered: success notice only for `?new=1` (flag removed from the URL with `history.replaceState`, verified live), code card, summary with "Total a pagar na loja", "Onde retirar", "Voltar ao início". Compared with screenshot 05 |
-| E7-10 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | Clipboard API + toast "Código copiado"; selects the code text when the clipboard refuses or doesn't exist (both tested) |
+| E7-10 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | Clipboard API + toast "Código copiado"; selects the code text when the clipboard refuses or doesn't exist (both tested). Removed on 22 Oct (D-29) |
 | E7-11 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | "Pedido não encontrado" (also the global not-found page, "Página não encontrada"), reopened without notice, error + retry |
 | E7-12 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | `LatestOrderCard` per AD-02: stored + created today + AWAITING_PICKUP; 404 clears the key; network/5xx hides silently and keeps it. Verified live: 358×64 px above the chips |
 | E7-13 | ✅ | | [#6](https://github.com/tiagopacedev/cupcake-app/pull/6) | Manual check at 360 px on a real order: no horizontal overflow, items and quantities at 14 px, code 30 px, total 24 px, no phone; unit tests cover US-20 AC1–AC2 (items/quantities/"Total a pagar na loja"; "Pedido não encontrado") on top of the E6-06 integration tests |
@@ -371,7 +371,7 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E9-01 | ◐ | | | Tester kit ready: [`docs/situacao-3/kit-de-teste.md`](situacao-3/kit-de-teste.md) (invite, consent, 6-task script, questionnaire mapped to the university table). Open, owner-side: recruit 5 + 1 spare by 31 Oct, create the Google Form, record names (with consent) and the form link in `docs/situacao-3/` |
 | E9-02 | ◐ | | n/a | 5 testers used production on 15–18 Oct 2026 (earlier than the 7–10 Nov window); findings recorded in [`docs/situacao-3/relatorio-de-testes.md`](situacao-3/relatorio-de-testes.md). Open: export the responses to PDF for the submission |
 | E9-03 | ◐ | | | Split into E9-07…E9-14 (18 Oct). Implementation is reviewed by the owner before anything is committed |
-| E9-04 | ☐ | | | |
+| E9-04 | ◐ | | | Written: [`docs/situacao-3/laudo-de-qualidade.md`](situacao-3/laudo-de-qualidade.md) (pt-BR, 4 findings → fixes and tests). Open: screenshots after v1.1.0 is live (E9-14); not committed |
 | E9-05 | ◐ | | | Script written: [`docs/situacao-3/roteiro-video-atualizado.md`](situacao-3/roteiro-video-atualizado.md) (pt-BR, ≤ 5 min, one scene per tester finding). Record after v1.1.0 is live |
 | E9-06 | ☐ | | | |
 | E9-07 | ◐ | | | Docs written and kept in step with the code: PRD 1.4, overview 1.6, UI doc 1.8, data model 1.2, architecture 1.5, API spec 1.3, testing 1.3, workflow 1.6, this plan 2.3, OpenAPI 1.1.0, `relatorio-de-testes.md`; waiting for the owner's review (nothing committed) |
@@ -379,7 +379,7 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | E9-09 | ◐ | | | Implemented locally, not committed: `STORE` config, `computePickup` + `formatOpeningHours` in `shared`, schedule stored on order creation. Waiting for the owner's review |
 | E9-10 | ◐ | | | Implemented locally, not committed: lazy `OrderExpiryService` (stock released exactly once, concurrency tested), `PATCH /api/orders/{code}/pickup`, `STAFF_API_TOKEN`, `UNAUTHORIZED`/`INVALID_ORDER_STATUS`. Waiting for the owner's review |
 | E9-11 | ◐ | | | Implemented locally, not committed: header/footer/pickup rows from `STORE`, ready label and pickup deadline, expired and picked-up notices. Waiting for the owner's review |
-| E9-12 | ◐ | | | Implemented locally, not committed: `cupcake.orders` (max 5, migration of `cupcake.lastOrder`), `ActiveOrderCards`, "Compartilhar". Waiting for the owner's review |
+| E9-12 | ◐ | | | Implemented locally, not committed: `cupcake.orders` (max 5, migration of `cupcake.lastOrder`), `ActiveOrderCards`. "Compartilhar" built and then removed with "Copiar código" (D-29, 22 Oct). Waiting for the owner's review |
 | E9-13 | ◐ | | | Implemented locally, not committed: cap-of-20 message on the card and the cart line. Waiting for the owner's review |
 | E9-14 | ☐ | | | |
 | E10-01 | ◐ | | | Template filled in an editable document (pt-BR): identification, documentation, coding table, the 5 tester tables and the quality report (laudo). Open: the two video links, screenshots and the re-test results after v1.1.0 |
@@ -419,3 +419,4 @@ Status: ☐ to do · ◐ in progress · ✅ done · ✂ cut. Update in each task
 | 2.4 | 18 Oct 2026 | E10-01 started (PIT template filled, video links and v1.1.0 status pending); E8-07 and E9-05 video scripts written |
 | 2.5 | 18 Oct 2026 | E9-03 revised: the store's opening hours stay in the `STORE` config (D-24) instead of database tables; no `GET /api/store`; the web is static again; migration renamed `order_schedule_and_expiry`; local databases reset; the dev seed now runs on Windows |
 | 2.6 | 18 Oct 2026 | Documentation review: neutral task routine (§1.3), G0 closed, status line current |
+| 2.7 | 22 Oct 2026 | D-29: "Copiar código" (E7-10) and "Compartilhar" (E9-12) removed from Meu pedido; E9-04 quality report written |

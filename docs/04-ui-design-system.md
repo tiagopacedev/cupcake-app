@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 1.9 (18 Oct 2026) |
+| **Version** | 1.10 (22 Oct 2026) |
 | **Status** | **Approved** by the product owner on 11 Oct 2026 |
 | **Design source** | Approved HTML mockups, screenshots and theme in [`design/`](design/) |
 | **Related** | [01-prd.md](01-prd.md) (BR, US, SCR IDs) · [03-data-model.md](03-data-model.md) (seed) · [diagrams/user-flows/](diagrams/user-flows/) |
@@ -272,7 +272,7 @@ Store name, address, hours and ready minutes come from the shared `STORE` config
 
 ### 6.11 OrderCode block (Meu pedido)
 
-`Card`-like container without shadcn `Card` padding defaults: `<section className="flex flex-col items-center gap-1.5 rounded-lg border border-input py-5 text-center">`: "Mostre este código no balcão" (`text-xs text-muted-foreground`) · code (§4.4) · a row with two `Button variant="ghost" size="sm"`: "Copiar código" (`Copy` icon) and "Compartilhar" (`Share2` icon) · meta "{Nome} · Hoje, {HH:mm} · pronto às {HH:mm}" (`text-sm text-muted-foreground tabular-nums`). On copy: toast "Código copiado". On share: the Web Share API sheet with `share.text`; if it is unavailable the text is copied and the toast is "Link copiado"; cancelling the sheet does nothing (US-23).
+`Card`-like container without shadcn `Card` padding defaults: `<section className="flex flex-col items-center gap-1.5 rounded-lg border border-input py-5 text-center">`: "Mostre este código no balcão" (`text-xs text-muted-foreground`) · code (§4.4) · meta "{Nome} · Hoje, {HH:mm} · pronto às {HH:mm}" (`text-sm text-muted-foreground tabular-nums`). No buttons: no copy or share action (D-29, G-13).
 
 ### 6.12 Notice (shadcn `Alert`)
 
@@ -464,9 +464,6 @@ Every icon-only button has an `aria-label` (§9). Status changes (toast, notices
 | order.expired | Este pedido expirou e as unidades foram liberadas. |
 | order.pickedup | Pedido retirado. |
 | code.hint | Mostre este código no balcão |
-| code.copy | Copiar código |
-| code.share | Compartilhar |
-| share.text | Meu pedido {código} na {nome da loja} (Web Share `text`; the link goes in `url`). Copy fallback: "Meu pedido {código} na {nome da loja}: {url}" |
 | meta | {Nome} · Hoje, {HH:mm} · pronto às {HH:mm} (ready part per §8.4) |
 | subtotal / total | Subtotal / Total a pagar na loja |
 | pickup.title | Onde retirar |
@@ -485,8 +482,6 @@ Every icon-only button has an `aria-label` (§9). Status changes (toast, notices
 | `ORDER_NOT_FOUND` | Meu pedido | Pedido não encontrado | "Voltar ao início" |
 | `RATE_LIMITED` | Checkout notice | Muitas tentativas. Tente de novo em instantes. | Retry later |
 | Network / `INTERNAL_ERROR` | Any data screen | Não foi possível carregar · Verifique sua conexão. | "Tentar de novo" |
-| Clipboard success | Toast | Código copiado | n/a |
-| Share fallback (no Web Share) | Toast | Link copiado | n/a |
 
 ---
 
@@ -513,7 +508,7 @@ Icons (Lucide): `shopping-bag` (cart), `star` (bestseller, filled on the badge),
 |---|---|---|
 | G-1 | The reference HTML (ref 09, desktop) showed the subtitle "Só nome e celular. Sem cadastro." under the checkout title; mobile never had it. | **Removed on both** (owner decision, 11 Oct). Don't build it; §7.3 and §9.3 no longer list it. |
 | G-2 | The approved checkout had no privacy/purpose notice (NFR-06, A-08). | **Approved (11 Oct):** one line under "Seus dados" using `privacy.notice` in §9.3. Build it as part of E7-02/E7-03. |
-| G-3 | The approved Meu pedido doesn't show "Salvo só neste navegador.". | BR-19 limitation is documented in the PRD; "Compartilhar" (US-23) is the answer for other devices; no extra UI text unless the owner asks. |
+| G-3 | The approved Meu pedido doesn't show "Salvo só neste navegador.". | BR-19 limitation is documented in the PRD; another device opens the order by its link `/orders/{code}`; no extra UI text unless the owner asks. |
 | G-4 | Copy originally marked *(proposed)* in §9 (empty filter, product not found, rate limit, clipboard toast, unknown route) wasn't in the mockups. | **Approved (11 Oct)** — use it as final copy, no longer flagged. |
 | G-5 | Reference screens show fixed artboard heights and sample data. | Pages are fluid; data comes from the API (§1 rule 2). |
 | G-7 | Reference screens use pixel values; the implementation uses the nearest Tailwind step, the Tailwind palette for status tints, shadcn's standard focus ring and button weight (`font-medium`). | Accepted (§4 fidelity note). Structure, main colors, radius and copy must match. |
@@ -522,6 +517,7 @@ Icons (Lucide): `shopping-bag` (cart), `star` (bestseller, filled on the badge),
 | G-10 | Mockups show the cart only at 390 px; product photos have no per-product alt text in the API; singular "1 item" / "só 1 disponível" isn't in the copy deck. | Cart is centered with `max-w-2xl` on desktop; card photos use the product name as `alt`; singular forms added to the copy (§9.1/§9.2). |
 | G-11 | The approved `globals.css` used `overflow-x: hidden` on `html, body`, which makes `body` a scroll container and silently breaks every `sticky bottom-0` action bar on pages taller than the screen (found on the checkout). | Changed to `overflow-x: clip` in `globals.css` (and its copy in `design/theme/`): same "never scroll sideways", sticky works. §5 updated. |
 | G-12 | Submit failures (network, 5xx) have no dedicated copy; Meu pedido lists items in cart order in the mockup, but the cart order isn't stored. | The error map's "Não foi possível carregar · Verifique sua conexão." is reused with "Tentar de novo"; items are sorted by name (07 §3.4). |
+| G-13 | The approved Meu pedido reference (`design/screens/05-my-order.html` and its screenshot) shows "Copiar código". | **Removed** (owner decision, 22 Oct, D-29): the code block has no copy or share action. The mockup is not edited; the difference is intended. |
 | G-6 | Store name, address and hours are placeholders ("Rua das Flores, 123 · Centro · São Paulo, SP", "Ter a dom, 10h às 19h"). | Kept in `packages/shared/src/store.ts` (D-24); replace the values when real data exists (A-03). |
 
 ## 12. Change log
@@ -538,3 +534,4 @@ Icons (Lucide): `shopping-bag` (cart), `star` (bestseller, filled on the badge),
 | 1.7 | 11 Oct 2026 | Owner experiment kept: no header border (all sizes), icon-only cart button below `lg`, chips padding 4/16 px, latest-order card full width (§6.1, §6.2, §6.3, §7.1) |
 | 1.8 | 18 Oct 2026 | User validation (E9-03): §6.2/§7.1/§8.3 several active-order cards (BR-19, no "today" rule); §6.4 cap-of-20 message; §6.10/§8.4 store hours in the shared config, ready label and pickup deadline; §6.11 "Compartilhar"; §6.12/§7.4 expired and picked-up notices; §9 copy additions (`card.max.cap`, `order.expired`, `order.pickedup`, `code.share`, `share.text`, `pickup.deadline`, ready label); G-3 and G-6 updated |
 | 1.9 | 18 Oct 2026 | Documentation review: neutral design-source wording; copy keys `orderCard.*`; stale references to the single latest order removed |
+| 1.10 | 22 Oct 2026 | Owner decision (D-29): §6.11 code block without "Copiar código" and "Compartilhar"; copy keys `code.copy`, `code.share`, `share.text` and both toasts removed; G-3 updated; G-13 added |
