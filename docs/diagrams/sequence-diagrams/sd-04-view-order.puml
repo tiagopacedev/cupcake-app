@@ -36,7 +36,7 @@ else found
   opt pickupStatus = EXPIRED or PICKED_UP
     V --> Actor : "Este pedido expirou…" or "Pedido retirado."
   end
-  V --> Actor : code + "Copiar código" + "Compartilhar", first name · time · ready time,\nitems, "Total a pagar na loja", address, hours and pickup deadline
+  V --> Actor : code, first name · time · ready time,\nitems, "Total a pagar na loja", address, hours and pickup deadline
   opt Store staff (UC-06)
     Actor -> Actor : check items, charge at the counter, hand over (BR-18)
     Actor -> C : PATCH /api/orders/{code}/pickup\nAuthorization: Bearer <staff token>
