@@ -177,11 +177,12 @@ test("BR-20 / US-25: after closing time the order expires, its stock returns and
   await expect(page.getByText("Este pedido expirou e as unidades foram liberadas.")).toBeVisible();
 });
 
-test("US-23: Meu pedido offers 'Compartilhar' next to 'Copiar código'", async ({ page }) => {
+test("US-16 / G-13: the order code block has no copy or share action", async ({ page }) => {
   const code = await createOrderViaApi(page, [{ slug: "chocolate-crush", quantity: 1 }]);
   await page.goto(`/orders/${code}`);
-  await expect(page.getByRole("button", { name: "Copiar código" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Compartilhar" })).toBeVisible();
+  await expect(page.getByText(code).first()).toBeVisible();
+  await expect(page.getByRole("button", { name: "Copiar código" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Compartilhar" })).toHaveCount(0);
 });
 
 test("US-06 AC5: at the cap of 20 units the card points to the store for larger orders", async ({
