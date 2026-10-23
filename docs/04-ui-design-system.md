@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Version** | 1.7 (11 Oct 2026) |
+| **Version** | 1.10 (22 Oct 2026) |
 | **Status** | **Approved** by the product owner on 11 Oct 2026 |
-| **Design source** | Claude Design canvas "Cupcake Store Screens" and design system "Cupcake Store" (exported into [`design/`](design/)) |
+| **Design source** | Approved HTML mockups, screenshots and theme in [`design/`](design/) |
 | **Related** | [01-prd.md](01-prd.md) (BR, US, SCR IDs) · [03-data-model.md](03-data-model.md) (seed) · [diagrams/user-flows/](diagrams/user-flows/) |
 
 This document is the single source of truth for **how the app looks and behaves on screen**: the theme (standard Tailwind CSS v4 + shadcn/ui, configured in one `globals.css`), components, the nine approved screens, states, routes and the exact pt-BR copy. The PRD says *what* the product does; this document says *how it appears*.
@@ -15,7 +15,7 @@ This document is the single source of truth for **how the app looks and behaves 
 
 ## 1. How to use this document (read this before building any screen)
 
-The approved UI is attached to the repository in three forms. Use them together:
+The approved UI is in the repository in four forms. Use them together:
 
 | Form | Path | Use it for |
 |---|---|---|
@@ -27,11 +27,11 @@ The approved UI is attached to the repository in three forms. Use them together:
 ### Rules for implementation
 
 1. **Reproduce, don't reinterpret.** Layout, spacing, sizes, colors, typography, radius and copy must match the reference. Don't add sections, headings, icons, shadows, borders, helper texts or features that aren't in the reference.
-2. **The reference HTML is a static mockup.** Product names, prices, counts, the customer name, times and the order code are **sample data**. In the app they come from the API, the cart store and `lastOrderStore`. Screen sizes (`width: 390px`, fixed heights) are artboard sizes, not layout rules: pages are fluid (§5).
+2. **The reference HTML is a static mockup.** Product names, prices, counts, the customer name, times and the order code are **sample data**. In the app they come from the API, the cart store and the active-orders store. Screen sizes (`width: 390px`, fixed heights) are artboard sizes, not layout rules: pages are fluid (§5).
 3. **Rebuild with shadcn/ui components and standard Tailwind utilities** (§4, §6). Never paste `style="…"` blocks into React and never use arbitrary values copied from the reference (`text-[15px]`, `bg-[#f4f4f6]`).
 4. **Everything visual comes from `globals.css`.** No hex values, fonts, radii or shadows in components, and no new component variants. The radius is **8px everywhere** (all shadcn radius steps map to it); `rounded-full` only for the cart count badge and the success check circle. The **toast** is the only element with a shadow.
 5. **Copy is final.** Use the strings in §9 exactly (accents, middle dots `·`, ellipsis `…`, non-breaking currency format `R$ 11,90`).
-6. **When the reference and this document disagree,** this document wins (theme mapping, behavior, states, routes); the reference wins for structure and copy. Known gaps are listed in §11. If something is missing in both, ask (CLAUDE.md §3).
+6. **When the reference and this document disagree,** this document wins (theme mapping, behavior, states, routes); the reference wins for structure and copy. Known gaps are listed in §11. If something is missing in both, specify it here first.
 
 ---
 
@@ -50,7 +50,7 @@ The approved UI is attached to the repository in three forms. Use them together:
 
 | Ref | Screen | PRD screen | Route | Width | Screenshot |
 |---|---|---|---|---|---|
-| 01 | Catálogo (Todos) + latest-order card | SCR-01 | `/` | 390 | [01-catalog.png](design/screenshots/01-catalog.png) |
+| 01 | Catálogo (Todos) + active-order cards | SCR-01 | `/` | 390 | [01-catalog.png](design/screenshots/01-catalog.png) |
 | 02 | Catálogo filtrado (Chocolate) + toast + stock limit | SCR-01 | `/?filter=chocolate` | 390 | [02-catalog-filtered.png](design/screenshots/02-catalog-filtered.png) |
 | 03 | Carrinho | SCR-02 | `/cart` | 390 | [03-cart.png](design/screenshots/03-cart.png) |
 | 04 | Finalizar pedido | SCR-03 | `/checkout` | 390 | [04-checkout.png](design/screenshots/04-checkout.png) |
@@ -94,7 +94,7 @@ The design system is **not a custom token set**. It is the standard shadcn/ui th
 | `--background` → `bg-background` | `#ffffff` | Pages, cards |
 | `--foreground` → `text-foreground`, `bg-foreground` | `#121117` | Text and icons; selected filter chip; toast; cart button border |
 | `--primary` / `--primary-foreground` → `bg-primary text-primary-foreground` | `#ff7aac` / `#121117` | `Button variant="default"` (all main CTAs); cart count badge. Pink is never text. |
-| `--secondary` / `--secondary-foreground` | `#f4f4f6` / `#121117` | `bg-secondary` panels: latest-order card, order summaries, totals box, footer |
+| `--secondary` / `--secondary-foreground` | `#f4f4f6` / `#121117` | `bg-secondary` panels: active-order cards, order summaries, totals box, footer |
 | `--muted` / `--muted-foreground` | `#f4f4f6` / `#5c5b6b` | `text-muted-foreground`: descriptors, unit prices, meta lines; `bg-muted`: skeletons, sold-out photo backdrop |
 | `--accent` / `--accent-foreground` | `#ffe8f1` / `#121117` | Hover of `outline` and `ghost` buttons (shadcn default behavior) |
 | `--destructive` → `text-destructive`, `bg-destructive/10`, `border-destructive` | `#b42318` | Field errors, stock errors, "Esgotado" |
@@ -190,10 +190,12 @@ Each component names the shadcn primitive, the variant and the utility classes t
 
 No history or account icon in the header.
 
-### 6.2 LatestOrderCard (home)
+### 6.2 ActiveOrderCards (home)
+
+One card per active order (up to 5, newest first, BR-19) stacked in `flex flex-col gap-3`; nothing is rendered when there are none. Each card is built as follows.
 
 `<Link>` styled as a panel: `flex items-center gap-3 rounded-lg bg-secondary py-3 pl-4 pr-3` (full width of the container on every screen size; the former `lg:max-w-md` was removed by the owner).
-Left: `text-xs text-muted-foreground` "Seu pedido" over the code (§4.4). Right: `Badge variant="secondary" className="bg-blue-100 text-blue-700"` "Aguardando retirada" and `ChevronRight` (`size-5`). `aria-label="Seu pedido CUP-XXXXXX, aguardando retirada"`. Hidden unless BR-19 passes (§8.3); no skeleton.
+Left: `text-xs text-muted-foreground` "Seu pedido" over the code (§4.4). Right: `Badge variant="secondary" className="bg-blue-100 text-blue-700"` "Aguardando retirada" and `ChevronRight` (`size-5`). `aria-label="Seu pedido CUP-XXXXXX, aguardando retirada"`. A card is hidden unless BR-19 passes (§8.3); no skeleton.
 
 ### 6.3 FilterChips
 
@@ -221,7 +223,7 @@ Left: `text-xs text-muted-foreground` "Seu pedido" over the code (§4.4). Right:
 ```
 
 - **Add button** (not in cart): `Button variant="secondary" size="icon" className="size-10 bg-background"` with `Plus`; `aria-label="Adicionar {nome}"`.
-- **Card stepper** (in cart): `div.flex.h-10.items-center.rounded-lg.bg-background` with two `Button variant="ghost" size="icon"` (`Minus`, `Plus`) and the quantity (`min-w-5 text-center text-sm font-semibold tabular-nums`). Minus at 1 removes from the cart (US-05 AC3). Plus `disabled` at the limit, and `<p role="status" className="text-xs text-amber-800">Máximo disponível.</p>` appears under the card.
+- **Card stepper** (in cart): `div.flex.h-10.items-center.rounded-lg.bg-background` with two `Button variant="ghost" size="icon"` (`Minus`, `Plus`) and the quantity (`min-w-5 text-center text-sm font-semibold tabular-nums`). Minus at 1 removes from the cart (US-05 AC3). Plus `disabled` at the limit, and `<p role="status" className="text-xs text-amber-800">Máximo disponível.</p>` appears under the card. When the limit is the cap of 20 rather than the stock (`maxQuantity === 20`), the message is `card.max.cap` (§9.1) instead; the same message appears under the stepper of the cart line (US-06 AC5).
 - **Low stock (1–5):** `Badge` with `bg-amber-100 text-amber-800` "Restam N" at the right of the price row.
 - **Sold out:** image `opacity-50 grayscale`, name and price `text-muted-foreground`, `Badge variant="destructive"`-style tint `bg-destructive/10 text-destructive` "Esgotado", no add control.
 
@@ -262,15 +264,15 @@ shadcn `Label` + `Input` in `flex flex-col gap-1.5`; `Input className="h-12 text
 ### 6.10 PickupInfo / StoreInfo
 
 Rows `flex items-start gap-2.5 text-sm` with Lucide `MapPin` / `Clock` (`size-5 shrink-0`):
-- Checkout "Retirada": address · "Pronto em ~15 min · Pagamento na loja".
-- Meu pedido "Onde retirar": address · opening hours.
+- Checkout "Retirada": address · ready label (§8.4) · "Pagamento na loja".
+- Meu pedido "Onde retirar": address · opening hours · "Retire até {dia}, {HH:mm}" (`pickup.deadline`, a third `InfoRow` with `CalendarClock`).
 - Footer: `<footer className="mt-auto flex flex-col items-center gap-2.5 bg-secondary px-4 pb-7 pt-6 text-sm">` with the wordmark (`text-base font-extrabold`) and the two rows (`size-4` icons).
 
-Store name, address, hours and ready minutes come from one config module.
+Store name, address, hours and ready minutes come from the shared `STORE` config (D-24). The wordmark, footer and pickup rows are in the first paint and never show a loading state.
 
 ### 6.11 OrderCode block (Meu pedido)
 
-`Card`-like container without shadcn `Card` padding defaults: `<section className="flex flex-col items-center gap-1.5 rounded-lg border border-input py-5 text-center">`: "Mostre este código no balcão" (`text-xs text-muted-foreground`) · code (§4.4) · `Button variant="ghost" size="sm"` "Copiar código" · meta "{Nome} · Hoje, {HH:mm} · pronto às {HH:mm}" (`text-sm text-muted-foreground tabular-nums`). On copy: toast "Código copiado".
+`Card`-like container without shadcn `Card` padding defaults: `<section className="flex flex-col items-center gap-1.5 rounded-lg border border-input py-5 text-center">`: "Mostre este código no balcão" (`text-xs text-muted-foreground`) · code (§4.4) · meta "{Nome} · Hoje, {HH:mm} · pronto às {HH:mm}" (`text-sm text-muted-foreground tabular-nums`). No buttons: no copy or share action (D-29, G-13).
 
 ### 6.12 Notice (shadcn `Alert`)
 
@@ -279,7 +281,7 @@ Store name, address, hours and ready minutes come from one config module.
 | Tone | Build | Example |
 |---|---|---|
 | Success | `Alert className="border-0 bg-emerald-50"` + `Check` `text-emerald-700` | "**Pedido feito!** Pronto em ~15 min." |
-| Warning | `Alert className="border-0 bg-amber-100"` + `CircleAlert` `text-amber-800` | "Cookies & Cream: só 3 disponíveis. Quantidade ajustada." |
+| Warning | `Alert className="border-0 bg-amber-100"` + `CircleAlert` `text-amber-800` | "Cookies & Cream: só 3 disponíveis. Quantidade ajustada." · "Este pedido expirou e as unidades foram liberadas." |
 | Error | `Alert variant="destructive" className="border-0 bg-destructive/10"` + action `Button variant="outline" size="sm"` | "Chocolate Crush: só 1 disponível." + "Revisar" |
 
 ### 6.13 Toast (shadcn `Sonner`)
@@ -305,7 +307,7 @@ Each screen lists structure top to bottom, data bindings and states. Visual valu
 
 1. AppHeader (catalog variant) with the live cart count (total units, US-07).
 2. `<main className="flex flex-col gap-5 px-4 pb-8 pt-6">`:
-   1. **LatestOrderCard** when the BR-19 rule passes (§8.3).
+   1. **ActiveOrderCards**, one per order that passes the BR-19 rule (§8.3).
    2. **FilterChips**; `?filter=` values: `bestsellers`, `classics`, `chocolate`, `fruity`; no value = Todos.
    3. **Product grid** of ProductCards in seed order (03-data-model §8).
 3. Footer with store info.
@@ -313,7 +315,7 @@ Each screen lists structure top to bottom, data bindings and states. Visual valu
 
 States: loading = skeleton (ref 07 "Catálogo · carregando"); failure = EmptyState "Não foi possível carregar" / "Verifique sua conexão." / "Tentar de novo"; empty filter = EmptyState "Nenhum cupcake aqui" / "Veja todos os sabores." / button "Ver todos"; stock limit = card stepper plus disabled + "Máximo disponível.".
 
-Desktop (ref 08): same order inside the desktop container (`py-12`); latest-order card full width; grid `sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10`; chips wrap.
+Desktop (ref 08): same order inside the desktop container (`py-12`); active-order cards full width; grid `sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10`; chips wrap.
 
 ### 7.2 SCR-02 · Carrinho (`/cart`) · ref 03
 
@@ -328,11 +330,11 @@ States: empty = EmptyState "Carrinho vazio" / "Escolha seus cupcakes." / "Ver cu
 1. Inner header "Finalizar pedido" (back → `/cart`).
 2. `<main className="flex flex-1 flex-col gap-6 px-4 pb-6 pt-5">`:
    1. Section "Seus dados": TextFields "Nome", "Celular", then the privacy line `<p className="text-xs text-muted-foreground">` (§9.3 `privacy.notice`, NFR-06, A-08).
-   2. Section "Retirada": address · "Pronto em ~15 min · Pagamento na loja".
+   2. Section "Retirada": address · ready label (§8.4) · "Pagamento na loja".
    3. OrderSummary with "Editar".
 3. Sticky action bar: primary "Fazer pedido".
 
-Behavior: empty cart → redirect to `/cart`. Validate on blur and submit (BR-14). Submitting: button becomes loading "Enviando…" (ref 06). Success → clear cart, save `lastOrder`, `router.replace('/orders/{code}?new=1')`. Insufficient stock (409) → danger Notice at the top of main "{nome}: só N disponível." with "Revisar" → `/cart`, and the affected summary line in `danger` (ref 06). Field errors → TextField error state with the messages in §9.
+Behavior: empty cart → redirect to `/cart`. Validate on blur and submit (BR-14). Submitting: button becomes loading "Enviando…" (ref 06). Success → clear cart, save the order in `cupcake.orders` (§8.3), `router.replace('/orders/{code}?new=1')`. Insufficient stock (409) → danger Notice at the top of main "{nome}: só N disponível." with "Revisar" → `/cart`, and the affected summary line in `danger` (ref 06). Field errors → TextField error state with the messages in §9.
 
 Desktop (ref 09): header with wordmark + "Continuar comprando"; title "Finalizar pedido" (`text-4xl font-extrabold tracking-tight`); form fields side by side (`grid grid-cols-2 gap-x-5 gap-y-4`); "Retirada" box `rounded-lg border p-5` showing "Cupcake Store · {endereço}" and "Pronto em ~15 min · {horário} · Pagamento na loja"; summary aside with "Fazer pedido" inside it. No subtitle under the title (removed on both mobile and desktop, G-1).
 
@@ -342,13 +344,14 @@ One page for both "just placed" and "reopened" (BR-19, US-18).
 
 1. Inner header "Meu pedido" (back → `/`).
 2. `<main className="flex flex-1 flex-col gap-6 px-4 pb-6 pt-5">`:
-   1. Success Notice "**Pedido feito!** Pronto em ~15 min." **only when `?new=1`**; remove the flag from the URL after showing it (so a refresh or the home card shows the reopened version).
+   0. For an EXPIRED order, a Warning Notice `order.expired`; for a PICKED_UP order, a Success Notice `order.pickedup`. No status badge.
+   1. Success Notice "**Pedido feito!** {ready label}." **only when `?new=1`**; remove the flag from the URL after showing it (so a refresh or the home card shows the reopened version).
    2. Code card: the OrderCode block (§6.11), `rounded-lg border border-input py-5`.
    3. OrderSummary (no header, no "Editar", no pickup row): lines, "Subtotal", "Total a pagar na loja".
-   4. "Onde retirar": address and hours.
+   4. "Onde retirar": address, hours and the pickup deadline (`expiresAt`).
    5. `Button variant="outline" size="lg" className="mt-auto h-12 w-full border-input"` "Voltar ao início".
 
-Data: `GET /api/orders/{code}` → code, firstName, createdAt, readyAt, items (name, imageUrl, quantity, unitPriceCents, lineTotalCents), totalCents. Times in America/Sao_Paulo; "Hoje" when the order is from today, otherwise `dd/mm`.
+Data: `GET /api/orders/{code}` → code, firstName, pickupStatus, createdAt, readyAt, expiresAt, items (name, imageUrl, quantity, unitPriceCents, lineTotalCents), totalCents. Times in America/Sao_Paulo; "Hoje" when the order is from today, otherwise `dd/mm`; the ready part of the meta line follows §8.4.
 
 States: loading = skeleton of the code card and summary; not found = EmptyState "Pedido não encontrado" / "Confira o código (CUP-XXXXXX)." / outline "Voltar ao início" (ref 07); error = "Não foi possível carregar" + "Tentar de novo".
 
@@ -373,15 +376,17 @@ EmptyState pattern. Unknown routes: "Página não encontrada" / "O link pode est
 
 Stored in `localStorage` key `cupcake.cart` as `[{ productId, quantity }]`. Badge = total units. Refresh against `GET /api/products` when the cart or checkout opens (US-10). Cleared after the order is created.
 
-### 8.3 Latest order (BR-19)
+### 8.3 Active orders (BR-19)
 
-- Key `cupcake.lastOrder` = `{ "code": "CUP-7K3Q9F", "createdAt": "2026-10-11T17:35:00.000Z" }`. Written after a 201 from `POST /api/orders`; overwrites the previous value. Nothing else is stored (no name, phone or items).
-- Home card shows only if: stored → `createdAt` is today in America/Sao_Paulo → `GET /api/orders/{code}` returns 200 with `pickupStatus = AWAITING_PICKUP`. 404 → remove the key. Network error → hide silently. See [AD-02](diagrams/activity-diagrams/ad-02-latest-order-card.svg) and [SD-03](diagrams/sequence-diagrams/sd-03-latest-order-card.svg).
-- Wrap every `localStorage` access in `try/catch`; if storage is unavailable, the app works without the card.
+- Key `cupcake.orders` = `[{ "code": "CUP-7K3Q9F", "createdAt": "2026-10-11T17:35:00.000Z" }, …]`, newest first, at most 5. Written after a 201 from `POST /api/orders` (the new order is added in front; the oldest is dropped beyond 5). Nothing else is stored (no name, phone or items). The former key `cupcake.lastOrder` is moved into this list once and removed.
+- Home shows one card for each stored order for which `GET /api/orders/{code}` returns 200 with `pickupStatus = AWAITING_PICKUP`, whatever day it was placed (no "today" rule). A 404, PICKED_UP or EXPIRED removes that code. A network error hides that card silently and keeps the code. See [AD-02](diagrams/activity-diagrams/ad-02-active-order-cards.svg) and [SD-03](diagrams/sequence-diagrams/sd-03-active-order-cards.svg).
+- Wrap every `localStorage` access in `try/catch`; if storage is unavailable, the app works without the cards.
 
-### 8.4 Ready time (BR-12)
+### 8.4 Store data and ready time (BR-12)
 
-`readyAt = createdAt + 15 min`, computed by the API from `PICKUP_READY_MINUTES` (default 15). The UI never hard-codes the time; "~15 min" in copy reads the same config.
+- Store name, address, time zone, preparation minutes and weekly opening hours are the shared `STORE` config (`packages/shared/src/store.ts`, D-24). Components read it directly, so nothing is fetched or shown as loading, and the pages stay static.
+- `readyAt` and `expiresAt` are computed by the API from `STORE` (`computePickup`, `packages/shared`) and stored on the order. The checkout preview runs the same function on the same config.
+- **Ready label** (checkout, success notice): "Pronto em ~{n} min" when `readyAt` is at most the preparation time from now; otherwise "Pronto hoje às {HH:mm}", "Pronto amanhã às {HH:mm}" or "Pronto {dd/mm} às {HH:mm}". On Meu pedido the meta line says "pronto às {HH:mm}" when the ready time is on the order's day, otherwise "pronto amanhã às {HH:mm}" or "pronto {dd/mm} às {HH:mm}".
 
 ### 8.5 Accessibility (NFR-03)
 
@@ -406,10 +411,11 @@ Every icon-only button has an `aria-label` (§9). Status changes (toast, notices
 | card.add.aria | Adicionar {nome} |
 | card.stepper.aria | Quantidade de {nome} · Diminuir · Aumentar |
 | card.max | Máximo disponível. |
+| card.max.cap | Máximo de 20 unidades. Para encomendas maiores, fale com a loja. |
 | toast.added | Adicionado ao carrinho · **Ver carrinho** |
-| latest.label | Seu pedido |
-| latest.status | Aguardando retirada |
-| latest.aria | Seu pedido {código}, aguardando retirada |
+| orderCard.label | Seu pedido |
+| orderCard.status | Aguardando retirada |
+| orderCard.aria | Seu pedido {código}, aguardando retirada |
 | footer | Cupcake Store · {endereço} · {horário} |
 | catalog.error | Não foi possível carregar · Verifique sua conexão. · Tentar de novo |
 
@@ -439,7 +445,7 @@ Every icon-only button has an `aria-label` (§9). Status changes (toast, notices
 | field.name / placeholder | Nome / Ex.: Maria Silva |
 | field.phone / placeholder | Celular / (11) 91234-5678 |
 | section.pickup | Retirada |
-| pickup.line | Pronto em ~15 min · Pagamento na loja |
+| pickup.line | {ready label} · Pagamento na loja (ready label: "Pronto em ~15 min", "Pronto hoje às {HH:mm}", "Pronto amanhã às {HH:mm}" or "Pronto {dd/mm} às {HH:mm}", §8.4) |
 | section.summary | Resumo do pedido · Editar |
 | cta / loading | Fazer pedido / Enviando… |
 | error.name | Informe seu nome. |
@@ -454,12 +460,14 @@ Every icon-only button has an `aria-label` (§9). Status changes (toast, notices
 |---|---|
 | title | Meu pedido |
 | back.aria | Voltar ao início |
-| success | **Pedido feito!** Pronto em ~15 min. |
+| success | **Pedido feito!** {ready label}. (for example "Pronto em ~15 min." or "Pronto amanhã às 10:15.") |
+| order.expired | Este pedido expirou e as unidades foram liberadas. |
+| order.pickedup | Pedido retirado. |
 | code.hint | Mostre este código no balcão |
-| code.copy | Copiar código |
-| meta | {Nome} · Hoje, {HH:mm} · pronto às {HH:mm} |
+| meta | {Nome} · Hoje, {HH:mm} · pronto às {HH:mm} (ready part per §8.4) |
 | subtotal / total | Subtotal / Total a pagar na loja |
 | pickup.title | Onde retirar |
+| pickup.deadline | Retire até {hoje, amanhã ou dd/mm}, {HH:mm} |
 | cta | Voltar ao início |
 | notfound | Pedido não encontrado · Confira o código (CUP-XXXXXX). · Voltar ao início |
 
@@ -474,7 +482,6 @@ Every icon-only button has an `aria-label` (§9). Status changes (toast, notices
 | `ORDER_NOT_FOUND` | Meu pedido | Pedido não encontrado | "Voltar ao início" |
 | `RATE_LIMITED` | Checkout notice | Muitas tentativas. Tente de novo em instantes. | Retry later |
 | Network / `INTERNAL_ERROR` | Any data screen | Não foi possível carregar · Verifique sua conexão. | "Tentar de novo" |
-| Clipboard success | Toast | Código copiado | n/a |
 
 ---
 
@@ -501,7 +508,7 @@ Icons (Lucide): `shopping-bag` (cart), `star` (bestseller, filled on the badge),
 |---|---|---|
 | G-1 | The reference HTML (ref 09, desktop) showed the subtitle "Só nome e celular. Sem cadastro." under the checkout title; mobile never had it. | **Removed on both** (owner decision, 11 Oct). Don't build it; §7.3 and §9.3 no longer list it. |
 | G-2 | The approved checkout had no privacy/purpose notice (NFR-06, A-08). | **Approved (11 Oct):** one line under "Seus dados" using `privacy.notice` in §9.3. Build it as part of E7-02/E7-03. |
-| G-3 | The approved Meu pedido doesn't show "Salvo só neste navegador.". | BR-19 limitation is documented in the PRD; no UI text unless the owner asks. |
+| G-3 | The approved Meu pedido doesn't show "Salvo só neste navegador.". | BR-19 limitation is documented in the PRD; another device opens the order by its link `/orders/{code}`; no extra UI text unless the owner asks. |
 | G-4 | Copy originally marked *(proposed)* in §9 (empty filter, product not found, rate limit, clipboard toast, unknown route) wasn't in the mockups. | **Approved (11 Oct)** — use it as final copy, no longer flagged. |
 | G-5 | Reference screens show fixed artboard heights and sample data. | Pages are fluid; data comes from the API (§1 rule 2). |
 | G-7 | Reference screens use pixel values; the implementation uses the nearest Tailwind step, the Tailwind palette for status tints, shadcn's standard focus ring and button weight (`font-medium`). | Accepted (§4 fidelity note). Structure, main colors, radius and copy must match. |
@@ -510,13 +517,14 @@ Icons (Lucide): `shopping-bag` (cart), `star` (bestseller, filled on the badge),
 | G-10 | Mockups show the cart only at 390 px; product photos have no per-product alt text in the API; singular "1 item" / "só 1 disponível" isn't in the copy deck. | Cart is centered with `max-w-2xl` on desktop; card photos use the product name as `alt`; singular forms added to the copy (§9.1/§9.2). |
 | G-11 | The approved `globals.css` used `overflow-x: hidden` on `html, body`, which makes `body` a scroll container and silently breaks every `sticky bottom-0` action bar on pages taller than the screen (found on the checkout). | Changed to `overflow-x: clip` in `globals.css` (and its copy in `design/theme/`): same "never scroll sideways", sticky works. §5 updated. |
 | G-12 | Submit failures (network, 5xx) have no dedicated copy; Meu pedido lists items in cart order in the mockup, but the cart order isn't stored. | The error map's "Não foi possível carregar · Verifique sua conexão." is reused with "Tentar de novo"; items are sorted by name (07 §3.4). |
-| G-6 | Store name, address and hours are placeholders ("Rua das Flores, 123 · Centro · São Paulo, SP", "Ter a dom, 10h às 19h"). | Single config module; replace when real data exists (A-03). |
+| G-13 | The approved Meu pedido reference (`design/screens/05-my-order.html` and its screenshot) shows "Copiar código". | **Removed** (owner decision, 22 Oct, D-29): the code block has no copy or share action. The mockup is not edited; the difference is intended. |
+| G-6 | Store name, address and hours are placeholders ("Rua das Flores, 123 · Centro · São Paulo, SP", "Ter a dom, 10h às 19h"). | Kept in `packages/shared/src/store.ts` (D-24); replace the values when real data exists (A-03). |
 
 ## 12. Change log
 
 | Version | Date | Change |
 |---|---|---|
-| 1.0 | 11 Oct 2026 | Approved Phase 3 UI exported from Claude Design: tokens, components, nine screen references with screenshots, routes, behavior rules, copy deck and error map |
+| 1.0 | 11 Oct 2026 | Approved Phase 3 UI exported to `docs/design/`: tokens, components, nine screen references with screenshots, routes, behavior rules, copy deck and error map |
 | 1.1 | 11 Oct 2026 | Theme moved to standard Tailwind CSS v4 + shadcn/ui: one `globals.css` with shadcn variables, flattened radius scale and no shadows; components mapped to shadcn primitives and standard variants; Tailwind scale and palette replace custom tokens |
 | 1.2 | 11 Oct 2026 | E0-02 open items closed by the owner: removed the desktop-only checkout subtitle (G-1) from everywhere; added the `privacy.notice` LGPD line under "Seus dados" at checkout (G-2, closes A-08); approved the five previously *(proposed)* copy strings as final (G-4) |
 | 1.3 | 11 Oct 2026 | E5: copy additions (§9.2 `soldout.removed`, *proposed* `gone.removed`, singular forms); gaps G-8…G-10 recorded |
@@ -524,3 +532,6 @@ Icons (Lucide): `shopping-bag` (cart), `star` (bestseller, filled on the badge),
 | 1.5 | 11 Oct 2026 | §6.3: the filter chips are sticky (owner request) |
 | 1.6 | 11 Oct 2026 | §6.1: sticky headers with fixed catalog height, inner header in the `max-w-6xl` container, circular count badge; §6.3 chips stick below the header; catalog `main` uses one 24 px rhythm (`gap-6`, no extra desktop top padding) |
 | 1.7 | 11 Oct 2026 | Owner experiment kept: no header border (all sizes), icon-only cart button below `lg`, chips padding 4/16 px, latest-order card full width (§6.1, §6.2, §6.3, §7.1) |
+| 1.8 | 18 Oct 2026 | User validation (E9-03): §6.2/§7.1/§8.3 several active-order cards (BR-19, no "today" rule); §6.4 cap-of-20 message; §6.10/§8.4 store hours in the shared config, ready label and pickup deadline; §6.11 "Compartilhar"; §6.12/§7.4 expired and picked-up notices; §9 copy additions (`card.max.cap`, `order.expired`, `order.pickedup`, `code.share`, `share.text`, `pickup.deadline`, ready label); G-3 and G-6 updated |
+| 1.9 | 18 Oct 2026 | Documentation review: neutral design-source wording; copy keys `orderCard.*`; stale references to the single latest order removed |
+| 1.10 | 22 Oct 2026 | Owner decision (D-29): §6.11 code block without "Copiar código" and "Compartilhar"; copy keys `code.copy`, `code.share`, `share.text` and both toasts removed; G-3 updated; G-13 added |

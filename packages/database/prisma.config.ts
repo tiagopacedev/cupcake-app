@@ -1,5 +1,11 @@
-import "dotenv/config";
+import { fileURLToPath } from "node:url";
+import { config } from "dotenv";
 import { defineConfig } from "prisma/config";
+
+// The one `.env` lives at the repo root (06-development-workflow.md §1). Resolved from this
+// file, not from the working directory, because the CLI runs from packages/database.
+// Variables already set in the shell win; a missing file is fine (CI and Vercel set real ones).
+config({ path: fileURLToPath(new URL("../../.env", import.meta.url)), quiet: true });
 
 /**
  * Prisma 7 CLI config (02-architecture.md §4). `datasource.url` is used by

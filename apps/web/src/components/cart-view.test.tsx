@@ -120,6 +120,32 @@ describe("US-09 edit cart items", () => {
     expect(screen.getAllByText(money("25,80")).length).toBeGreaterThanOrEqual(2);
   });
 
+  it("US-06 AC5: at the cap of 20 units the line points to the store for larger orders", async () => {
+    serve([crush]);
+    setCart([{ productId: "crush", quantity: 20 }]);
+    render(<CartView />);
+
+    const row = (await screen.findByRole("heading", { name: "Chocolate Crush" })).closest("li");
+    const line = within(row as HTMLElement);
+    expect(line.getByRole("button", { name: "Aumentar" })).toBeDisabled();
+    // (The quantity <output> is a "status" too, so look the message up by its text.)
+    expect(
+      line.getByText("Máximo de 20 unidades. Para encomendas maiores, fale com a loja."),
+    ).toHaveAttribute("role", "status");
+  });
+
+  it("US-06 AC5: no store message below the cap, and none when the stock (not the cap) is the limit", async () => {
+    serve([crush, cookies]);
+    setCart([
+      { productId: "crush", quantity: 19 },
+      { productId: "cookies", quantity: 3 },
+    ]);
+    render(<CartView />);
+
+    await screen.findByRole("heading", { name: "Chocolate Crush" });
+    expect(screen.queryByText(/fale com a loja/)).not.toBeInTheDocument();
+  });
+
   it("disables 'Diminuir' at 1: removal has its own button", async () => {
     serve([crush]);
     setCart([{ productId: "crush", quantity: 1 }]);

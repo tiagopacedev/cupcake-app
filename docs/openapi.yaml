@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Cupcake App API
-  version: 1.0.0
+  title: Cupcake Store API
+  version: 1.1.0
   summary: Catalog and orders for a cupcake store with store pickup and payment at the counter.
   description: |
     Contract for `apps/api` (Fastify). Source of truth for request/response shapes;
@@ -18,9 +18,9 @@ info:
 servers:
   - url: http://localhost:4000
     description: Local API
-  - url: https://cupcake-web.vercel.app
-    description: Production, through the web app's /api rewrite
-security: []   # public API: no authentication in the MVP (no accounts, no admin)
+  - url: https://cupcake-app-iota.vercel.app
+    description: Production (the web origin rewrites /api/* to the API)
+security: []   # public API: no accounts. Only the staff pickup endpoint needs the staff token (bearerAuth)
 tags:
   - name: Health
     description: Liveness check used before testing sessions and recordings
@@ -115,7 +115,9 @@ paths:
       description: |
         Creates the order in one transaction: conditional stock decrement for every line,
         customer upsert by normalized phone, totals from database prices, unique order code.
-        The order starts as AWAITING_PICKUP. No payment is taken (BR-09).
+        The order starts as AWAITING_PICKUP. No payment is taken (BR-09). `readyAt` and `expiresAt`
+        come from the store's opening hours (BR-12): an order placed while the store is closed is
+        accepted and ready after the next opening.
         Rate limit: 10 requests per minute per IP.
       requestBody:
         required: true
@@ -178,6 +180,8 @@ paths:
       description: |
         Returns the customer's first name only; never the phone (BR-16).
         Malformed and unknown codes both return 404 ORDER_NOT_FOUND.
+        Overdue orders are expired before the response is built (BR-20), so an order past its
+        `expiresAt` is returned as EXPIRED.
       parameters:
         - name: code
           in: path
@@ -199,7 +203,60 @@ paths:
         "500":
           $ref: "#/components/responses/InternalError"
 
+  /api/orders/{code}/pickup:
+    patch:
+      tags: [Orders]
+      operationId: markOrderPickedUp
+      summary: Staff records that the order was handed over (US-24, BR-21)
+      description: |
+        Marks an AWAITING_PICKUP order as PICKED_UP. No request body and no UI: staff call it
+        with the secret staff token (`STAFF_API_TOKEN`) after handing over the order. Picked-up
+        orders never release stock. A missing or wrong token, or a server without a configured
+        token, returns 401 UNAUTHORIZED. An order that is already PICKED_UP or EXPIRED returns
+        409 INVALID_ORDER_STATUS.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CUP-7K3Q9F
+      responses:
+        "200":
+          description: The order, now PICKED_UP
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/OrderNotFound"
+        "409":
+          description: The order is already PICKED_UP or EXPIRED; nothing changed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error:
+                  code: INVALID_ORDER_STATUS
+                  message: Only an order awaiting pickup can be marked as picked up.
+                  details: { pickupStatus: EXPIRED }
+                  requestId: 8f2c1b6e-0d1a-4c55-9a77-1b2c3d4e5f64
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Secret staff token from the API environment (`STAFF_API_TOKEN`). Used only by the staff pickup endpoint.
   schemas:
     Slug:
       type: string
@@ -216,6 +273,14 @@ components:
       minimum: 0
       description: Amount in BRL cents
       example: 1190
+
+    PickupStatus:
+      type: string
+      enum: [AWAITING_PICKUP, PICKED_UP, EXPIRED]
+      description: |
+        AWAITING_PICKUP on creation (BR-10); PICKED_UP when staff record the handover (BR-21);
+        EXPIRED when it was not collected by `expiresAt` and its stock was released (BR-20).
+        PICKED_UP and EXPIRED are final.
 
     Health:
       type: object
@@ -335,19 +400,22 @@ components:
     Order:
       type: object
       additionalProperties: false
-      required: [code, pickupStatus, customerFirstName, createdAt, readyAt, items, totalCents]
+      required: [code, pickupStatus, customerFirstName, createdAt, readyAt, expiresAt, items, totalCents]
       properties:
         code: { $ref: "#/components/schemas/OrderCode" }
-        pickupStatus:
-          type: string
-          enum: [AWAITING_PICKUP, PICKED_UP]
+        pickupStatus: { $ref: "#/components/schemas/PickupStatus" }
         customerFirstName: { type: string, example: Ana }
         createdAt: { type: string, format: date-time, example: "2026-10-11T17:35:00.000Z" }
         readyAt:
           type: string
           format: date-time
-          description: createdAt + 15 minutes (BR-12)
+          description: First moment the order can be collected, within opening hours (BR-12)
           example: "2026-10-11T17:50:00.000Z"
+        expiresAt:
+          type: string
+          format: date-time
+          description: Closing time of the pickup day; an order not collected by then expires (BR-20)
+          example: "2026-10-11T22:00:00.000Z"
         items:
           type: array
           minItems: 1
@@ -360,6 +428,7 @@ components:
         customerFirstName: Ana
         createdAt: "2026-10-11T17:35:00.000Z"
         readyAt: "2026-10-11T17:50:00.000Z"
+        expiresAt: "2026-10-11T22:00:00.000Z"
         items:
           - { productId: 3f6c1d2a-6a4e-4b8e-9a1f-2c3d4e5f6a7b, slug: chocolate-crush, name: Chocolate Crush, imageUrl: /images/products/chocolate-crush.jpg, quantity: 2, unitPriceCents: 1190, lineTotalCents: 2380 }
           - { productId: 9b8a7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d, slug: birthday-vanilla, name: Birthday Vanilla, imageUrl: /images/products/birthday-vanilla.jpg, quantity: 1, unitPriceCents: 990, lineTotalCents: 990 }
@@ -373,6 +442,8 @@ components:
         - NOT_FOUND
         - PRODUCT_NOT_FOUND
         - INSUFFICIENT_STOCK
+        - INVALID_ORDER_STATUS
+        - UNAUTHORIZED
         - RATE_LIMITED
         - INTERNAL_ERROR
 
@@ -425,6 +496,7 @@ components:
                 productIds:
                   type: array
                   items: { type: string, format: uuid }
+                pickupStatus: { $ref: "#/components/schemas/PickupStatus" }
             requestId: { type: string }
 
   responses:
@@ -448,6 +520,13 @@ components:
           schema: { $ref: "#/components/schemas/ErrorResponse" }
           example:
             error: { code: ORDER_NOT_FOUND, message: Order not found., requestId: 8f2c1b6e-0d1a-4c55-9a77-1b2c3d4e5f63 }
+    Unauthorized:
+      description: Missing or wrong staff token, or no token configured on the server
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+          example:
+            error: { code: UNAUTHORIZED, message: Staff token required., requestId: 8f2c1b6e-0d1a-4c55-9a77-1b2c3d4e5f65 }
     RateLimited:
       description: Too many requests
       headers:

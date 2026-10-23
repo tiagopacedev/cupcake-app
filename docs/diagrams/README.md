@@ -13,11 +13,11 @@ All diagrams are written as code. Each source file (`.puml` PlantUML, `.mmd` Mer
 | n/a | API request lifecycle | `architecture/request-lifecycle.puml` | 02-architecture §3, §7 |
 | SD-01 | Browse and filter catalog | `sequence-diagrams/sd-01-browse-catalog.puml` | UC-01 |
 | SD-02 | Place order (stock reserved in the same transaction) | `sequence-diagrams/sd-02-place-order.puml` | UC-03, UC-07 |
-| SD-03 | Latest-order card on the home page | `sequence-diagrams/sd-03-latest-order-card.puml` | UC-04, BR-19 |
-| SD-04 | View / verify order | `sequence-diagrams/sd-04-view-order.puml` | UC-05, UC-06 |
+| SD-03 | Active-order cards on the home page | `sequence-diagrams/sd-03-active-order-cards.puml` | UC-04, BR-19 |
+| SD-04 | View order, verify and mark as picked up | `sequence-diagrams/sd-04-view-order.puml` | UC-05, UC-06, BR-21 |
 | AD-01 | Customer purchase journey | `activity-diagrams/ad-01-purchase-journey.puml` | UC-01…UC-05 |
-| AD-02 | Latest-order card decision | `activity-diagrams/ad-02-latest-order-card.puml` | UC-04, BR-19 |
-| AD-03 | Order verification and payment at pickup | `activity-diagrams/ad-03-pickup-verification.puml` | UC-06, BR-09, BR-18 |
+| AD-02 | Active-order cards decision | `activity-diagrams/ad-02-active-order-cards.puml` | UC-04, BR-19 |
+| AD-03 | Order verification, payment and handover at pickup | `activity-diagrams/ad-03-pickup-verification.puml` | UC-06, BR-09, BR-18, BR-21 |
 | n/a | Conceptual ER model | `database/er-conceptual.mmd` | 03-data-model §2 |
 | n/a | Logical ER model (3NF) | `database/er-logical.mmd` | 03-data-model §3 |
 | n/a | Physical ER model | `database/er-physical.mmd` | 03-data-model §6 |
@@ -32,12 +32,12 @@ Endpoint paths in the sequence diagrams follow `07-api-spec.md` and `openapi.yam
 
 ## Rendering
 
-Tools used: PlantUML 1.2022.12 (Java 17+ and Graphviz) and Mermaid CLI 11.4.2.
+Tools used: PlantUML 1.2022.12 (Java 17+ and Graphviz) and Mermaid CLI 11.4.2 (headless Chromium). Run from `docs/diagrams`; each command writes the image next to its source.
 
 ```bash
-# PlantUML (from docs/diagrams)
-java -jar plantuml.jar -charset UTF-8 -tsvg  **/*.puml
-java -jar plantuml.jar -charset UTF-8 -tpng  **/*.puml
+# PlantUML
+java -jar plantuml.jar -charset UTF-8 -tsvg */*.puml
+java -jar plantuml.jar -charset UTF-8 -tpng */*.puml
 
 # Mermaid
 npx -p @mermaid-js/mermaid-cli@11.4.2 mmdc -i database/er-logical.mmd -o database/er-logical.svg -b white

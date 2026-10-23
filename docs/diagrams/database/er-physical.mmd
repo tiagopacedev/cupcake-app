@@ -1,5 +1,5 @@
 ---
-title: Cupcake App · Physical model (PostgreSQL 16)
+title: Cupcake Store · Physical model (PostgreSQL 16)
 ---
 erDiagram
   %% Physical model (PostgreSQL 16), mirrors physical-model.sql (03-data-model.md §6)
@@ -55,6 +55,8 @@ erDiagram
     uuid customer_id FK
     integer total_cents "CHECK gt 0"
     pickup_status pickup_status "enum, default AWAITING_PICKUP"
+    timestamptz ready_at "CHECK ge created_at"
+    timestamptz expires_at "CHECK gt ready_at"
     timestamptz created_at
     timestamptz updated_at
   }

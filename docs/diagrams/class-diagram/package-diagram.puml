@@ -1,6 +1,6 @@
 @startuml package-diagram
 !include ../_style.iuml
-title Cupcake App · MVC Package Diagram (logical architecture)
+title Cupcake Store · MVC Package Diagram (logical architecture)
 skinparam packageStyle rectangle
 
 package "apps/web (Next.js) · VIEW" as WEB {
@@ -11,16 +11,20 @@ package "apps/web (Next.js) · VIEW" as WEB {
     [OrderPage (Meu pedido)\nSCR-04] as P4
   }
   package "components" as WComp {
-    [AppHeader, LatestOrderCard,\nFilterChips, ProductCard, QuantityStepper,\nCartLine, OrderSummary, OrderCode,\nStoreInfo, Notice, Toast, EmptyState] as C1
+    [AppHeader, ActiveOrderCards,\nFilterChips, ProductCard, QuantityStepper,\nCartLine, OrderSummary, OrderCodeCard,\nPickupInfo, StoreFooter, Notice, EmptyState] as C1
   }
   package "lib" as WLib {
     [apiClient\n(typed from OpenAPI)] as AC
-    [cartStore, lastOrderStore\n(localStorage)] as CS
-    [format (pt-BR, BRL)] as FMT
+    [cart store, active-orders store\n(localStorage)] as CS
+    [format (pt-BR, BRL,\nready time, deadline)] as FMT
   }
 }
 
 package "apps/api (Fastify)" as API {
+  package "plugins" as PL {
+    [requestId, security\n(helmet, cors, rate limit)] as PLS
+    [staff-auth\n(bearer token, BR-21)] as SA
+  }
   package "routes · ROUTER" as R {
     [catalog.routes] as R1
     [orders.routes] as R2
@@ -31,9 +35,9 @@ package "apps/api (Fastify)" as API {
   }
   package "services · MODEL (business rules)" as SV {
     [CatalogService] as CSV
-    [OrderService\n(create, getByCode)] as OSV
-    [StockService\n(UC-07)] as SSV
-    [orderCode, phone utils,\nstore config (address,\nhours, ready minutes)] as UT
+    [OrderService\n(create, getByCode,\nmarkPickedUp)] as OSV
+    [OrderExpiryService\n(BR-20)] as XSV
+    [stock rules, order code,\norder mapper] as UT
   }
   package "repositories · MODEL (persistence)" as RP {
     [ProductRepository] as PR
@@ -49,7 +53,7 @@ package "packages/database" as DBP {
 }
 
 package "packages/shared" as SH {
-  [zod schemas (BR-14), error codes,\nstore config, phone utils] as SHV
+  [zod order schema (BR-14), phone utils,\nerror codes, STORE config,\ncomputePickup (BR-12)] as SHV
 }
 
 database "PostgreSQL" as PG
@@ -59,15 +63,18 @@ WPages ..> WLib
 AC ..> R : HTTPS / JSON
 R1 ..> CC
 R2 ..> OC
+R2 ..> SA : PATCH …/pickup
 CC ..> CSV
 OC ..> OSV
-OSV ..> SSV
+CSV ..> XSV
+OSV ..> XSV
 OSV ..> UT
 CSV ..> PR
 CSV ..> CR
 OSV ..> CUR
 OSV ..> OR
-SSV ..> PR
+XSV ..> OR
+XSV ..> PR
 RP ..> PS : Prisma Client
 PS ..> PG
 CT ..> ERR
@@ -81,8 +88,9 @@ note right of CT
   No business logic, no database access.
 end note
 note right of SV
-  Services hold BR-01…BR-19.
+  Services hold BR-01…BR-21.
   Order creation (stock decrement +
-  order insert) runs in one transaction.
+  order insert) runs in one transaction;
+  overdue orders are expired first.
 end note
 @enduml

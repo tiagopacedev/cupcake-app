@@ -1,0 +1,37 @@
+@startuml ad-02-active-order-cards
+!include ../_style.iuml
+title AD-02 · Active-order cards on the home page (UC-04, BR-19)
+
+|Web app (View)|
+start
+:Read "cupcake.orders" from localStorage\n(up to 5 codes, newest first);
+if (Any stored order?) then (no)
+  :Show no card;
+  stop
+else (yes)
+endif
+while (For each stored code) is (next code)
+  :GET /api/orders/{code};
+  |API (Controller + Model)|
+  :Expire overdue orders (BR-20);
+  :Find order by code;
+  |Web app (View)|
+  if (Response?) then (404)
+    :Remove the stored code;
+  elseif () then (network error)
+    :Keep the code; show no card for it;
+  else (200)
+    if (pickupStatus = AWAITING_PICKUP?) then (yes)
+      :Show card "Seu pedido · code ·\nAguardando retirada";
+    else (PICKED_UP or EXPIRED)
+      :Remove the stored code;
+    endif
+  endif
+endwhile (done)
+note right
+  The day the order was placed does not matter.
+  Cards exist only in this browser
+  (no account, no history list, BR-19).
+end note
+stop
+@enduml

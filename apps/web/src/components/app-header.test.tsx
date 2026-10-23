@@ -95,12 +95,27 @@ describe("inner header (04-ui-design-system.md §6.1)", () => {
   });
 });
 
-describe("store footer", () => {
-  it("shows the store name, address and opening hours from the shared config", () => {
+describe("store footer (US-17 AC2, D-24)", () => {
+  it("shows the store name, address and opening hours from the shared store config", () => {
     render(<StoreFooter />);
     const footer = screen.getByRole("contentinfo");
     expect(footer).toHaveTextContent("Cupcake Store");
     expect(footer).toHaveTextContent("Rua das Flores, 123 · Centro · São Paulo, SP");
     expect(footer).toHaveTextContent("Ter a dom, 10h às 19h");
+  });
+
+  it("has its content straight away: nothing to load, no placeholder", () => {
+    render(<StoreFooter />);
+    expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
+    expect(screen.queryByText(/carregando/i)).not.toBeInTheDocument();
+  });
+});
+
+describe("wordmark (D-24)", () => {
+  it("shows the store name in the catalog and checkout headers", () => {
+    const { rerender } = render(<AppHeader variant="catalog" />);
+    expect(screen.getByRole("link", { name: "Cupcake Store" })).toHaveAttribute("href", "/");
+    rerender(<AppHeader variant="checkout" />);
+    expect(screen.getByRole("link", { name: "Cupcake Store" })).toBeInTheDocument();
   });
 });

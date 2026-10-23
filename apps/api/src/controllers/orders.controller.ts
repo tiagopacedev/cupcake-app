@@ -17,5 +17,8 @@ export function createOrdersController(service: OrderService) {
     },
     getOrder: async (request: FastifyRequest<{ Params: { code: string } }>) =>
       service.getByCode(request.params.code),
+    /** Staff handover (BR-21); the bearer token was already checked by the route's preHandler. */
+    markPickedUp: async (request: FastifyRequest<{ Params: { code: string } }>) =>
+      service.markPickedUp(request.params.code),
   };
 }

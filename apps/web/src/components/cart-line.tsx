@@ -3,12 +3,14 @@ import { Trash2 } from "lucide-react";
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/format";
+import { CAP_LIMIT_MESSAGE, isCapLimit } from "@/lib/quantity-limit";
 import type { Product } from "@/lib/api/types";
 
 /**
  * One cart row (04-ui-design-system.md §6.6): photo, name and current unit
  * price, trash button, stepper and line total. Removal asks for confirmation
- * inline (US-09): "Remover" or "Cancelar".
+ * inline (US-09): "Remover" or "Cancelar". At the cap of 20 units it points to the
+ * store for larger orders (US-06 AC5).
  */
 export function CartLine({
   product,
@@ -66,6 +68,11 @@ export function CartLine({
           </div>
         </div>
       </div>
+      {quantity >= product.maxQuantity && isCapLimit(product.maxQuantity) && (
+        <p role="status" className="mt-2 text-xs text-amber-800">
+          {CAP_LIMIT_MESSAGE}
+        </p>
+      )}
       {confirmingRemoval && (
         <div className="mt-3 flex flex-col gap-3 rounded-lg border p-4">
           <p className="font-medium">Remover {product.name}?</p>

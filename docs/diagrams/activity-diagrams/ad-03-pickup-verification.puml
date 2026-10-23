@@ -1,6 +1,6 @@
 @startuml ad-03-pickup-verification
 !include ../_style.iuml
-title AD-03 · Order verification and payment at store pickup (UC-06, BR-09, BR-18)
+title AD-03 · Order verification, payment and handover at the store (UC-06, BR-09, BR-18, BR-21)
 
 |Customer|
 start
@@ -10,6 +10,7 @@ repeat
   |Store staff|
   :Type the code and open order page /orders/{code};
   |System|
+  :Expire overdue orders (BR-20);
   :Find order by code;
 repeat while (Not found and code mistyped?) is (yes: re-type) not (no)
 if (Order found?) then (no)
@@ -19,26 +20,30 @@ if (Order found?) then (no)
 else (yes)
 endif
 |System|
-:Show code, status, items, quantities,\n"Total a pagar na loja", first name only;
+:Show code, items, quantities,\n"Total a pagar na loja", first name only;
 |Store staff|
-if (Status = AWAITING_PICKUP?) then (yes)
+if (Status?) then (AWAITING_PICKUP)
   :Gather the listed items;
   :Charge the total at the counter\n(any method the store accepts);
   |Customer|
   :Pay;
   |Store staff|
   :Hand over the cupcakes;
-  |Customer|
-  :Receive the order;
+  :Record the handover:\nPATCH /api/orders/{code}/pickup\nwith the staff token;
+  |System|
+  :Set PICKED_UP\n(the stock stays reserved);
   note right
-    Recording payment and PICKED_UP
-    in the app is future work
-    (out of MVP scope).
+    Payment itself is never recorded (BR-09).
+    The staff API has no UI (BR-21).
   end note
   stop
-else (no: already picked up, future)
+elseif () then (PICKED_UP)
   |Store staff|
   :Explain that the order was already collected;
+  stop
+else (EXPIRED)
+  |Store staff|
+  :Explain that the order expired at closing time;\noffer to take a new order;
   stop
 endif
 @enduml

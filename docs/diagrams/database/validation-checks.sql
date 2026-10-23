@@ -27,14 +27,14 @@ UPDATE products SET stock_quantity = stock_quantity - 1 WHERE slug='birthday-van
 UPDATE products SET stock_quantity = stock_quantity - 2 WHERE slug='chocolate-crush'  AND stock_quantity >= 2;
 INSERT INTO customers (name, phone) VALUES ('Ana Souza','+5511912345678')
 ON CONFLICT (phone) DO UPDATE SET name = EXCLUDED.name, updated_at = now();
-INSERT INTO orders (code, customer_id, total_cents)
-SELECT 'CUP-7K3Q9F', id, 2*1190+990 FROM customers WHERE phone='+5511912345678';
+INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at)
+SELECT 'CUP-7K3Q9F', id, 2*1190+990, now() + interval '15 minutes', now() + interval '1 day' FROM customers WHERE phone='+5511912345678';
 INSERT INTO order_items (order_id, product_id, quantity, unit_price_cents)
 SELECT o.id, p.id, q, p.price_cents FROM orders o,
  (VALUES ('chocolate-crush',2),('birthday-vanilla',1)) v(slug,q) JOIN products p ON p.slug=v.slug
 WHERE o.code='CUP-7K3Q9F';
 COMMIT;
-SELECT code, pickup_status, total_cents, (created_at + interval '15 minutes') > created_at AS ready_at_derived FROM orders;
+SELECT code, pickup_status, total_cents, ready_at > created_at AS ready_after_created, expires_at > ready_at AS expires_after_ready FROM orders;
 SELECT slug, stock_quantity FROM products WHERE slug IN ('chocolate-crush','birthday-vanilla') ORDER BY slug;
 -- Customer reuse (BR-15): upsert by phone updates the name
 INSERT INTO customers (name, phone) VALUES ('Ana S. Lima','+5511912345678')
@@ -49,12 +49,15 @@ INSERT INTO customers (name, phone) VALUES ('Bruno','+5511812345678');          
 INSERT INTO customers (name, phone) VALUES ('B','+5521998765432');                  -- 3 name too short
 UPDATE products SET stock_quantity = -1 WHERE slug='red-velvet-classic';           -- 4 negative stock
 UPDATE products SET price_cents = 0 WHERE slug='red-velvet-classic';               -- 5 zero price
-INSERT INTO orders (code, customer_id, total_cents) SELECT 'CUP-7K3Q9F', id, 990 FROM customers LIMIT 1;  -- 6 duplicate code
-INSERT INTO orders (code, customer_id, total_cents) SELECT 'CUP-0OI1L2', id, 990 FROM customers LIMIT 1;  -- 7 ambiguous chars
-INSERT INTO orders (code, customer_id, total_cents) SELECT 'CUP-AAAAAA', id, 0 FROM customers LIMIT 1;    -- 8 zero total
-INSERT INTO orders (code, customer_id, total_cents, pickup_status) SELECT 'CUP-BBBBBB', id, 990, 'NOT_READY' FROM customers LIMIT 1; -- 9 removed status value
+INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at) SELECT 'CUP-7K3Q9F', id, 990, now() + interval '15 minutes', now() + interval '1 day' FROM customers LIMIT 1;  -- 6 duplicate code
+INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at) SELECT 'CUP-0OI1L2', id, 990, now() + interval '15 minutes', now() + interval '1 day' FROM customers LIMIT 1;  -- 7 ambiguous chars
+INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at) SELECT 'CUP-AAAAAA', id, 0, now() + interval '15 minutes', now() + interval '1 day' FROM customers LIMIT 1;    -- 8 zero total
+INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at, pickup_status) SELECT 'CUP-BBBBBB', id, 990, now() + interval '15 minutes', now() + interval '1 day', 'NOT_READY' FROM customers LIMIT 1; -- 9 removed status value
 INSERT INTO order_items (order_id, product_id, quantity, unit_price_cents) SELECT o.id, p.id, 21, 1290 FROM orders o, products p WHERE o.code='CUP-7K3Q9F' AND p.slug='red-velvet-classic'; -- 10 qty > 20
 INSERT INTO order_items (order_id, product_id, quantity, unit_price_cents) SELECT o.id, p.id, 1, 1190 FROM orders o, products p WHERE o.code='CUP-7K3Q9F' AND p.slug='chocolate-crush'; -- 11 duplicate line
 DELETE FROM categories WHERE slug='classics';                                       -- 12 RESTRICT
 DELETE FROM products WHERE slug='chocolate-crush';                                  -- 13 RESTRICT (ordered)
 INSERT INTO categories (name, slug) VALUES ('Sem Açúcar','Sem Acucar');            -- 14 slug format
+INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at, created_at) SELECT 'CUP-CCCCCC', id, 990, now() - interval '1 hour', now() + interval '1 day', now() FROM customers LIMIT 1; -- 15 ready before created
+INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at) SELECT 'CUP-DDDDDD', id, 990, now() + interval '2 hours', now() + interval '1 hour' FROM customers LIMIT 1; -- 16 expires before ready
+

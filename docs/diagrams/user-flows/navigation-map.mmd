@@ -6,7 +6,7 @@ flowchart LR
   O["/orders/:code (SCR-04)<br/>?new=1 after checkout"]
   N["not found / error (SCR-05)"]
   H -- "header: Carrinho" --> C
-  H -- "latest-order card" --> O
+  H -- "active-order card" --> O
   C -- "back arrow" --> H
   C -- "Continuar" --> K
   K -- "back arrow / Editar" --> C

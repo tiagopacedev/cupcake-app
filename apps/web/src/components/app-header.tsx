@@ -15,7 +15,8 @@ type AppHeaderProps =
  * title, in the same `max-w-6xl` container as the catalog header. `checkout`: the inner header on mobile; on desktop the wordmark and
  * "Continuar comprando" instead of the cart. No history or account icon, by design. Every variant is sticky; the
  * catalog header has a fixed height (`h-18`, `lg:h-20`) so the filter chips can
- * stick exactly below it (`top-18`, `lg:top-20`).
+ * stick exactly below it (`top-18`, `lg:top-20`). The wordmark is the store name from
+ * the shared STORE config.
  */
 export function AppHeader(props: AppHeaderProps) {
   if (props.variant === "checkout") {

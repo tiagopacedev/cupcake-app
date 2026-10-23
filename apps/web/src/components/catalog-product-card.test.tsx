@@ -110,6 +110,25 @@ describe("US-06 client quantity limits", () => {
     expect(screen.getByRole("button", { name: "Aumentar" })).toBeDisabled();
   });
 
+  it("US-06 AC5: at the cap of 20 the message points to the store for larger orders", () => {
+    useCartStore.setState({ lines: [{ productId: "p1", quantity: 20 }] });
+    render(<CatalogProductCard product={product({ stockQuantity: 50, maxQuantity: 20 })} />);
+    const messages = screen.getAllByRole("status").map((el) => el.textContent);
+    expect(messages).toContain("Máximo de 20 unidades. Para encomendas maiores, fale com a loja.");
+    expect(screen.queryByText("Máximo disponível.")).not.toBeInTheDocument();
+  });
+
+  it("US-06 AC5: when the stock is the limit it still says 'Máximo disponível.'", () => {
+    useCartStore.setState({ lines: [{ productId: "p1", quantity: 12 }] });
+    render(
+      <CatalogProductCard
+        product={product({ stockQuantity: 12, stockState: "AVAILABLE", maxQuantity: 12 })}
+      />,
+    );
+    expect(screen.getByText("Máximo disponível.")).toBeInTheDocument();
+    expect(screen.queryByText(/fale com a loja/)).not.toBeInTheDocument();
+  });
+
   it("shows no limit message below the limit", () => {
     useCartStore.setState({ lines: [{ productId: "p1", quantity: 1 }] });
     render(<CatalogProductCard product={product()} />);

@@ -28,7 +28,12 @@ function setup(products: ProductRecord[] = [product()]) {
   const findActive = vi.fn(async () => products);
   const categories = { findAllOrdered: vi.fn(async () => [category]) };
   const tags = { findAll: vi.fn(async () => [bestseller]) };
-  return { findActive, catalog: new CatalogService({ findActive }, categories, tags) };
+  const expiry = { expireOverdue: vi.fn(async () => 0) };
+  return {
+    findActive,
+    expiry,
+    catalog: new CatalogService({ findActive }, categories, tags, expiry),
+  };
 }
 
 describe("US-01 CatalogService.listProducts", () => {
@@ -66,6 +71,15 @@ describe("US-01 CatalogService.listProducts", () => {
       ["AVAILABLE", 20],
       ["SOLD_OUT", 0],
     ]);
+  });
+
+  it("US-25 AC1: gives back the units of overdue orders before reading the stock (BR-20)", async () => {
+    const { catalog, findActive, expiry } = setup();
+    await catalog.listProducts();
+    expect(expiry.expireOverdue).toHaveBeenCalledTimes(1);
+    expect(expiry.expireOverdue.mock.invocationCallOrder[0]).toBeLessThan(
+      findActive.mock.invocationCallOrder[0] ?? 0,
+    );
   });
 
   it("passes the filter to the repository untouched (BR-03)", async () => {

@@ -1,3 +1,4 @@
+import { pathToFileURL } from "node:url";
 import { getPrisma } from "./client.js";
 import { SEED_CATEGORIES, SEED_PRODUCTS, SEED_TAG } from "./seed-catalog.js";
 import type { PrismaClient } from "./generated/client/client.js";
@@ -90,8 +91,9 @@ async function main(): Promise<void> {
 
 // Only run when invoked directly (`pnpm db:seed` / `tsx src/seed.ts`), not
 // when `seedCatalog` is imported by a test.
+// `pathToFileURL` so the comparison also holds on Windows (`file:///C:/…` vs `C:…`).
 const isMainModule =
-  process.argv[1] !== undefined && import.meta.url === `file://${process.argv[1]}`;
+  process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (isMainModule) {
   main()
     .catch((err: unknown) => {

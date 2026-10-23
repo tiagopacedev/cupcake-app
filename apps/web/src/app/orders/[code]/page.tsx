@@ -5,10 +5,11 @@ import { EmptyState } from "@/components/empty-state";
 import { LoadError } from "@/components/load-error";
 import { OrderCodeCard } from "@/components/order-code-card";
 import { OrderSuccessNotice } from "@/components/order-success-notice";
+import { Notice } from "@/components/notice";
 import { OrderSummary } from "@/components/order-summary";
 import { PickupInfo } from "@/components/pickup-info";
 import { Button } from "@/components/ui/button";
-import { formatDayMonth, formatTime, isToday } from "@/lib/format";
+import { formatDayMonth, formatReadyMeta, formatTime, isToday } from "@/lib/format";
 import { fetchOrder } from "@/lib/orders";
 
 const mainClass = "mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 pt-5 pb-6";
@@ -48,7 +49,18 @@ export default async function OrderPage({
         )}
         {result.status === "ok" && (
           <>
-            {justPlaced && <OrderSuccessNotice />}
+            {result.order.pickupStatus === "EXPIRED" && (
+              <Notice tone="warning">Este pedido expirou e as unidades foram liberadas.</Notice>
+            )}
+            {result.order.pickupStatus === "PICKED_UP" && (
+              <Notice tone="success">Pedido retirado.</Notice>
+            )}
+            {justPlaced && (
+              <OrderSuccessNotice
+                createdAt={result.order.createdAt}
+                readyAt={result.order.readyAt}
+              />
+            )}
             <OrderCodeCard
               code={result.order.code}
               meta={[
@@ -56,7 +68,7 @@ export default async function OrderPage({
                 `${
                   isToday(result.order.createdAt) ? "Hoje" : formatDayMonth(result.order.createdAt)
                 }, ${formatTime(result.order.createdAt)}`,
-                `pronto às ${formatTime(result.order.readyAt)}`,
+                formatReadyMeta(result.order.readyAt, result.order.createdAt),
               ].join(" · ")}
             />
             <OrderSummary
@@ -69,7 +81,12 @@ export default async function OrderPage({
                 unitPriceCents: item.unitPriceCents,
               }))}
             />
-            <PickupInfo variant="order" />
+            <PickupInfo
+              variant="order"
+              expiresAt={
+                result.order.pickupStatus === "AWAITING_PICKUP" ? result.order.expiresAt : undefined
+              }
+            />
             <Button
               asChild
               variant="outline"

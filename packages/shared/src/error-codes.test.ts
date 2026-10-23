@@ -11,14 +11,16 @@ const openapiPath = path.resolve(
 );
 
 describe("02-architecture §7 error codes", () => {
-  it("has exactly the 7 documented codes", () => {
-    expect(ERROR_CODES).toHaveLength(7);
+  it("has exactly the 9 documented codes", () => {
+    expect(ERROR_CODES).toHaveLength(9);
     expect(ERROR_CODES).toEqual([
       "VALIDATION_ERROR",
       "ORDER_NOT_FOUND",
       "NOT_FOUND",
       "PRODUCT_NOT_FOUND",
       "INSUFFICIENT_STOCK",
+      "INVALID_ORDER_STATUS",
+      "UNAUTHORIZED",
       "RATE_LIMITED",
       "INTERNAL_ERROR",
     ]);
@@ -38,6 +40,8 @@ describe("02-architecture §7 error codes", () => {
     expect(ERROR_CODE_STATUS.NOT_FOUND).toBe(404);
     expect(ERROR_CODE_STATUS.PRODUCT_NOT_FOUND).toBe(409);
     expect(ERROR_CODE_STATUS.INSUFFICIENT_STOCK).toBe(409);
+    expect(ERROR_CODE_STATUS.INVALID_ORDER_STATUS).toBe(409);
+    expect(ERROR_CODE_STATUS.UNAUTHORIZED).toBe(401);
     expect(ERROR_CODE_STATUS.RATE_LIMITED).toBe(429);
     expect(ERROR_CODE_STATUS.INTERNAL_ERROR).toBe(500);
   });

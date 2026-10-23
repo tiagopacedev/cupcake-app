@@ -31,7 +31,7 @@ export function FilterChips({ selected }: { selected: FilterKey | null }) {
           <Button
             key={label}
             type="button"
-            variant="outline"
+            variant="ghost"
             aria-pressed={isSelected}
             onClick={() => router.replace(hrefForFilter(key), { scroll: false })}
             className={cn(

@@ -1,6 +1,6 @@
 @startuml request-lifecycle
 !include ../_style.iuml
-title Cupcake App · API request lifecycle (MVC in apps/api)
+title Cupcake Store · API request lifecycle (MVC in apps/api)
 autonumber
 participant "Next.js\n(View)" as V
 participant "Fastify hooks\nrequestId · helmet · cors ·\nrate-limit · logger (redacted)" as H

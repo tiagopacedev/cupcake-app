@@ -1,6 +1,6 @@
 @startuml sd-04-view-order
 !include ../_style.iuml
-title SD-04 · View order (Meu pedido) / verify at pickup (UC-05, UC-06) · endpoints per 07-api-spec
+title SD-04 · View order (Meu pedido) / verify and hand over at pickup (UC-05, UC-06) · endpoints per 07-api-spec
 autonumber
 actor "Customer or\nStore staff" as Actor
 participant "OrderPage\n(View, SCR-04)" as V
@@ -9,33 +9,51 @@ participant "OrderService" as S
 participant "OrderRepository" as OR
 database "PostgreSQL" as DB
 
-Actor -> V : open /orders/{code}\n(after checkout with ?new=1, from the home card, or typed)
+Actor -> V : open /orders/{code}\n(after checkout with ?new=1, from a home card, a shared link, or typed)
 activate V
-V -> V : loading state
 V -> C : GET /api/orders/{code}
 activate C
-C -> C : validate code format
-C -> S : getPublicOrder(code)
+C -> S : getByCode(code)
 activate S
+S -> S : upper-case and check the code format
+S -> DB : expire overdue orders (BR-20)
 S -> OR : findByCode(code)
 OR -> DB : SELECT order, items (+product name, image), customer.name\nWHERE orders.code = $1
 DB --> OR : row | none
-alt not found
-  S --> C : throw OrderNotFoundError
+alt not found or malformed
+  S --> C : throw ORDER_NOT_FOUND
   C --> V : 404 ORDER_NOT_FOUND
   V --> Actor : "Pedido não encontrado" + "Voltar ao início" (alt A)
 else found
-  S -> S : firstName = first word of customer.name (BR-16)\nreadyAt = createdAt + 15 min (BR-12)\nphone is never included
+  S -> S : firstName = first word of customer.name (BR-16);\nphone never included
   S --> C : public order view
   deactivate S
-  C --> V : 200 Order { code, pickupStatus, customerFirstName,\ncreatedAt, readyAt, items, totalCents }
+  C --> V : 200 Order { code, pickupStatus, customerFirstName,\ncreatedAt, readyAt, expiresAt, items, totalCents }
   deactivate C
   opt arrived from checkout (?new=1)
-    V --> Actor : success notice "Pedido feito! Pronto em ~15 min."
+    V --> Actor : "Pedido feito!" with the ready time (BR-12)
   end
-  V --> Actor : centered code + "Copiar código", first name · time · ready time,\nitems (photo, qty × unit price, line total), subtotal,\n"Total a pagar na loja", store address and hours
+  opt pickupStatus = EXPIRED or PICKED_UP
+    V --> Actor : "Este pedido expirou…" or "Pedido retirado."
+  end
+  V --> Actor : code, first name · time · ready time,\nitems, "Total a pagar na loja", address, hours and pickup deadline
   opt Store staff (UC-06)
-    Actor -> Actor : check items, collect payment at the counter,\nhand over (offline, BR-18)
+    Actor -> Actor : check items, charge at the counter, hand over (BR-18)
+    Actor -> C : PATCH /api/orders/{code}/pickup\nAuthorization: Bearer <staff token>
+    activate C
+    C -> C : check the staff token (401 if missing or wrong)
+    C -> S : markPickedUp(code)
+    activate S
+    S -> DB : expire overdue orders;\nUPDATE orders SET pickup_status = PICKED_UP\nWHERE code = $1 AND pickup_status = AWAITING_PICKUP
+    alt 1 row updated
+      S --> C : order (PICKED_UP)
+      C --> Actor : 200
+    else 0 rows (already PICKED_UP or EXPIRED)
+      S --> C : throw INVALID_ORDER_STATUS
+      C --> Actor : 409 { pickupStatus }
+    end
+    deactivate S
+    deactivate C
   end
 end
 deactivate V

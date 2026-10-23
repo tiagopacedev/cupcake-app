@@ -6,12 +6,14 @@ import { toast } from "sonner";
 import { ProductCard } from "@/components/product-card";
 import { Button } from "@/components/ui/button";
 import { selectQuantity, useCartStore } from "@/lib/cart-store";
+import { quantityLimitMessage } from "@/lib/quantity-limit";
 import type { Product } from "@/lib/api/types";
 
 /**
  * ProductCard wired to the cart (US-05, US-06): the "+" button becomes a
  * stepper once the product is in the cart; "−" at 1 removes it; "+" stops at
- * `maxQuantity` (min(stock, 20), BR-06) and "Máximo disponível." appears.
+ * `maxQuantity` (min(stock, 20), BR-06) and "Máximo disponível." appears (or, when the
+ * cap of 20 is the limit, the "fale com a loja" message).
  * The server re-validates everything when the order is created (BR-05).
  */
 export function CatalogProductCard({
@@ -88,7 +90,7 @@ export function CatalogProductCard({
       notice={
         quantity > 0 && atMax ? (
           <p role="status" className="text-xs text-amber-800">
-            Máximo disponível.
+            {quantityLimitMessage(product.maxQuantity)}
           </p>
         ) : null
       }

@@ -2,10 +2,10 @@
 
 | | |
 |---|---|
-| **Product** | Cupcake App: mobile-first web store for cupcakes with store pickup |
+| **Product** | Cupcake Store: mobile-first web store for cupcakes with store pickup |
 | **Owner** | Tiago Pace Greggio (RGM 34852191) |
-| **Version** | 1.3 (11 Oct 2026) |
-| **Status** | Updated for the approved UI |
+| **Version** | 1.6 (22 Oct 2026) |
+| **Status** | Approved; updated after user validation (opening hours, order expiry, several active orders) |
 | **Related** | [00-project-overview.md](00-project-overview.md) · [04-ui-design-system.md](04-ui-design-system.md) (approved UI) · affinity map in [diagrams/planning/](diagrams/planning/) |
 
 This document is the **single source of truth** for scope, business rules (BR), non-functional requirements (NFR), user stories (US), acceptance criteria (AC), the product backlog and the task breakdown. Other documents reference these IDs instead of restating them.
@@ -42,9 +42,9 @@ A gourmet cupcake shop's previous app was withdrawn after customer complaints: r
 1. Browse cupcakes (filters) and select quantities on the product cards.
 2. Review the cart.
 3. Enter name and phone number (no account) and review the full order summary.
-4. Place the order. The app shows **Meu pedido** with a unique order code; the order is ready in about 15 minutes.
+4. Place the order. The app shows **Meu pedido** with a unique order code and when the order will be ready: about 15 minutes when the store is open, otherwise shortly after the next opening.
 5. Visit the store, present the code, **pay at the counter** and collect the order (offline step; staff check the order page).
-6. While the order awaits pickup, the home page shows a small card that reopens **Meu pedido** (stored in this browser only).
+6. While orders await pickup, the home page shows a card for each one that reopens **Meu pedido** (stored in this browser only). Orders not collected by closing time expire.
 
 ## 4. Scope
 
@@ -56,7 +56,9 @@ A gourmet cupcake shop's previous app was withdrawn after customer complaints: r
 - Guest checkout (name + phone) with the full order summary visible before placing the order
 - Payment **at the store** when collecting the order; the app shows the amount to pay
 - **Meu pedido** page (after placing the order and when reopened): order code, items, total to pay at the store, pickup address and hours
-- Latest-order card on the home page while that order awaits pickup (browser-stored, latest order only)
+- Order cards on the home page while those orders await pickup (browser-stored, up to 5 active orders)
+- Pickup time that respects the store's opening hours; unclaimed orders expire at closing time and release their stock (BR-12, BR-20)
+- Staff API (no UI) to mark an order as picked up (BR-21)
 - Store address and hours in the footer, at checkout and on Meu pedido
 - Loading, empty, success and error states; not-found and generic error pages
 - Seeded catalog (categories, tags, products, stock)
@@ -66,10 +68,10 @@ A gourmet cupcake shop's previous app was withdrawn after customer complaints: r
 | Item | Note |
 |---|---|
 | Customer accounts, login, passwords | Guest checkout only |
-| Admin panel; product, stock and order management UI | Catalog and stock maintained through the seed script |
-| Marking an order as paid or picked up in the app | `PICKED_UP` exists in the data model; changing it is future work |
+| Admin panel; product, stock and order management UI | Catalog and stock maintained through the seed script; store hours in one configuration module. Holidays and extraordinary closures are future work |
+| A staff screen to mark an order as picked up; recording payment | Handover is recorded only through the protected staff API, without any UI (BR-21). Payment is never recorded (BR-09) |
 | Any online payment (Pix, card, wallets) or payment screen | Payment happens at the counter (BR-09) |
-| Order history list ("Meus pedidos") and a separate confirmation page | Only the latest order is remembered, on Meu pedido and the home card (BR-19) |
+| Order history list ("Meus pedidos"), recovery of orders on another device, and a separate confirmation page | Only the active orders of this browser (max 5) are remembered, as cards on the home page (BR-19). Another device opens the order by its link `/orders/{code}` |
 | Home delivery, addresses, delivery fees | Store pickup only |
 | Order lookup by phone or email | Order code only |
 | Product variants, sizes, add-ons | Each cupcake is a standalone product |
@@ -87,20 +89,22 @@ A gourmet cupcake shop's previous app was withdrawn after customer complaints: r
 | **BR-03** | A product can have **zero or more tags** describing characteristics (e.g. *Bestseller*). Catalog filters: **All Cupcakes** = every active product; **Bestsellers** = active products with the Bestseller tag; **Classics / Chocolate / Fruity** = active products in that category. |
 | **BR-04** | Each product has a **stock quantity** (an integer ≥ 0). A product with stock 0 is shown as **sold out** and can't be added to the cart. Inactive products are never shown. |
 | **BR-05** | The quantity of a product in the cart and in an order **can't exceed its available stock**. The client enforces this for usability; the **server re-validates it** when the order is created. |
-| **BR-06** | The quantity per product line is an integer from **1 to min(stock, 20)**. *(The cap of 20 is an assumption to prevent absurd orders; see overview, open items.)* |
+| **BR-06** | The quantity per product line is an integer from **1 to min(stock, 20)**. *(The cap of 20 is an assumption to prevent absurd orders; see overview, open items.)* When the cap of 20 (not the stock) is the limit, the UI tells the customer to talk to the store for larger orders. |
 | **BR-07** | Prices are stored as **integer cents in BRL**. The **server computes** line totals and the order total from database prices and ignores any client-sent price. Each order item stores the **unit price at the time of purchase**. |
 | **BR-08** | **Store pickup only.** There are no delivery options, addresses or fees. Order total = Σ (unit price × quantity). |
 | **BR-09** | **Payment happens at the store**, at the counter, when the customer collects the order. The app processes **no payment** and has no payment screen. It shows the amount to pay ("Total a pagar na loja") and states "Pagamento na loja" at checkout. Payment is not recorded in the MVP. |
-| **BR-10** | When the customer places the order, the system creates it with pickup status **AWAITING_PICKUP**. Each checkout submission creates a new order. |
-| **BR-11** | Order creation happens in **a single transaction**: the system **decrements stock atomically** for each item, but only if enough stock remains, then upserts the customer and inserts the order and its items. If any item lacks stock, nothing changes, no order is created and the customer is told which items are affected and how many are available. |
-| **BR-12** | **Ready time:** an order is ready **about 15 minutes** after it's created (`readyAt = createdAt + 15 min`, configurable in one place). The UI shows "Pronto em ~15 min" before ordering and "pronto às HH:mm" on Meu pedido. Orders don't expire in the MVP. |
+| **BR-10** | When the customer places the order, the system creates it with pickup status **AWAITING_PICKUP**. It later becomes **PICKED_UP** (BR-21) or **EXPIRED** (BR-20); both are final. Each checkout submission creates a new order. |
+| **BR-11** | Order creation happens in **a single transaction**: the system **decrements stock atomically** for each item, but only if enough stock remains, then upserts the customer and inserts the order and its items. If any item lacks stock, nothing changes, no order is created and the customer is told which items are affected and how many are available. Stock is given back only when the order expires (BR-20). |
+| **BR-12** | **Pickup schedule:** the store has opening hours per weekday and a preparation time (15 min), both kept in one configuration module (`packages/shared/src/store.ts`). The server computes `readyAt` as the first moment at least the preparation time after the order, inside opening hours, leaving the customer at least the preparation time before closing (`readyAt <= closesAt - preparation time`). An order placed while the store is closed (or too close to closing) is **accepted** and ready at the next opening plus the preparation time; a closed weekday is skipped. The server also stores `expiresAt`, the closing time of the pickup day (BR-20). The UI shows "Pronto em ~15 min" when the store is open and the pickup is imminent, otherwise the day and time ("Pronto amanhã às 10:15"), and "pronto às HH:mm" on Meu pedido. |
 | **BR-13** | Each order has a **unique, non-sequential, human-readable code** in the format `CUP-XXXXXX`, where X comes from an alphabet without ambiguous characters (no 0/O, 1/I/L). The database ID is never exposed. |
 | **BR-14** | Customer data: **name** is required, 2–80 characters after trimming. **Phone** is required and must be a Brazilian mobile number (2-digit area code + 9 digits starting with 9), stored normalized in E.164 format (`+55DD9XXXXXXXX`). |
 | **BR-15** | On order creation, the system looks up a customer by normalized phone. If one exists, it's **reused** and its name is updated to the name just provided; otherwise a new customer is created. |
 | **BR-16** | **Privacy:** a phone number never reveals personal data or order history. No feature searches orders or customers by phone. Public order views show the customer's **first name only** and never the phone number. |
 | **BR-17** | The cart lives in the customer's browser and survives page reloads. It's **cleared after the order is created**. Cart quantities are adjusted (and the customer informed) when stock has dropped below the cart quantity. |
-| **BR-18** | **Pickup:** the customer presents the order code; staff open the order page for that code, check that it shows **AWAITING_PICKUP**, gather the listed items, **charge the total** and hand over the order. Recording payment or the handover (`PICKED_UP`) is outside the MVP. |
-| **BR-19** | **Latest order in the browser:** after an order is created, the browser stores **only that order's code and creation time** in `localStorage` (key `cupcake.lastOrder`), replacing any previous one. The home page shows the latest-order card only when the stored order was **created today** (America/Sao_Paulo) and the API returns it as **AWAITING_PICKUP**; a code the API doesn't know is removed. **Limitations:** the card exists only in that browser on that device, disappears if browser data is cleared, and is not an account or order history. |
+| **BR-18** | **Pickup:** the customer presents the order code; staff open the order page for that code, check that it shows **AWAITING_PICKUP**, gather the listed items, **charge the total** and hand over the order, then mark it as picked up through the staff API (BR-21). Payment is never recorded (BR-09). |
+| **BR-19** | **Active orders in the browser:** after an order is created, the browser stores **only its code and creation time** in `localStorage` (key `cupcake.orders`), newest first, **up to 5**; the oldest is dropped beyond that. The home page shows one card per stored order that the API returns as **AWAITING_PICKUP**, regardless of the day it was placed. A code the API doesn't know, or that is PICKED_UP or EXPIRED, is removed; a network error hides the card without removing the code. The former key `cupcake.lastOrder` is migrated once. **Limitations:** the cards exist only in that browser on that device, disappear if browser data is cleared, and are not an account or order history; to open an order elsewhere the customer types its link `/orders/{code}`. |
+| **BR-20** | **Expiry:** an order still AWAITING_PICKUP at its `expiresAt` (closing time of its pickup day, BR-12) becomes **EXPIRED** and its reserved stock is **released exactly once**. There is no background job: overdue orders are expired when the API next handles a catalog, order creation, order view or staff request. An EXPIRED order stays viewable by its code. |
+| **BR-21** | **Staff pickup:** `PATCH /api/orders/{code}/pickup` marks an AWAITING_PICKUP order as **PICKED_UP**. It requires a secret staff token (`Authorization: Bearer`), has no UI, and rejects orders that are already PICKED_UP or EXPIRED. Picked-up orders never release stock. |
 
 ## 6. Non-functional requirements
 
@@ -204,6 +208,7 @@ Card format follows the PIT I template: ID, Title, Requester, Action, Comments, 
   - **AC2:** Given my cart holds 3 units of a product with stock 3, when I look at its card, then the "+" of the stepper is disabled and I see "Máximo disponível.".
   - **AC3:** Given a product has stock above 20, when I try to raise the quantity above 20, then the stepper stops at 20.
   - **AC4:** Given someone sends an order with a quantity above stock directly to the API, when the server validates it, then the order is rejected with an insufficient-stock error.
+  - **AC5:** Given a product has stock above 20 and my quantity is 20, when I look at the card or the cart line, then I see "Máximo de 20 unidades. Para encomendas maiores, fale com a loja." (instead of "Máximo disponível.").
 - **Business rules:** BR-05, BR-06
 - **Non-functional requirements:** NFR-05, NFR-08
 - **Priority:** A · **Story points:** 5
@@ -294,7 +299,8 @@ Card format follows the PIT I template: ID, Title, Requester, Action, Comments, 
 - **Acceptance criteria:**
   - **AC1:** Given my cart has items, when I open the checkout, then I see a "Resumo do pedido" with each item's photo, name, quantity × unit price and line subtotal, followed by the subtotal, "Retirada na loja · Grátis" and the total.
   - **AC2:** Given I'm at checkout, when I tap "Editar" in the summary, then I return to the cart.
-  - **AC3:** Given I'm at checkout, when I look at the "Retirada" block, then I see the store address and "Pronto em ~15 min · Pagamento na loja".
+  - **AC3:** Given I'm at checkout while the store is open, when I look at the "Retirada" block, then I see the store address and "Pronto em ~15 min · Pagamento na loja".
+  - **AC4:** Given I'm at checkout while the store is closed (or too close to closing), when I look at the "Retirada" block, then it shows when the order will be ready (for example "Pronto amanhã às 10:15") together with "Pagamento na loja", and I can still place the order.
 - **Business rules:** BR-07, BR-08, BR-12
 - **Non-functional requirements:** NFR-01, NFR-04, NFR-12
 - **Priority:** A · **Story points:** 3
@@ -329,11 +335,10 @@ Card format follows the PIT I template: ID, Title, Requester, Action, Comments, 
 #### US-16 · Receive my order code
 - **Requester:** Customer
 - **Action:** As a customer, I want to receive a unique order code right after placing my order, so that I can collect it at the store.
-- **Comments:** Shown on Meu pedido, centered and large, with "Mostre este código no balcão" and a copy action.
+- **Comments:** Shown on Meu pedido, centered and large, with "Mostre este código no balcão". No copy or share action (owner decision, 22 Oct 2026).
 - **Acceptance criteria:**
-  - **AC1:** Given my order was placed, when Meu pedido opens, then I see "Pedido feito! Pronto em ~15 min.", the code in the format `CUP-XXXXXX`, my first name, the order time and the ready time, my items with quantities, and the total to pay at the store.
+  - **AC1:** Given my order was placed, when Meu pedido opens, then I see the "Pedido feito!" notice with the ready time ("Pronto em ~15 min." or, outside opening hours, for example "Pronto amanhã às 10:15."), the code in the format `CUP-XXXXXX`, my first name, the order time and the ready time, my items with quantities, and the total to pay at the store.
   - **AC2:** Given two orders are placed, when their codes are generated, then the codes are different and not sequential.
-  - **AC3:** Given I'm on Meu pedido, when I tap "Copiar código", then the code is copied and I see a confirmation; if the clipboard is unavailable, the code text is selected instead.
 - **Business rules:** BR-12, BR-13
 - **Non-functional requirements:** NFR-03, NFR-04
 - **Priority:** A · **Story points:** 3
@@ -341,11 +346,12 @@ Card format follows the PIT I template: ID, Title, Requester, Action, Comments, 
 #### US-17 · See pickup instructions
 - **Requester:** Customer
 - **Action:** As a customer, I want to see where and when to collect my order, so that I know what to do next.
-- **Comments:** Store name, address and opening hours are fictional and configured in one place.
+- **Comments:** Store name, address, opening hours and preparation time are fictional and kept in one configuration module (A-03).
 - **Acceptance criteria:**
-  - **AC1:** Given I placed an order, when I view Meu pedido, then I see "Onde retirar" with the store address and opening hours.
+  - **AC1:** Given I placed an order, when I view Meu pedido, then I see "Onde retirar" with the store address, the opening hours and the day and time until which I can collect ("Retire até hoje, 19:00").
   - **AC2:** Given I'm browsing the catalog, when I scroll to the footer, then I see the store name, address and opening hours.
-- **Business rules:** BR-08, BR-18
+  - **AC3:** Given any page renders, then the header and footer appear on first paint, with no loading state.
+- **Business rules:** BR-08, BR-12, BR-18
 - **Non-functional requirements:** NFR-04
 - **Priority:** B · **Story points:** 1
 
@@ -357,33 +363,56 @@ Card format follows the PIT I template: ID, Title, Requester, Action, Comments, 
   - **AC1:** Given an order with code `CUP-7K3Q9F`, when I open its URL, then I see the code, items, total to pay at the store, pickup address and hours, and the customer's first name only.
   - **AC2:** Given a code that doesn't exist, when I open its URL, then I see "Pedido não encontrado" with "Voltar ao início".
   - **AC3:** Given I reopen an existing order (not right after placing it), when the page opens, then the "Pedido feito!" notice isn't shown; everything else is the same.
-- **Business rules:** BR-13, BR-16
+  - **AC4:** Given the order is EXPIRED, when I open its URL, then I see the notice "Este pedido expirou e as unidades foram liberadas."; given it is PICKED_UP, I see "Pedido retirado.".
+- **Business rules:** BR-13, BR-16, BR-20, BR-21
 - **Non-functional requirements:** NFR-06, NFR-07
 - **Priority:** B · **Story points:** 3
 
-#### US-22 · Find my latest order on the home page
+#### US-22 · Find my active orders on the home page
 - **Requester:** Customer
-- **Action:** As a customer, I want the home page to show my current order, so that I can reopen it quickly without saving the code.
-- **Comments:** A compact, subtle card between the header and the filter chips. Only the latest order placed in this browser is considered (BR-19).
+- **Action:** As a customer, I want the home page to show my orders that are still waiting for pickup, so that I can reopen any of them quickly without saving the codes.
+- **Comments:** Compact, subtle cards between the header and the filter chips, one per active order (up to 5, newest first). The day an order was placed does not matter (BR-19).
 - **Acceptance criteria:**
-  - **AC1:** Given I placed an order today in this browser and it's awaiting pickup, when I open the home page, then I see the card "Seu pedido · CUP-XXXXXX · Aguardando retirada".
-  - **AC2:** Given I tap the card, when it opens, then I'm on Meu pedido for that code.
-  - **AC3:** Given I have no stored order, the stored order is from a previous day, or it's no longer awaiting pickup, when I open the home page, then no card is shown.
-  - **AC4:** Given the stored code no longer exists on the server, when the home page loads, then the card isn't shown and the stored code is removed.
-- **Business rules:** BR-19
+  - **AC1:** Given I placed an order in this browser and it's awaiting pickup, when I open the home page, then I see the card "Seu pedido · CUP-XXXXXX · Aguardando retirada".
+  - **AC2:** Given I tap a card, when it opens, then I'm on Meu pedido for that code.
+  - **AC3:** Given I have no stored order, or none is awaiting pickup (picked up or expired), when I open the home page, then no card is shown.
+  - **AC4:** Given a stored code no longer exists on the server, or is picked up or expired, when the home page loads, then its card isn't shown and the code is removed from the browser.
+  - **AC5:** Given I placed two orders, when I open the home page, then I see one card for each, newest first.
+  - **AC6:** Given I placed an order on a previous day and it's still awaiting pickup, when I open the home page, then its card is shown.
+  - **AC7:** Given I have placed more than 5 orders, when I open the home page, then only the 5 most recent are considered.
+- **Business rules:** BR-19, BR-20
 - **Non-functional requirements:** NFR-01, NFR-03
 - **Priority:** B · **Story points:** 3
 
 #### US-20 · Verify an order at pickup
 - **Requester:** Store staff
 - **Action:** As store staff, I want to open an order by its code, so that I hand the right cupcakes to the customer and charge the right amount.
-- **Comments:** Staff use the same public order page as customers (US-18). No staff login in the MVP. Recording payment or the handover is out of scope (BR-18).
+- **Comments:** Staff use the same public order page as customers (US-18). No staff login in the app. Recording the handover is done through the staff API (US-24); recording payment is out of scope (BR-18).
 - **Acceptance criteria:**
   - **AC1:** Given a customer presents code `CUP-7K3Q9F`, when staff open that order page, then they see the items and quantities to hand over and the "Total a pagar na loja" to charge.
   - **AC2:** Given the code doesn't exist, when staff open the page, then it shows "Pedido não encontrado".
 - **Business rules:** BR-09, BR-16, BR-18
 - **Non-functional requirements:** NFR-01, NFR-03
 - **Priority:** B · **Story points:** 2
+
+#### US-23 · Share my order code
+- **Requester:** Customer
+- **Action:** As a customer, I want to send my order code or link to myself or someone else, so that I can reopen the order on another browser or device.
+- **Status:** **Removed** (owner decision, 22 Oct 2026). Added after user validation, then dropped to keep the order code block clean. The ID is kept so the other IDs don't change.
+
+#### US-24 · Mark an order as picked up
+- **Requester:** Store staff
+- **Action:** As store staff, I want to mark an order as picked up after handing it over, so that it is not expired and its stock is not released.
+- **Comments:** API only, no UI and no staff login (BR-21). The secret staff token is configured in the environment.
+- **Acceptance criteria:**
+  - **AC1:** Given an AWAITING_PICKUP order and a valid staff token, when `PATCH /api/orders/{code}/pickup` is called, then the order becomes PICKED_UP.
+  - **AC2:** Given a missing or wrong token (or no token configured on the server), when the endpoint is called, then the response is 401 and nothing changes.
+  - **AC3:** Given the order is already PICKED_UP or EXPIRED, when the endpoint is called, then the response is 409 and nothing changes.
+  - **AC4:** Given an unknown code, when the endpoint is called with a valid token, then the response is 404.
+  - **AC5:** Given a picked-up order, when its pickup day ends, then its stock is not released.
+- **Business rules:** BR-10, BR-18, BR-21
+- **Non-functional requirements:** NFR-06, NFR-07
+- **Priority:** B · **Story points:** 3
 
 ### Theme T6 · Error handling and resilience
 
@@ -396,6 +425,19 @@ Card format follows the PIT I template: ID, Title, Requester, Action, Comments, 
   - **AC2:** Given I return to the cart after that notice, when the cart opens, then the affected quantities are adjusted to the available stock (US-10 AC2).
   - **AC3:** Given a product in my cart became inactive, when I place the order, then no order is created and I'm told which item was removed.
 - **Business rules:** BR-05, BR-11
+- **Non-functional requirements:** NFR-07, NFR-08
+- **Priority:** A · **Story points:** 5
+
+#### US-25 · Release stock of unclaimed orders
+- **Requester:** Store owner
+- **Action:** As the store owner, I want orders that were not collected by closing time to expire and give their units back to the catalog, so that stock is not blocked indefinitely.
+- **Comments:** Added after user validation. No background job: expiry runs when the API handles a request (BR-20).
+- **Acceptance criteria:**
+  - **AC1:** Given an AWAITING_PICKUP order whose `expiresAt` has passed, when the catalog is requested, then the order is EXPIRED and each product's stock is increased by the ordered quantity.
+  - **AC2:** Given two requests expire the same order at the same time, when both finish, then the stock was released exactly once.
+  - **AC3:** Given an order placed after closing (ready tomorrow), when today ends, then it is not expired; it expires at closing time of the pickup day.
+  - **AC4:** Given an expired order, when I open its URL, then it still shows, with the notice of US-18 AC4.
+- **Business rules:** BR-11, BR-12, BR-20
 - **Non-functional requirements:** NFR-07, NFR-08
 - **Priority:** A · **Story points:** 5
 
@@ -425,10 +467,12 @@ Stories grouped by theme. The diagram is in [`diagrams/planning/affinity-map.svg
 | T2 · Cart | US-05, US-06, US-07, US-08, US-09, US-10 | 17 |
 | T3 · Checkout and identification | US-11, US-12 | 8 |
 | T4 · Order placement and payment at the store | US-13, US-14, US-15 | 12 |
-| T5 · My order and pickup | US-16, US-17, US-18, US-22, US-20 | 12 |
-| T6 · Error handling and resilience | US-19 | 5 |
+| T5 · My order and pickup | US-16, US-17, US-18, US-22, US-20, US-24 | 15 |
+| T6 · Error handling and resilience | US-19, US-25 | 10 |
 | T7 · Store setup | US-21 | 3 |
-| **Total** | **22 stories** | **66** |
+| **Total** | **24 stories** | **74** |
+
+US-23, US-24 and US-25 were added after user validation (E9-03, version 1.4); US-23 was removed on 22 Oct (version 1.6).
 
 ## 9. Prioritized product backlog
 
@@ -452,18 +496,22 @@ The order reflects dependencies first (the seed and catalog enable everything el
 | 14 | US-19 | As a customer, I want to be told about stock changes during checkout so that I can adjust | 5 | A |
 | 15 | US-17 | As a customer, I want pickup instructions so that I know where and when to go | 1 | B |
 | 16 | US-18 | As a customer, I want to reopen Meu pedido so that I can show it at the store | 3 | B |
-| 17 | US-22 | As a customer, I want my latest order on the home page so that I can reopen it quickly | 3 | B |
+| 17 | US-22 | As a customer, I want my active orders on the home page so that I can reopen them quickly | 3 | B |
 | 18 | US-20 | As store staff, I want to open an order by code so that I hand over and charge correctly | 2 | B |
 | 19 | US-03 | As a customer, I want a Bestsellers filter so that I can pick popular items | 2 | B |
 | 20 | US-10 | As a customer, I want my cart kept so that I don't lose my selection | 2 | B |
 | 21 | US-14 | As a customer, I want to know I pay at the store so that I'm not surprised | 1 | B |
 | 22 | US-07 | As a customer, I want a cart count badge so that I know what I've selected | 1 | C |
+| 23 | US-25 | As the store owner, I want unclaimed orders to expire and release stock so that stock is not blocked | 5 | A |
+| 24 | US-24 | As store staff, I want to mark an order as picked up so that it is not expired | 3 | B |
+
+Ranks 23–24 come from user validation (E9-03) and ship in v1.1.0.
 
 **Release cut:** ranks 1–14 (priority A, 51 points) make up the minimum journey and must be finished by **3 Nov** (feature complete). Ranks 15–22 (15 points) are planned for the same window and are the first to be simplified if time runs short.
 
 ## 10. Task breakdown
 
-Tasks are estimated in hours (2–12 h each, as PIT I requires). IDs: `T-<story>-<n>`. Cross-cutting tasks use `T-X-<n>`. Estimates assume AI-assisted implementation; you review and test everything.
+Tasks are estimated in hours (2–12 h each, as PIT I requires). IDs: `T-<story>-<n>`. Cross-cutting tasks use `T-X-<n>`. Estimates cover implementation and tests.
 
 ### Cross-cutting
 
@@ -501,25 +549,25 @@ Tasks are estimated in hours (2–12 h each, as PIT I requires). IDs: `T-<story>
 | T-12-2 | Field-level display of client and server errors | 2 |
 | T-13-1 | Checkout order summary + pickup block (mobile stacked, desktop aside) | 3 |
 | T-15-1 | Atomic stock decrement inside the order-creation transaction + concurrency integration tests | 6 |
-| T-15-2 | Submit flow: clear cart, save latest order (BR-19), navigate to Meu pedido with `?new=1`, retry on error | 3 |
+| T-15-2 | Submit flow: clear cart, save the order in the browser (BR-19), navigate to Meu pedido with `?new=1`, retry on error | 3 |
 | T-16-1 | Order code generator (alphabet, uniqueness retry) + unit tests | 2 |
 | T-16-2 | Meu pedido view: success notice, centered code with copy, items, total to pay at the store | 4 |
 | T-19-1 | Insufficient-stock / inactive-product flows at checkout (notice, "Revisar", adjust cart) | 4 |
 | T-17-1 | Store info configuration (name, address, hours, ready minutes) + footer and "Onde retirar" blocks | 2 |
 | T-18-1 | `GET /orders/{code}` public view (first name only, readyAt) + integration tests | 3 |
 | T-18-2 | Order page states: new (`?new=1`), reopened, not found | 2 |
-| T-22-1 | `lastOrderStore` (localStorage) + "today" rule (America/Sao_Paulo) + unit tests | 2 |
-| T-22-2 | Home latest-order card: fetch, show/hide rules, stale-code removal | 3 |
+| T-22-1 | `lastOrderStore` (localStorage) + "today" rule (America/Sao_Paulo) + unit tests (replaced in v1.4 by the active-orders store, E9-12) | 2 |
+| T-22-2 | Home order cards: fetch, show/hide rules, stale-code removal (revised in v1.4 for several orders) | 3 |
 | T-20-1 | Staff readability check of the order page (items, quantities, total) at 360 px | 2 |
 | T-03-1 | Bestsellers filter + badge | 2 |
 | T-10-1 | Cart refresh against current stock/price on load, with notices | 3 |
 | T-14-1 | "Pagamento na loja" / "Total a pagar na loja" copy and a test that no payment UI exists | 2 |
-| T-16-3 | Copy-to-clipboard with fallback (order code) | 2 |
+| T-16-3 | ~~Copy-to-clipboard with fallback (order code)~~ removed 22 Oct 2026 | 2 |
 | T-07-1 | Header cart badge with accessible label | 2 |
 
 **Totals:** cross-cutting 33 h + stories 103 h = **136 h of conventional implementation and testing effort**, scheduled for 20 Oct – 3 Nov (Phases 4–5 in the overview).
 
-> ⚠️ **Capacity risk:** 136 h in two weeks is far beyond what one person can write by hand. The plan only works because Claude Code generates most of the code from these specs while you review, run and test it. Track actual hours per task. If you're behind by **29 Oct**, cut in this order: T-X-8 (E2E test) → US-07 → US-10 → US-03 → US-22.
+> ⚠️ **Capacity risk:** 136 h in about two weeks is more than one person can normally deliver. The mitigation is to specify first, keep tasks small and verifiable, and track actual hours. If the work is behind on **29 Oct**, cut in this order: T-X-8 (E2E test) → US-07 → US-10 → US-03 → US-22.
 
 ---
 
@@ -531,7 +579,7 @@ Use cases reference these screen IDs. Layout, states and pt-BR copy are specifie
 
 | ID | Screen | Route | Approved reference |
 |---|---|---|---|
-| SCR-01 | Catálogo (home: latest-order card, filter chips, product grid, footer) | `/` (`?filter=`) | `01-catalog`, `02-catalog-filtered`, `08-desktop-catalog` |
+| SCR-01 | Catálogo (home: active-order cards, filter chips, product grid, footer) | `/` (`?filter=`) | `01-catalog`, `02-catalog-filtered`, `08-desktop-catalog` |
 | SCR-02 | Carrinho | `/cart` | `03-cart` |
 | SCR-03 | Finalizar pedido (checkout) | `/checkout` | `04-checkout`, `06-checkout-errors`, `09-desktop-checkout` |
 | SCR-04 | Meu pedido (after placing the order and when reopened) | `/orders/{code}` | `05-my-order` |
@@ -634,18 +682,18 @@ Format follows the PIT I model: name, identifier, description, actors, pre- and 
 | **Stories** | US-11, US-12, US-13, US-14, US-15, US-19 |
 | **Includes** | UC-07 Validate and reserve stock |
 | **Pre-conditions** | The cart has at least one line. |
-| **Post-conditions** | Stock is decremented; a customer record exists (reused or created); an order exists with pickup status AWAITING_PICKUP, unit-price snapshots and a unique code; the browser cart is cleared and the code is stored as the latest order; the customer is on SCR-04. |
+| **Post-conditions** | Stock is decremented; a customer record exists (reused or created); an order exists with pickup status AWAITING_PICKUP, unit-price snapshots and a unique code; the browser cart is cleared and the code is stored among the active orders of the browser (BR-19); the customer is on SCR-04. |
 
 **Main flow**
 1. The use case starts when the customer continues from the cart.
-2. The system displays **SCR-03** with the fields Nome and Celular, the pickup block (store address, "Pronto em ~15 min · Pagamento na loja") and the order summary with photos, quantities, unit prices, line subtotals, subtotal and total (**BR-09, BR-12**). <Alternative D>
+2. The system displays **SCR-03** with the fields Nome and Celular, the pickup block (store address, ready time and "Pagamento na loja", **BR-12**) and the order summary with photos, quantities, unit prices, line subtotals, subtotal and total (**BR-09, BR-12**). <Alternative D>
 3. The customer enters their name and phone number.
 4. The system validates the fields (**BR-14**). <Alternative A>
 5. The customer taps "Fazer pedido"; the system disables the button and shows "Enviando…".
 6. The system sends the cart lines (product, quantity) and the customer data to the server.
 7. The server re-validates the customer data (**BR-14**) <Alternative A> and checks that every product exists and is active <Alternative B>.
 8. In one transaction, the server decrements stock for every line (**UC-07, BR-11**) <Alternative C>, upserts the customer by normalized phone (**BR-15**), computes line totals and the order total from database prices (**BR-07, BR-08**), generates a unique order code (**BR-13**), and creates the order (AWAITING_PICKUP) and its items (**BR-10**).
-9. The system clears the browser cart (**BR-17**), stores the order code as the latest order (**BR-19**) and displays **SCR-04** with the "Pedido feito!" notice; the use case ends and **UC-05** applies. <Alternative E at steps 6–8>
+9. The system clears the browser cart (**BR-17**), stores the order code among the active orders (**BR-19**) and displays **SCR-04** with the "Pedido feito!" notice; the use case ends and **UC-05** applies. <Alternative E at steps 6–8>
 
 **Alternative A: invalid customer data**
 - A4.1 The system shows a message next to each invalid field. The order isn't created; the use case returns to step 3.
@@ -666,12 +714,12 @@ Format follows the PIT I model: name, identifier, description, actors, pre- and 
 
 ---
 
-#### UC-04 · Reopen latest order
+#### UC-04 · Reopen an active order
 
 | | |
 |---|---|
 | **Identifier** | UC-04 |
-| **Description** | The home page shows a compact card for the latest order placed in this browser while it awaits pickup; the customer taps it to reopen Meu pedido. |
+| **Description** | The home page shows a compact card for each order (up to 5) placed in this browser that still awaits pickup; the customer taps one to reopen Meu pedido. |
 | **Actors** | Customer |
 | **Stories** | US-22 |
 | **Includes** | UC-05 View order |
@@ -680,20 +728,19 @@ Format follows the PIT I model: name, identifier, description, actors, pre- and 
 
 **Main flow**
 1. The use case starts when the customer opens the home page (**SCR-01**).
-2. The system reads the stored latest order (code and creation time) from the browser. <Alternative A>
-3. The system checks that the order was created today in America/Sao_Paulo. <Alternative A>
-4. The system retrieves the order by code. <Alternative B> <Alternative C>
-5. If the order is AWAITING_PICKUP, the system shows the card "Seu pedido · code · Aguardando retirada" between the header and the filter chips. <Alternative A>
-6. The customer taps the card; the system opens **SCR-04** for the code (**UC-05**). The use case ends.
+2. The system reads the stored orders (code and creation time, up to 5) from the browser. <Alternative A>
+3. The system retrieves each order by code. <Alternative B> <Alternative C>
+4. For each order that is AWAITING_PICKUP, regardless of the day it was placed, the system shows the card "Seu pedido · code · Aguardando retirada" between the header and the filter chips. <Alternative A>
+5. The customer taps a card; the system opens **SCR-04** for the code (**UC-05**). The use case ends.
 
 **Alternative A: nothing to show**
-- A.1 No stored order, an order from a previous day, or a status other than AWAITING_PICKUP: the card isn't shown. The use case ends.
+- A.1 No stored order, or none with status AWAITING_PICKUP (PICKED_UP or EXPIRED are removed from the browser): no card is shown. The use case ends.
 
 **Alternative B: stored code not found**
-- B4.1 The system removes the stored code and doesn't show the card. The use case ends.
+- B3.1 The system removes the stored code and doesn't show its card. The use case ends.
 
 **Alternative C: network error**
-- C4.1 The card isn't shown; the catalog keeps working. The use case ends.
+- C3.1 The card isn't shown (the code is kept); the catalog keeps working. The use case ends.
 
 ---
 
@@ -711,8 +758,8 @@ Format follows the PIT I model: name, identifier, description, actors, pre- and 
 **Main flow**
 1. The use case starts when the actor opens the order page for a code (**SCR-04**). This happens automatically after UC-03 (with the "new order" flag) and from UC-04.
 2. The system retrieves the order by code. <Alternative A>
-3. If the page was opened right after placing the order, the system shows "Pedido feito! Pronto em ~15 min.". <Alternative B>
-4. The system displays the order code centered with "Mostre este código no balcão" and "Copiar código", the customer's **first name only** (**BR-16**), the order time and the ready time (**BR-12**), the items (photo, quantity × unit price, line subtotal), the subtotal, "Total a pagar na loja" (**BR-09**), and "Onde retirar" with the store address and hours (**BR-18**).
+3. If the page was opened right after placing the order, the system shows the "Pedido feito!" notice with the ready time (BR-12). <Alternative B>
+4. The system displays the order code centered with "Mostre este código no balcão", the customer's **first name only** (**BR-16**), the order time and the ready time (**BR-12**), the items (photo, quantity × unit price, line subtotal), the subtotal, "Total a pagar na loja" (**BR-09**), and "Onde retirar" with the store address, hours and the pickup deadline (**BR-18, BR-12**). If the order is EXPIRED or PICKED_UP, the system also shows the notice of US-18 AC4 (**BR-20, BR-21**).
 5. The use case ends.
 
 **Alternative A: order not found**
@@ -733,7 +780,7 @@ Format follows the PIT I model: name, identifier, description, actors, pre- and 
 | **Stories** | US-20 |
 | **Includes** | UC-05 View order |
 | **Pre-conditions** | The customer is at the store with an order code. |
-| **Post-conditions** | The customer paid and received the order. Recording payment or the handover (PICKED_UP) is outside the MVP (**BR-18**). |
+| **Post-conditions** | The customer paid and received the order. The handover is recorded through the staff API (**BR-21**); recording payment is outside the product (**BR-18**). |
 
 **Main flow**
 1. The use case starts when the customer presents the order code (on Meu pedido or written down).
@@ -772,6 +819,8 @@ Format follows the PIT I model: name, identifier, description, actors, pre- and 
 | US-22 | UC-04 (+UC-05) | SCR-01 | SD-03 | AD-02 |
 | US-16–18 | UC-05 | SCR-04, SCR-05 | SD-04 | AD-01 |
 | US-20 | UC-06 (+UC-05) | SCR-04 | SD-04 | AD-03 |
+| US-24 | UC-06 | n/a (staff API) | SD-04 | AD-03 |
+| US-25 | UC-07 | n/a (server) | SD-01…SD-04 | AD-01…AD-03 |
 | US-21 | n/a (technical) | n/a | n/a | n/a |
 
 ## 12. Change log
@@ -782,3 +831,6 @@ Format follows the PIT I model: name, identifier, description, actors, pre- and 
 | 1.1 | 10 Oct 2026 | Phase 2: screen IDs, use case diagram, expanded use cases UC-01…UC-07, traceability to sequence and activity diagrams |
 | 1.2 | 11 Oct 2026 | Approved UI (Phase 3): payment at the store replaces simulated Pix (BR-09…BR-12, NFR-12 rewritten); stock decremented at order creation; ready in ~15 min; new BR-19 (latest order in the browser); US-13/14/15/22 replaced, US-05/11/16–20 updated; T4/T5 regrouped (still 22 stories, 66 points); screens SCR-01…SCR-05 mapped to approved references; UC-03…UC-07 rewritten; backlog and tasks re-estimated (136 h) |
 | 1.3 | 11 Oct 2026 | US-02 AC5: the filter chips stay visible while scrolling (owner request after testing the live app) |
+| 1.4 | 18 Oct 2026 | User validation (E9-03, 5 testers): BR-12 rewritten (opening hours in the store configuration, orders accepted outside hours, `expiresAt`); BR-10, BR-11, BR-18 updated; BR-19 rewritten (up to 5 active orders, no "today" rule); new BR-20 (expiry and stock release) and BR-21 (staff pickup API); BR-06 cap guidance; §4 scope lines updated; US-06 AC5, US-13 AC4, US-16 AC1, US-17, US-18 AC4, US-22 rewritten; new US-23, US-24, US-25 (25 stories, 76 points) |
+| 1.5 | 18 Oct 2026 | Documentation review: product name "Cupcake Store"; traceability rows for US-23, US-24, US-25; affinity map and UML diagrams redrawn for the current rules |
+| 1.6 | 22 Oct 2026 | Owner decision (D-29): the order code block has no copy or share action. US-16 AC3 and US-23 removed (24 stories, 74 points); §3, §4, BR-19, UC-05 and traceability updated |

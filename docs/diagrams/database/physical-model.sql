@@ -1,5 +1,5 @@
 -- =====================================================================
--- Cupcake App · Physical data model (PostgreSQL 16)
+-- Cupcake Store · Physical data model (PostgreSQL 16)
 -- Source of truth for the physical design described in docs/03-data-model.md.
 -- Phase 4: the Prisma schema in packages/database must produce an
 -- equivalent schema; CHECK constraints that Prisma can't express are
@@ -8,7 +8,8 @@
 
 -- ---------- Enumerated types -----------------------------------------
 -- Payment happens at the store counter and is not recorded by the app (BR-09).
-CREATE TYPE pickup_status AS ENUM ('AWAITING_PICKUP', 'PICKED_UP');
+-- EXPIRED: not collected by closing time of the pickup day; stock released (BR-20).
+CREATE TYPE pickup_status AS ENUM ('AWAITING_PICKUP', 'PICKED_UP', 'EXPIRED');
 
 -- ---------- Catalog --------------------------------------------------
 CREATE TABLE categories (
@@ -89,15 +90,20 @@ CREATE TABLE orders (
   customer_id     uuid            NOT NULL,
   total_cents     integer         NOT NULL,
   pickup_status   pickup_status   NOT NULL DEFAULT 'AWAITING_PICKUP',      -- BR-10
+  ready_at        timestamptz     NOT NULL,                                -- BR-12 (computed by the API, stored)
+  expires_at      timestamptz     NOT NULL,                                -- BR-20 (closing time of the pickup day)
   created_at      timestamptz     NOT NULL DEFAULT now(),
   updated_at      timestamptz     NOT NULL DEFAULT now(),
   CONSTRAINT orders_customer_fk     FOREIGN KEY (customer_id)
                                     REFERENCES customers (id) ON DELETE RESTRICT,
   CONSTRAINT orders_code_key        UNIQUE (code),                                          -- BR-13
   CONSTRAINT orders_code_fmt        CHECK (code ~ '^CUP-[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{6}$'), -- BR-13
-  CONSTRAINT orders_total_pos       CHECK (total_cents > 0)
+  CONSTRAINT orders_total_pos       CHECK (total_cents > 0),
+  CONSTRAINT orders_ready_after_created CHECK (ready_at >= created_at),                   -- BR-12
+  CONSTRAINT orders_expires_after_ready CHECK (expires_at > ready_at)                     -- BR-20
 );
 CREATE INDEX orders_customer_id_idx ON orders (customer_id);
+CREATE INDEX orders_status_expires_at_idx ON orders (pickup_status, expires_at);       -- lazy expiry (BR-20)
 
 CREATE TABLE order_items (
   id                uuid         PRIMARY KEY DEFAULT gen_random_uuid(),

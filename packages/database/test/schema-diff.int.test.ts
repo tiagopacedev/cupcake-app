@@ -58,6 +58,8 @@ const EXPECTED_CHECK_CONSTRAINTS = [
   "orders_total_pos",
   "order_items_quantity_range",
   "order_items_unit_price_pos",
+  "orders_ready_after_created",
+  "orders_expires_after_ready",
 ].sort();
 
 const EXPECTED_UNIQUE_INDEXES = [
@@ -76,6 +78,7 @@ const EXPECTED_NON_UNIQUE_INDEXES = [
   "products_category_id_idx",
   "product_tags_tag_id_idx",
   "orders_customer_id_idx",
+  "orders_status_expires_at_idx",
   "order_items_product_id_idx",
 ].sort();
 
@@ -114,7 +117,7 @@ describe("E2-02 schema-diff: migrated DB vs physical-model.sql", () => {
     expect(names).toEqual(EXPECTED_FOREIGN_KEYS);
   });
 
-  it("has exactly the 15 documented CHECK constraints (03-data-model.md §9)", async () => {
+  it("has exactly the 17 documented CHECK constraints (03-data-model.md §9)", async () => {
     const names = await constraintNames(pool, "c");
     expect(names).toEqual(EXPECTED_CHECK_CONSTRAINTS);
   });
@@ -129,14 +132,14 @@ describe("E2-02 schema-diff: migrated DB vs physical-model.sql", () => {
     expect(names).toEqual(EXPECTED_NON_UNIQUE_INDEXES);
   });
 
-  it("pickup_status enum has exactly AWAITING_PICKUP and PICKED_UP, in that order", async () => {
+  it("pickup_status enum has exactly AWAITING_PICKUP, PICKED_UP and EXPIRED, in that order", async () => {
     const { rows } = await pool.query<{ enumlabel: string }>(
       `SELECT e.enumlabel FROM pg_enum e
        JOIN pg_type t ON t.oid = e.enumtypid
        WHERE t.typname = 'pickup_status'
        ORDER BY e.enumsortorder`,
     );
-    expect(rows.map((r) => r.enumlabel)).toEqual(["AWAITING_PICKUP", "PICKED_UP"]);
+    expect(rows.map((r) => r.enumlabel)).toEqual(["AWAITING_PICKUP", "PICKED_UP", "EXPIRED"]);
   });
 });
 

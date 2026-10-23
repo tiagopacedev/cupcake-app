@@ -1,4 +1,12 @@
-import { createOrderViaApi, expect, price, seedCart, test } from "../support/test.js";
+import type { Page } from "@playwright/test";
+import {
+  addFromCatalog,
+  createOrderViaApi,
+  expect,
+  price,
+  seedCart,
+  test,
+} from "../support/test.js";
 
 /** Acceptance criteria that 05 §5 assigns to the E level beyond the five journeys. */
 
@@ -82,32 +90,121 @@ test("US-18 / US-20: an order opens by its code, in lowercase too, with no phone
   expect(text).not.toMatch(/\+55|91234|Souza/);
 });
 
-test("US-22 AC4: a stored code the server doesn't know is removed", async ({ page }) => {
+/** Stores orders the way checkout does (BR-19): newest first. */
+async function storeOrders(page: Page, orders: { code: string; createdAt: string }[]) {
   await page.goto("/");
-  await page.evaluate(() =>
-    localStorage.setItem(
-      "cupcake.lastOrder",
-      JSON.stringify({ code: "CUP-ZZZZZZ", createdAt: new Date().toISOString() }),
-    ),
+  await page.evaluate(
+    (value) => localStorage.setItem("cupcake.orders", JSON.stringify(value)),
+    orders,
   );
+}
+
+test("US-22 AC4: a stored code the server doesn't know is removed", async ({ page }) => {
+  await storeOrders(page, [{ code: "CUP-ZZZZZZ", createdAt: new Date().toISOString() }]);
   await page.reload();
   await expect
-    .poll(() => page.evaluate(() => localStorage.getItem("cupcake.lastOrder")))
-    .toBeNull();
+    .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("cupcake.orders") ?? "null")))
+    .toEqual([]);
   await expect(page.getByRole("link", { name: /Seu pedido/ })).toHaveCount(0);
 });
 
-test("US-22 AC3: a stored order from a previous day shows no card", async ({ page }) => {
-  await page.goto("/");
-  await page.evaluate(() =>
-    localStorage.setItem(
-      "cupcake.lastOrder",
-      JSON.stringify({ code: "CUP-ABCDEF", createdAt: "2020-01-01T15:00:00.000Z" }),
-    ),
-  );
+test("US-22 AC6: an order from a previous day still awaiting pickup keeps its card", async ({
+  page,
+}) => {
+  const code = await createOrderViaApi(page, [{ slug: "chocolate-crush", quantity: 1 }]);
+  await storeOrders(page, [{ code, createdAt: "2020-01-01T15:00:00.000Z" }]);
   await page.reload();
-  await expect(page.getByRole("heading", { level: 2 })).toHaveCount(6);
-  await expect(page.getByRole("link", { name: /Seu pedido/ })).toHaveCount(0);
+  await expect(
+    page.getByRole("link", { name: new RegExp(`Seu pedido ${code}, aguardando retirada`) }),
+  ).toBeVisible();
+});
+
+test("US-22 AC5 / BR-19: two orders show two cards, newest first, and each opens its order", async ({
+  page,
+}) => {
+  const first = await createOrderViaApi(page, [{ slug: "chocolate-crush", quantity: 1 }]);
+  const second = await createOrderViaApi(page, [{ slug: "birthday-vanilla", quantity: 1 }]);
+  const now = new Date().toISOString();
+  await storeOrders(page, [
+    { code: second, createdAt: now },
+    { code: first, createdAt: now },
+  ]);
+  await page.reload();
+
+  const cards = page.getByRole("link", { name: /^Seu pedido CUP-/ });
+  await expect(cards).toHaveCount(2);
+  await expect(cards.nth(0)).toHaveAttribute("href", `/orders/${second}`);
+  await expect(cards.nth(1)).toHaveAttribute("href", `/orders/${first}`);
+
+  await cards.nth(1).click();
+  await expect(page).toHaveURL(new RegExp(`/orders/${first}$`));
+});
+
+test("BR-19: the v1.0.0 single-order key is picked up and migrated", async ({ page }) => {
+  const code = await createOrderViaApi(page, [{ slug: "chocolate-crush", quantity: 1 }]);
+  await page.goto("/");
+  await page.evaluate((value) => localStorage.setItem("cupcake.lastOrder", JSON.stringify(value)), {
+    code,
+    createdAt: new Date().toISOString(),
+  });
+  await page.reload();
+  await expect(page.getByRole("link", { name: new RegExp(`Seu pedido ${code}`) })).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem("cupcake.lastOrder"))).toBeNull();
+});
+
+test("BR-20 / US-25: after closing time the order expires, its stock returns and its card goes away", async ({
+  page,
+  db,
+}) => {
+  const code = await createOrderViaApi(page, [{ slug: "chocolate-crush", quantity: 2 }]);
+  expect(await db.stockOf("chocolate-crush")).toBe(33);
+  await storeOrders(page, [{ code, createdAt: new Date().toISOString() }]);
+  await page.reload();
+  await expect(page.getByRole("link", { name: new RegExp(`Seu pedido ${code}`) })).toBeVisible();
+
+  await db.makeOverdue(code);
+  await page.reload();
+  await expect(page.getByRole("link", { name: /^Seu pedido/ })).toHaveCount(0);
+  expect(await db.statusOf(code)).toBe("EXPIRED");
+  expect(await db.stockOf("chocolate-crush")).toBe(35);
+  await expect
+    .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("cupcake.orders") ?? "null")))
+    .toEqual([]);
+
+  // US-18 AC4: the expired order is still viewable by its code.
+  await page.goto(`/orders/${code}`);
+  await expect(page.getByText(code).first()).toBeVisible();
+  await expect(page.getByText("Este pedido expirou e as unidades foram liberadas.")).toBeVisible();
+});
+
+test("US-16 / G-13: the order code block has no copy or share action", async ({ page }) => {
+  const code = await createOrderViaApi(page, [{ slug: "chocolate-crush", quantity: 1 }]);
+  await page.goto(`/orders/${code}`);
+  await expect(page.getByText(code).first()).toBeVisible();
+  await expect(page.getByRole("button", { name: "Copiar código" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Compartilhar" })).toHaveCount(0);
+});
+
+test("US-06 AC5: at the cap of 20 units the card points to the store for larger orders", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await addFromCatalog(page, "Birthday Vanilla", 20); // stock 40
+  await expect(
+    page.getByText("Máximo de 20 unidades. Para encomendas maiores, fale com a loja."),
+  ).toBeVisible();
+  await expect(page.getByText("Máximo disponível.")).toHaveCount(0);
+});
+
+test("US-17 AC2: the header and footer come in the server-rendered HTML with the store data", async ({
+  page,
+}) => {
+  const html = await (await page.request.get("/")).text();
+  expect(html).toContain("Rua das Flores, 123");
+  expect(html).toContain("Ter a dom, 10h às 19h");
+
+  await page.goto("/");
+  await expect(page.getByRole("contentinfo")).toContainText("Ter a dom, 10h às 19h");
 });
 
 test("US-14 AC3 / NFR-12: no payment field or status anywhere in the journey", async ({ page }) => {

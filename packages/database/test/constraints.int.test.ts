@@ -3,7 +3,7 @@ import type { Pool } from "pg";
 import { createTestPool, truncateAll } from "./helpers/db.js";
 
 /**
- * The 14 invalid operations of 03-data-model.md §9 "Validation evidence",
+ * The 14 invalid operations of 03-data-model.md §9 (plus cases 15 and 16 for the order pickup schedule, E9-08) "Validation evidence",
  * each asserted against the specific constraint that must reject it
  * (05-testing-strategy.md §3.3). Raw `pg`, not Prisma Client, mirroring
  * schema-diff.int.test.ts — this suite doesn't depend on `prisma generate`.
@@ -63,7 +63,7 @@ describe("E2-02 constraint violations (03-data-model.md §9)", () => {
     const customerId = customer.rows[0]!.id;
 
     const order = await pool.query<{ id: string }>(
-      `INSERT INTO orders (code, customer_id, total_cents) VALUES ('CUP-23456A', $1, 1000) RETURNING id`,
+      `INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at) VALUES ('CUP-23456A', $1, 1000, now() + interval '15 minutes', now() + interval '1 day') RETURNING id`,
       [customerId],
     );
     const orderId = order.rows[0]!.id;
@@ -114,7 +114,7 @@ describe("E2-02 constraint violations (03-data-model.md §9)", () => {
   it("6. a duplicate order code is rejected by orders_code_key", async () => {
     await expectConstraint(
       pool.query(
-        `INSERT INTO orders (code, customer_id, total_cents) VALUES ('CUP-23456A', $1, 500)`,
+        `INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at) VALUES ('CUP-23456A', $1, 500, now() + interval '15 minutes', now() + interval '1 day')`,
         [fx.customerId],
       ),
       "orders_code_key",
@@ -124,7 +124,7 @@ describe("E2-02 constraint violations (03-data-model.md §9)", () => {
   it("7. an order code with excluded characters (0/O/1/I/L) is rejected by orders_code_fmt", async () => {
     await expectConstraint(
       pool.query(
-        `INSERT INTO orders (code, customer_id, total_cents) VALUES ('CUP-000000', $1, 500)`,
+        `INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at) VALUES ('CUP-000000', $1, 500, now() + interval '15 minutes', now() + interval '1 day')`,
         [fx.customerId],
       ),
       "orders_code_fmt",
@@ -134,7 +134,7 @@ describe("E2-02 constraint violations (03-data-model.md §9)", () => {
   it("8. an order total of 0 is rejected by orders_total_pos", async () => {
     await expectConstraint(
       pool.query(
-        `INSERT INTO orders (code, customer_id, total_cents) VALUES ('CUP-23456B', $1, 0)`,
+        `INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at) VALUES ('CUP-23456B', $1, 0, now() + interval '15 minutes', now() + interval '1 day')`,
         [fx.customerId],
       ),
       "orders_total_pos",
@@ -145,6 +145,15 @@ describe("E2-02 constraint violations (03-data-model.md §9)", () => {
     await expect(
       pool.query(`UPDATE orders SET pickup_status = 'NOT_READY' WHERE id = $1`, [fx.orderId]),
     ).rejects.toMatchObject({ code: "22P02" });
+  });
+
+  it("9b. the EXPIRED status (BR-20) is accepted by the pickup_status enum", async () => {
+    await pool.query(`UPDATE orders SET pickup_status = 'EXPIRED' WHERE id = $1`, [fx.orderId]);
+    const { rows } = await pool.query<{ pickup_status: string }>(
+      `SELECT pickup_status FROM orders WHERE id = $1`,
+      [fx.orderId],
+    );
+    expect(rows[0]!.pickup_status).toBe("EXPIRED");
   });
 
   it("10. a line quantity of 21 is rejected by order_items_quantity_range", async () => {
@@ -187,6 +196,28 @@ describe("E2-02 constraint violations (03-data-model.md §9)", () => {
         `INSERT INTO categories (name, slug, sort_order) VALUES ('Bolos', 'Has Spaces', 2)`,
       ),
       "categories_slug_fmt",
+    );
+  });
+
+  it("15. an order ready before it was created is rejected by orders_ready_after_created (BR-12)", async () => {
+    await expectConstraint(
+      pool.query(
+        `INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at, created_at)
+         VALUES ('CUP-23456C', $1, 500, now() - interval '1 hour', now() + interval '1 day', now())`,
+        [fx.customerId],
+      ),
+      "orders_ready_after_created",
+    );
+  });
+
+  it("16. an order that expires before it is ready is rejected by orders_expires_after_ready (BR-20)", async () => {
+    await expectConstraint(
+      pool.query(
+        `INSERT INTO orders (code, customer_id, total_cents, ready_at, expires_at)
+         VALUES ('CUP-23456D', $1, 500, now() + interval '2 hours', now() + interval '1 hour')`,
+        [fx.customerId],
+      ),
+      "orders_expires_after_ready",
     );
   });
 });

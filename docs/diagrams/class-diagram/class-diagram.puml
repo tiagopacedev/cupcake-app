@@ -1,12 +1,13 @@
 @startuml class-diagram
 !include ../_style.iuml
-title Cupcake App · Persistence (Domain) Class Diagram
+title Cupcake Store · Persistence (Domain) Class Diagram
 hide empty members
 skinparam linetype ortho
 
 enum PickupStatus <<enumeration>> {
   AWAITING_PICKUP
   PICKED_UP
+  EXPIRED
 }
 
 class Category {
@@ -62,11 +63,12 @@ class Order {
   - code : String {unique, CUP-XXXXXX}
   - totalCents : Integer {> 0}
   - pickupStatus : PickupStatus = AWAITING_PICKUP
+  - readyAt : DateTime {>= createdAt}
+  - expiresAt : DateTime {> readyAt}
   - createdAt : DateTime
   - updatedAt : DateTime
   --
-  + readyAt() : DateTime
-  + isFromToday(now : DateTime) : Boolean
+  + isOverdue(now : DateTime) : Boolean
 }
 
 class OrderItem {
@@ -89,7 +91,10 @@ Order ..> PickupStatus
 note bottom of Order
   totalCents is a stored snapshot of Σ lineTotalCents()
   (deliberate, documented denormalization, see 03-data-model §5).
-  readyAt = createdAt + 15 min (BR-12), derived, not stored.
+  readyAt and expiresAt are computed from the store's opening
+  hours when the order is created and stored (BR-12).
+  Overdue AWAITING_PICKUP orders become EXPIRED and their
+  units return to stock exactly once (BR-20).
   Payment happens at the store and is not recorded (BR-09).
   Stock is decremented when the order is created (BR-11).
 end note

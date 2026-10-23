@@ -7,6 +7,10 @@ import { MAX_LINE_QUANTITY } from "./store.js";
  * maps fields to the pt-BR copy of 04-ui-design-system.md §9.3/§9.5.
  */
 
+/** Pickup status of an order (BR-10): AWAITING_PICKUP, then PICKED_UP (BR-21) or EXPIRED (BR-20). */
+export const PICKUP_STATUSES = ["AWAITING_PICKUP", "PICKED_UP", "EXPIRED"] as const;
+export type PickupStatus = (typeof PICKUP_STATUSES)[number];
+
 /** Order code alphabet: digits 2-9 and letters without I, L, O (BR-13). 31 characters. */
 export const ORDER_CODE_ALPHABET = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
 export const ORDER_CODE_PATTERN = /^CUP-[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{6}$/;

@@ -12,7 +12,7 @@ if (Catalog loaded?) then (no)
   stop
 else (yes)
 endif
-:Show latest-order card if an order from today\nis awaiting pickup (see AD-02);
+:Show a card for each stored order\nstill awaiting pickup (see AD-02);
 :Show product cards with stock state;
 |Customer|
 repeat
@@ -37,17 +37,18 @@ endif
 :Edit quantities / remove items (optional);
 :Continue to checkout;
 |Web app (View)|
-:Show form, pickup address, "Pronto em ~15 min",\n"Pagamento na loja" and full order summary;
+:Show form, pickup address, ready time\n(from the opening hours, BR-12), "Pagamento na loja"\nand full order summary;
 repeat
   |Customer|
   :Enter / correct name and phone;
   |Web app (View)|
   :Validate fields (BR-14);
 repeat while (Any field invalid?) is (yes: show field messages) not (no)
-:Send POST /orders;
+:Send POST /api/orders;
 |API (Controller + Model)|
+:Expire overdue orders and release\ntheir stock (BR-20);
 :Re-validate data and products;
-:In one transaction: decrement stock atomically,\nupsert customer, create order AWAITING_PICKUP\n(UC-07, BR-10, BR-11, BR-15);
+:In one transaction: decrement stock atomically,\nupsert customer, compute ready time and pickup\ndeadline, create order AWAITING_PICKUP\n(UC-07, BR-10, BR-11, BR-12, BR-15);
 if (Created?) then (no)
   :Return error\n(VALIDATION_ERROR / PRODUCT_NOT_FOUND /\nINSUFFICIENT_STOCK);
   |Web app (View)|
@@ -56,10 +57,10 @@ if (Created?) then (no)
 else (yes)
 endif
 |Web app (View)|
-:Clear cart (BR-17); save order code\nin the browser (BR-19);
-:Show Meu pedido: "Pedido feito!", code,\nitems, total to pay at the store, address;
+:Clear cart (BR-17); add the order code\nto the browser's active orders (BR-19);
+:Show Meu pedido: "Pedido feito!", ready time,\ncode, items, total to pay at the store,\naddress and pickup deadline;
 |Customer|
-:Go to the store within ~15 min;
+:Go to the store between the ready time\nand the pickup deadline;
 :Show the code, pay at the counter,\ncollect the order (see AD-03);
 stop
 @enduml
